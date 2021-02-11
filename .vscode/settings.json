@@ -1,0 +1,16 @@
+{
+  "files.exclude": {
+    "node_modules": true,
+    "src/react-app-env.v.ts": true,
+    "src/reportWebVitals.ts": true,
+    "src/serviceWorkerRegistration.ts": true,
+    ".eslintcache": true,
+    "yarn.lock": true,
+    "certs": true,
+    "build": true,
+    "public/*.svg": true,
+    "public/*.png": true,
+    "public/*.ico": true,
+    "public/browserconfig.xml": true
+  }
+}
