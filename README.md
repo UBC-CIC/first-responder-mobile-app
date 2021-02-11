@@ -11,7 +11,9 @@ Mobile app for first responders to get in direct contact with medical profession
 
 ## Installation
 
-Download on [App Store](#) or [Google Play Store](#) TODO
+<!-- Download on [App Store](#) or [Google Play Store](#) TODO -->
+
+[Add to home screen](#) from your browser TODO
 
 ## Usage
 
