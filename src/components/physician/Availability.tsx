@@ -1,7 +1,6 @@
-import { createRef, ReactElement, ReactNode, useEffect, useState } from "react";
-import Layout from "../styling/Layout";
+import { ReactElement, useState } from "react";
 import ScheduleSelector from "react-schedule-selector";
-import { Button } from "@material-ui/core";
+import Layout from "../styling/Layout";
 
 const DAYS_OF_WEEK: DayIndex[] = [
   "Monday",
@@ -27,7 +26,6 @@ type DayIndex = keyof DayMap;
 
 const Availability = (): ReactElement => {
   const [schedule, setSchedule] = useState([] as Date[]);
-  const [selectedDays, setSelectedDays] = useState({} as DayMap);
   return (
     <Layout>
       {/* root */}

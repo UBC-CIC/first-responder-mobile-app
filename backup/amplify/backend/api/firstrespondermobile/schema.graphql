@@ -1,0 +1,29 @@
+# Models
+type Meeting @model {
+  id: ID!
+  attendees: [Attendee] @connection(keyName: "byMeeting", fields: ["id"])
+}
+
+type Attendee @model @key(name: "byMeeting", fields: ["meetingID"]) {
+  id: ID!
+  name: String!
+  meetingID: ID!
+  meeting: Meeting @connection(fields: ["meetingID"])
+}
+
+# Private Types
+
+type JoinInfo {
+  Title: String!
+  Meeting: Meeting!
+}
+
+# Resolvers
+type Query {
+  echo(msg: String): String @function(name: "echofunction-${env}")
+}
+
+type Mutation {
+  createChimeMeeting(title: String): JoinInfo
+    @function(name: "firstrespondercreatemeeting-${env}")
+}

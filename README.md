@@ -37,3 +37,7 @@ Please [open an issue](#) for support, or contact the [UBC CIC](#) or [STARS](#)
 ## Contributing
 
 Create a branch, add commits, and [open a pull request](#). TODO
+
+## Important Things TODO
+
+- Pass name of DynamoDB to Lambda via CloudFormation

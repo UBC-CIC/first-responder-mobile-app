@@ -13,6 +13,8 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "amazon-chime-sdk-js": "^2.4.1",
+    "aws-amplify": "^3.3.18",
     "axios": "^0.21.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

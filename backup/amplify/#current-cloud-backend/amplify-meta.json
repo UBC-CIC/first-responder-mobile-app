@@ -1,0 +1,151 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-firstrespondermobile-dev-123130-authRole",
+      "UnauthRoleArn": "arn:aws:iam::676717162865:role/amplify-firstrespondermobile-dev-123130-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::676717162865:role/amplify-firstrespondermobile-dev-123130-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-firstrespondermobile-dev-123130-deployment",
+      "UnauthRoleName": "amplify-firstrespondermobile-dev-123130-unauthRole",
+      "StackName": "amplify-firstrespondermobile-dev-123130",
+      "StackId": "arn:aws:cloudformation:us-east-1:676717162865:stack/amplify-firstrespondermobile-dev-123130/ccbbd840-6b15-11eb-acbf-0eec813a27fb",
+      "AmplifyAppId": "d3piyn3v3guks"
+    }
+  },
+  "function": {
+    "echofunction": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "api",
+          "resourceName": "firstrespondermobile",
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput"
+          ]
+        }
+      ],
+      "lastBuildTimeStamp": "2021-02-09T22:43:37.300Z",
+      "lastPackageTimeStamp": "2021-02-09T22:43:37.342Z",
+      "distZipFilename": "echofunction-54624d6c626b57654365-build.zip",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-firstrespondermobile-dev-123130-deployment/amplify-cfn-templates/function/echofunction-cloudformation-template.json",
+        "logicalId": "functionechofunction"
+      },
+      "lastPushTimeStamp": "2021-02-11T21:44:36.305Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:676717162865:function:echofunction-dev",
+        "Name": "echofunction-dev",
+        "LambdaExecutionRole": "firstrespondermobileLambdaRoledccaa4c8-dev"
+      },
+      "lastPushDirHash": "ieivoroeBEK3nCHFBG5qsuaRTHw="
+    },
+    "firstrespondercreatemeeting": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2021-02-11T21:43:30.375Z",
+      "lastPackageTimeStamp": "2021-02-11T21:43:30.403Z",
+      "distZipFilename": "firstrespondercreatemeeting-35616c422b5231372f6f-build.zip",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-firstrespondermobile-dev-123130-deployment/amplify-cfn-templates/function/firstrespondercreatemeeting-cloudformation-template.json",
+        "logicalId": "functionfirstrespondercreatemeeting"
+      },
+      "lastPushTimeStamp": "2021-02-11T21:44:36.314Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:676717162865:function:firstrespondercreatemeeting-dev",
+        "Name": "firstrespondercreatemeeting-dev",
+        "LambdaExecutionRole": "firstrespondermobileLambdaRole999e1e13-dev"
+      },
+      "lastPushDirHash": "K5x8ry5zs0XdCUiQnNYBdPjTzoE=",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "firstresponderdbutillayer",
+          "attributes": [
+            "Arn"
+          ]
+        }
+      ]
+    },
+    "firstresponderdbutillayer": {
+      "layerVersionMap": {
+        "1": {
+          "permissions": [
+            {
+              "type": "private"
+            }
+          ],
+          "hash": "WA7ifF3fry3Zgyj1nlgwepgxhvMKbuDxllQdC2DrcK0="
+        },
+        "2": {
+          "permissions": [
+            {
+              "type": "private"
+            }
+          ],
+          "hash": "tyw7qGwH2XkBGuFxpCUwfDtCvBfuNp7u6Y8cnVihihw="
+        },
+        "3": {
+          "permissions": [
+            {
+              "type": "private"
+            }
+          ],
+          "hash": "JIxkV4GxyrM1EPad/H/+9Jab+vGGXmoaTgABPcsnGhM="
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "LambdaLayer",
+      "build": true,
+      "lastPackageTimeStamp": "2021-02-11T21:32:56.767Z",
+      "distZipFilename": "firstresponderdbutillayer-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-firstrespondermobile-dev-123130-deployment",
+        "s3Key": "amplify-builds/firstresponderdbutillayer-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-firstrespondermobile-dev-123130-deployment/amplify-cfn-templates/function/firstresponderdbutillayer-awscloudformation-template.json",
+        "logicalId": "functionfirstresponderdbutillayer"
+      },
+      "lastPushTimeStamp": "2021-02-11T21:44:36.309Z",
+      "output": {
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:676717162865:layer:firstresponderdbutillayer-dev:3"
+      },
+      "lastPushDirHash": "Yid4Ce3p2Ncy2UTivpVqm7MuEWg="
+    }
+  },
+  "auth": {},
+  "api": {
+    "firstrespondermobile": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 7,
+              "description": "First Responder Mobile API"
+            }
+          },
+          "additionalAuthenticationProviders": []
+        },
+        "GraphQLAPIIdOutput": "c5unt3ibyvbolirazav3h2h5pi",
+        "GraphQLAPIEndpointOutput": "https://tah5rg4tpvdcdikxowjrlpggmi.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-bzkdrqzekfgbvaku4khkts3khq"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-firstrespondermobile-dev-123130-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apifirstrespondermobile"
+      },
+      "lastPushTimeStamp": "2021-02-11T21:44:36.311Z",
+      "lastPushDirHash": "9oHIylnjlz5I3Zhi5LWAS8PG3+E="
+    }
+  }
+}

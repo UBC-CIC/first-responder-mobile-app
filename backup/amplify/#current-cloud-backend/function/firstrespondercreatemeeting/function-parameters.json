@@ -1,0 +1,9 @@
+{
+  "lambdaLayers": [
+    {
+      "type": "ProjectLayer",
+      "resourceName": "firstresponderdbutillayer",
+      "version": 3
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+# Models
+type Meeting @model {
+  id: ID!
+  attendees: [Attendee] @connection(keyName: "byMeeting", fields: ["id"])
+}
+
+type Attendee @model @key(name: "byMeeting", fields: ["meetingID"]) {
+  id: ID!
+  name: String!
+  meetingID: ID!
+  meeting: Meeting @connection(fields: ["meetingID"])
+}
+
+# Private Types
+
+type JoinInfo {
+  id: String!
+  Meeting: MeetingData!
+  Attendee: AttendeeInfo
+}
+
+type AttendeeInfo {
+  ExternalUserId: String
+  AttendeeId: String
+  JoinToken: String
+}
+
+type MeetingData {
+  MeetingId: String!
+  ExternalMeetingId: String
+  MediaPlacement: MediaPlacement!
+  MediaRegion: String!
+}
+
+type MediaPlacement {
+  AudioHostUrl: String!
+  AudioFallbackUrl: String!
+  ScreenDataUrl: String!
+  ScreenSharingUrl: String!
+  ScreenViewingUrl: String!
+  SignalingUrl: String!
+  TurnControlUrl: String!
+}
+
+# Resolvers
+type Query {
+  echo(msg: String): String @function(name: "echofunction-${env}")
+  echo2(msg: String): String @function(name: "echofunction-${env}")
+}
+
+type Mutation {
+  createChimeMeeting(title: String): JoinInfo
+    @function(name: "firstrespondercreatemeeting-${env}")
+  joinChimeMeeting(title: String, name: String, region: String): JoinInfo
+    @function(name: "firstresponderjoinmeeting-${env}")
+}

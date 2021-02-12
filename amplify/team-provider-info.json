@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-starspwa-dev-152341-authRole",
+      "UnauthRoleArn": "arn:aws:iam::676717162865:role/amplify-starspwa-dev-152341-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::676717162865:role/amplify-starspwa-dev-152341-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-starspwa-dev-152341-deployment",
+      "UnauthRoleName": "amplify-starspwa-dev-152341-unauthRole",
+      "StackName": "amplify-starspwa-dev-152341",
+      "StackId": "arn:aws:cloudformation:us-east-1:676717162865:stack/amplify-starspwa-dev-152341/2fcf7da0-6cc0-11eb-b8b7-0e4936f32daf",
+      "AmplifyAppId": "d8lfiqhvfn2jd"
+    }
+  }
+}
