@@ -34,23 +34,24 @@ const getMeeting = async (meetingId) => {
   if (!result.Item) {
     return null;
   }
-  console.log(result);
   const meetingData = result.Item;
+  const mid = meetingData.MeetingId.S;
+  console.log("DATA:", mid);
   try {
     await chime
       .getMeeting({
-        MeetingId: meetingData.Meeting.MeetingId,
+        MeetingId: mid,
       })
       .promise();
   } catch (err) {
     return null;
   }
+  console.log("Joining existing meeting, id: ", meetingData.MeetingId);
   return meetingData;
 };
 
 const putMeeting = async (title, meetingInfo) => {
   const { Meeting } = meetingInfo;
-  console.log("meetingId", Meeting);
   await ddb
     .putItem({
       TableName: meetingsTableName,
@@ -107,6 +108,7 @@ exports.handler = async (event, context, callback) => {
   const title = event.arguments.title;
   const name = event.arguments.name;
   const region = event.arguments.region || "us-east-1";
+  console.log("Unique Meeting ID: ", title);
   let meetingInfo = await getMeeting(title);
   if (!meetingInfo) {
     const request = {
@@ -118,12 +120,10 @@ exports.handler = async (event, context, callback) => {
     await putMeeting(title, meetingInfo);
   }
 
-  console.log(meetingInfo);
-
   console.info("Adding new attendee");
   const attendeeInfo = await chime
     .createAttendee({
-      MeetingId: meetingInfo.Meeting.MeetingId,
+      MeetingId: meetingInfo.MeetingId.S,
       ExternalUserId: uuid(),
     })
     .promise();
