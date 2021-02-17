@@ -2,11 +2,14 @@
 type Meeting @model {
   id: ID!
   attendees: [Attendee] @connection(keyName: "byMeeting", fields: ["id"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
 }
 
 type Attendee @model @key(name: "byMeeting", fields: ["meetingID"]) {
   id: ID!
-  name: String!
+  Name: String!
+  externalUserId: String
   meetingID: ID!
   meeting: Meeting @connection(fields: ["meetingID"])
 }

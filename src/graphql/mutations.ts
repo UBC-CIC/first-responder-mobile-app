@@ -64,7 +64,8 @@ export const createMeeting = /* GraphQL */ `
       attendees {
         items {
           id
-          name
+          Name
+          externalUserId
           meetingID
           createdAt
           updatedAt
@@ -86,7 +87,8 @@ export const updateMeeting = /* GraphQL */ `
       attendees {
         items {
           id
-          name
+          Name
+          externalUserId
           meetingID
           createdAt
           updatedAt
@@ -108,7 +110,8 @@ export const deleteMeeting = /* GraphQL */ `
       attendees {
         items {
           id
-          name
+          Name
+          externalUserId
           meetingID
           createdAt
           updatedAt
@@ -127,7 +130,8 @@ export const createAttendee = /* GraphQL */ `
   ) {
     createAttendee(input: $input, condition: $condition) {
       id
-      name
+      Name
+      externalUserId
       meetingID
       meeting {
         id
@@ -149,7 +153,8 @@ export const updateAttendee = /* GraphQL */ `
   ) {
     updateAttendee(input: $input, condition: $condition) {
       id
-      name
+      Name
+      externalUserId
       meetingID
       meeting {
         id
@@ -171,7 +176,8 @@ export const deleteAttendee = /* GraphQL */ `
   ) {
     deleteAttendee(input: $input, condition: $condition) {
       id
-      name
+      Name
+      externalUserId
       meetingID
       meeting {
         id

@@ -8,6 +8,10 @@ import ContactInfo from "./physician/ContactInfo";
 import PhysicianMain from "./physician/PhysicianMain";
 import PhysicianProfile from "./physician/PhysicianProfile";
 import Call from "./shared/Call";
+import {
+  RosterProvider,
+  MeetingProvider,
+} from "amazon-chime-sdk-component-library-react";
 const Router = (): ReactElement => {
   return (
     <BrowserRouter>
@@ -41,7 +45,11 @@ const Router = (): ReactElement => {
         {/* Shared */}
 
         <Route exact path="/call">
-          <Call />
+          <MeetingProvider>
+            {/* <RosterProvider> */}
+            <Call />
+            {/* </RosterProvider> */}
+          </MeetingProvider>
         </Route>
         {/* Not Found */}
         <Route path="*">

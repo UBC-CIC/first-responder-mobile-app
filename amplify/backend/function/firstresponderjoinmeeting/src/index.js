@@ -34,11 +34,11 @@ const getMeeting = async (meetingId) => {
   if (!result.Item) {
     return null;
   }
-  const meetingData = result.Item;
+  let meetingData = result.Item;
   const mid = meetingData.MeetingId.S;
   console.log("DATA:", mid);
   try {
-    await chime
+    meetingData = await chime
       .getMeeting({
         MeetingId: mid,
       })
@@ -46,7 +46,7 @@ const getMeeting = async (meetingId) => {
   } catch (err) {
     return null;
   }
-  console.log("Joining existing meeting, id: ", meetingData.MeetingId);
+  console.log("Joining existing meeting, id: ", meetingData.Meeting.MeetingId);
   return meetingData;
 };
 
@@ -61,7 +61,12 @@ const putMeeting = async (title, meetingInfo) => {
         ExternalMeetingId: { S: Meeting.ExternalMeetingId || "" },
         MediaRegion: { S: Meeting.MediaRegion },
         MediaPlacement: { S: JSON.stringify(Meeting.MediaPlacement) },
-
+        createdAt: {
+          S: "" + new Date(Date.now()),
+        },
+        updatedAt: {
+          S: "" + new Date(Date.now()),
+        },
         TTL: {
           N: "" + oneDayFromNow,
         },
@@ -76,7 +81,7 @@ const getAttendee = async (title, attendeeId) => {
       TableName: attendeesTableName,
       Key: {
         id: {
-          S: `${title}/${attendeeId}`,
+          S: `${attendeeId}`,
         },
       },
     })
@@ -87,15 +92,16 @@ const getAttendee = async (title, attendeeId) => {
   return result.Item.Name.S;
 };
 
-const putAttendee = async (title, attendeeId, name) => {
+const putAttendee = async (title, attendeeId, name, meetingID) => {
   await ddb
     .putItem({
       TableName: attendeesTableName,
       Item: {
         id: {
-          S: `${title}/${attendeeId}`,
+          S: `${attendeeId}`,
         },
         Name: { S: name },
+        meetingID: { S: meetingID },
         TTL: {
           N: "" + oneDayFromNow,
         },
@@ -123,12 +129,17 @@ exports.handler = async (event, context, callback) => {
   console.info("Adding new attendee");
   const attendeeInfo = await chime
     .createAttendee({
-      MeetingId: meetingInfo.MeetingId.S,
+      MeetingId: meetingInfo.Meeting.MeetingId,
       ExternalUserId: uuid(),
     })
     .promise();
 
-  putAttendee(title, attendeeInfo.Attendee.AttendeeId, name);
+  await putAttendee(
+    title,
+    attendeeInfo.Attendee.AttendeeId,
+    name,
+    meetingInfo.Meeting.MeetingId
+  );
 
   const joinInfo = {
     id: title,

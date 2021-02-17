@@ -69,7 +69,7 @@
         "Timeout": "25",
         "Code": {
           "S3Bucket": "amplify-starspwa-dev-152341-deployment",
-          "S3Key": "amplify-builds/firstresponderjoinmeeting-6636794d685330534a58-build.zip"
+          "S3Key": "amplify-builds/firstresponderjoinmeeting-6b556777626439674d48-build.zip"
         }
       }
     },

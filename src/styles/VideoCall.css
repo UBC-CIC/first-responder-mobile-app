@@ -1,0 +1,6 @@
+div > video.ch-video {
+  position: relative !important;
+  max-height: 300px;
+  width: auto;
+  max-width: 100%;
+}

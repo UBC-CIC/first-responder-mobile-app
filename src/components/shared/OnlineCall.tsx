@@ -1,125 +1,137 @@
-import { Button } from "@material-ui/core";
-import React, { ReactElement, useState } from "react";
-import { createChimeMeeting, joinChimeMeeting } from "../../graphql/mutations";
-import Layout from "../styling/Layout";
-import { API, graphqlOperation } from "aws-amplify";
-import Amplify from "aws-amplify";
-import config from "../../aws-exports";
 import { GraphQLResult } from "@aws-amplify/api";
+import { Button } from "@material-ui/core";
+import {
+  LocalVideo,
+  MicSelection,
+  SpeakerSelection,
+  useAudioVideo,
+  useLocalVideo,
+  useMeetingManager,
+  useRosterState,
+} from "amazon-chime-sdk-component-library-react";
+import { AttendeeResponse } from "amazon-chime-sdk-component-library-react/lib/providers/MeetingProvider/types";
+import Amplify, { API, graphqlOperation } from "aws-amplify";
+import React, { ReactElement, useEffect } from "react";
 import {
   CreateChimeMeetingMutation,
+  CreateMeetingMutation,
+  CreateMeetingMutationVariables,
+  GetAttendeeQuery,
+  GetAttendeeQueryVariables,
   JoinChimeMeetingMutation,
   JoinChimeMeetingMutationVariables,
 } from "../../API";
+import config from "../../aws-exports";
 import {
-  ConsoleLogger,
-  DefaultDeviceController,
-  DefaultMeetingSession,
-  LogLevel,
-  MeetingSessionConfiguration,
-  RemovableAnalyserNode,
-} from "amazon-chime-sdk-js";
+  createChimeMeeting,
+  createMeeting,
+  joinChimeMeeting,
+} from "../../graphql/mutations";
+import { getAttendee } from "../../graphql/queries";
+import "../../styles/VideoCall.css";
+import Layout from "../styling/Layout";
+import RosterDisplay from "./RosterDisplay";
 
-import { MicrophoneActivity } from "amazon-chime-sdk-component-library-react";
 Amplify.configure(config);
-const OnlineCall = (): ReactElement => {
-  const [meetingSession, setMeetingSession] = useState<DefaultMeetingSession>();
-  const [analyser, setAnalyser] = useState<RemovableAnalyserNode | null>();
-  const [frequencyData, setFrequencyData] = useState(new Float32Array());
-  const createMeeting = () => {
-    return API.graphql(
-      graphqlOperation(createChimeMeeting, { title: "theboys" })
-    ) as GraphQLResult<CreateChimeMeetingMutation>;
-  };
 
+const OnlineCall = (): ReactElement => {
+  const { toggleVideo } = useLocalVideo();
+  const audioVideo = useAudioVideo();
+  const meetingManager = useMeetingManager();
+  const { roster } = useRosterState();
+
+  const fetchAttendee = (options: GetAttendeeQueryVariables) => {
+    return API.graphql(graphqlOperation(getAttendee, options)) as Promise<
+      GraphQLResult<GetAttendeeQuery>
+    >;
+  };
   const joinMeeting = (options: JoinChimeMeetingMutationVariables) => {
     return API.graphql(
       graphqlOperation(joinChimeMeeting, options)
     ) as GraphQLResult<JoinChimeMeetingMutation>;
   };
 
+  /** On mount */
+  useEffect(() => {
+    handleCreateandJoinMeeting("theboys", "Trevor");
+    meetingManager.getAttendee = async (chimeAttendeeId) => {
+      const res = await fetchAttendee({ id: chimeAttendeeId });
+      console.log(res);
+
+      if (res.errors) {
+        console.error(res.errors);
+      }
+      return Promise.resolve({ name: res.data?.getAttendee?.Name });
+    };
+  }, []);
+
+  /** On change of roster */
+  useEffect(() => {
+    const attendees = Object.values(roster);
+    console.log(attendees);
+  }, [roster]);
+
+  /** On change of audio/video when call starts */
+  useEffect(() => {
+    const f = async () => {
+      /** Get and Bind User Devices to Chime Infrastructure */
+      if (!audioVideo) return;
+      try {
+        const audioInputs: MediaDeviceInfo[] = await audioVideo.listAudioInputDevices();
+        const videoInputs: MediaDeviceInfo[] = await audioVideo.listVideoInputDevices();
+        await audioVideo.chooseVideoInputDevice(videoInputs[0].deviceId);
+        await audioVideo.chooseAudioInputDevice(audioInputs[0].deviceId);
+      } catch (err) {
+        // handle error - unable to acquire audio device perhaps due to permissions blocking
+      }
+      const audioOutputElement = document.getElementById("meeting-audio");
+      // const videoOutputElement = document.getElementById("meeting-video");
+
+      // await audioVideo.bindVideoElement(
+      //   0,
+      //   videoOutputElement as HTMLVideoElement
+      // );
+
+      // await audioVideo.bindAudioElement(audioOutputElement as HTMLAudioElement);
+
+      audioVideo.start();
+      toggleVideo();
+    };
+    if (audioVideo) f();
+  }, [audioVideo]);
+
   const handleCreateandJoinMeeting = async (title: string, name: string) => {
+    /** Get Meeting data from Lambda call to DynamoDB */
     const joinRes = await joinMeeting({ title, name });
-    console.log(joinRes);
-    const logger = new ConsoleLogger("MeetingLogs", LogLevel.INFO);
-    const deviceController = new DefaultDeviceController(logger);
-    const meeting = joinRes.data?.joinChimeMeeting?.Meeting;
-    const attendee = joinRes.data?.joinChimeMeeting?.Attendee;
-    const configuration = new MeetingSessionConfiguration(meeting, attendee);
-    const meet = new DefaultMeetingSession(
-      configuration,
-      logger,
-      deviceController
-    );
-    setMeetingSession(meet);
-    try {
-      const audioInputs: MediaDeviceInfo[] = await meet.audioVideo.listAudioInputDevices();
-      const videoInputs: MediaDeviceInfo[] = await meet.audioVideo.listVideoInputDevices();
-      await meet.audioVideo.chooseVideoInputDevice(videoInputs[0].deviceId);
-      await meet.audioVideo.chooseAudioInputDevice(audioInputs[0].deviceId);
 
-      const audioNode = meet.audioVideo.createAnalyserNodeForAudioInput();
-      setAnalyser(audioNode);
-    } catch (err) {
-      // handle error - unable to acquire audio device perhaps due to permissions blocking
-    }
-    const audioOutputElement = document.getElementById("meeting-audio");
-    const videoOutputElement = document.getElementById("meeting-video");
+    const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
+    const attendeeInfo = { ...joinRes.data?.joinChimeMeeting?.Attendee, name };
+    console.log(meetingInfo, attendeeInfo);
 
-    console.log(videoOutputElement?.id);
-    console.log(audioOutputElement?.id);
-
-    // await meet.audioVideo.bindVideoElement(
-    //   0,
-    //   videoOutputElement as HTMLVideoElement
-    // );
-
-    // meet.audioVideo.startVideoPreviewForVideoInput(
-    //   videoOutputElement as HTMLVideoElement
-    // );
-    await meet.audioVideo.bindAudioElement(
-      audioOutputElement as HTMLAudioElement
-    );
-
-    meet.audioVideo.start();
+    await meetingManager.join({ meetingInfo, attendeeInfo });
   };
 
   return (
     <Layout title="Online Call">
-      <Button onClick={() => handleCreateandJoinMeeting("theboys", "Trevor")}>
-        Create Meeting
-      </Button>
-      <video
-        id="meeting-video"
+      <div
         style={{
-          zIndex: 100,
-          border: "1px solid black",
-          width: "100%",
-        }}
-      ></video>
-      <audio
-        id="meeting-audio"
-        style={{ width: "100%", border: "1px solid black" }}
-      ></audio>
-      <Button
-        onClick={async () =>
-          console.log(await meetingSession?.audioVideo.listAudioInputDevices())
-        }
-      >
-        List Audio Devices
-      </Button>
-      <Button
-        onClick={() => {
-          const floats: Float32Array = new Float32Array(
-            analyser?.frequencyBinCount || 0
-          );
-          analyser?.getFloatFrequencyData(floats);
-          console.log(floats);
-          setFrequencyData(floats);
+          objectFit: "contain",
+          height: "70%",
+          minHeight: "100px",
+          maxHeight: "300px",
         }}
       >
-        freqData
-      </Button>
+        <LocalVideo
+          css={
+            "object-fit: contain; width: 100%; height: 100%; position: relative !important;  "
+          }
+        />
+      </div>
+      <Button onClick={toggleVideo}>Toggle</Button>
+      <audio id="meeting-audio" style={{ display: "none" }}></audio>
+      <MicSelection />
+      <SpeakerSelection />
+      <RosterDisplay />
     </Layout>
   );
 };

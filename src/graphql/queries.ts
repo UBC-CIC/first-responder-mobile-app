@@ -19,7 +19,8 @@ export const getMeeting = /* GraphQL */ `
       attendees {
         items {
           id
-          name
+          Name
+          externalUserId
           meetingID
           createdAt
           updatedAt
@@ -54,7 +55,8 @@ export const getAttendee = /* GraphQL */ `
   query GetAttendee($id: ID!) {
     getAttendee(id: $id) {
       id
-      name
+      Name
+      externalUserId
       meetingID
       meeting {
         id
@@ -78,7 +80,8 @@ export const listAttendees = /* GraphQL */ `
     listAttendees(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
+        Name
+        externalUserId
         meetingID
         meeting {
           id

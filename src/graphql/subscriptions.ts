@@ -9,7 +9,8 @@ export const onCreateMeeting = /* GraphQL */ `
       attendees {
         items {
           id
-          name
+          Name
+          externalUserId
           meetingID
           createdAt
           updatedAt
@@ -28,7 +29,8 @@ export const onUpdateMeeting = /* GraphQL */ `
       attendees {
         items {
           id
-          name
+          Name
+          externalUserId
           meetingID
           createdAt
           updatedAt
@@ -47,7 +49,8 @@ export const onDeleteMeeting = /* GraphQL */ `
       attendees {
         items {
           id
-          name
+          Name
+          externalUserId
           meetingID
           createdAt
           updatedAt
@@ -63,7 +66,8 @@ export const onCreateAttendee = /* GraphQL */ `
   subscription OnCreateAttendee {
     onCreateAttendee {
       id
-      name
+      Name
+      externalUserId
       meetingID
       meeting {
         id
@@ -82,7 +86,8 @@ export const onUpdateAttendee = /* GraphQL */ `
   subscription OnUpdateAttendee {
     onUpdateAttendee {
       id
-      name
+      Name
+      externalUserId
       meetingID
       meeting {
         id
@@ -101,7 +106,8 @@ export const onDeleteAttendee = /* GraphQL */ `
   subscription OnDeleteAttendee {
     onDeleteAttendee {
       id
-      name
+      Name
+      externalUserId
       meetingID
       meeting {
         id

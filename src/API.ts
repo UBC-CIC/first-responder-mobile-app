@@ -4,34 +4,16 @@
 
 export type CreateMeetingInput = {
   id?: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
 };
 
 export type ModelMeetingConditionInput = {
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelMeetingConditionInput | null > | null,
   or?: Array< ModelMeetingConditionInput | null > | null,
   not?: ModelMeetingConditionInput | null,
-};
-
-export type UpdateMeetingInput = {
-  id: string,
-};
-
-export type DeleteMeetingInput = {
-  id?: string | null,
-};
-
-export type CreateAttendeeInput = {
-  id?: string | null,
-  name: string,
-  meetingID: string,
-};
-
-export type ModelAttendeeConditionInput = {
-  name?: ModelStringInput | null,
-  meetingID?: ModelIDInput | null,
-  and?: Array< ModelAttendeeConditionInput | null > | null,
-  or?: Array< ModelAttendeeConditionInput | null > | null,
-  not?: ModelAttendeeConditionInput | null,
 };
 
 export type ModelStringInput = {
@@ -74,6 +56,32 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type UpdateMeetingInput = {
+  id: string,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+};
+
+export type DeleteMeetingInput = {
+  id?: string | null,
+};
+
+export type CreateAttendeeInput = {
+  id?: string | null,
+  Name: string,
+  externalUserId?: string | null,
+  meetingID: string,
+};
+
+export type ModelAttendeeConditionInput = {
+  Name?: ModelStringInput | null,
+  externalUserId?: ModelStringInput | null,
+  meetingID?: ModelIDInput | null,
+  and?: Array< ModelAttendeeConditionInput | null > | null,
+  or?: Array< ModelAttendeeConditionInput | null > | null,
+  not?: ModelAttendeeConditionInput | null,
+};
+
 export type ModelIDInput = {
   ne?: string | null,
   eq?: string | null,
@@ -92,7 +100,8 @@ export type ModelIDInput = {
 
 export type UpdateAttendeeInput = {
   id: string,
-  name?: string | null,
+  Name?: string | null,
+  externalUserId?: string | null,
   meetingID?: string | null,
 };
 
@@ -102,6 +111,8 @@ export type DeleteAttendeeInput = {
 
 export type ModelMeetingFilterInput = {
   id?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelMeetingFilterInput | null > | null,
   or?: Array< ModelMeetingFilterInput | null > | null,
   not?: ModelMeetingFilterInput | null,
@@ -109,7 +120,8 @@ export type ModelMeetingFilterInput = {
 
 export type ModelAttendeeFilterInput = {
   id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
+  Name?: ModelStringInput | null,
+  externalUserId?: ModelStringInput | null,
   meetingID?: ModelIDInput | null,
   and?: Array< ModelAttendeeFilterInput | null > | null,
   or?: Array< ModelAttendeeFilterInput | null > | null,
@@ -198,15 +210,16 @@ export type CreateMeetingMutation = {
       items:  Array< {
         __typename: "Attendee",
         id: string,
-        name: string,
+        Name: string,
+        externalUserId: string | null,
         meetingID: string,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
+    createdAt: string | null,
+    updatedAt: string | null,
   } | null,
 };
 
@@ -224,15 +237,16 @@ export type UpdateMeetingMutation = {
       items:  Array< {
         __typename: "Attendee",
         id: string,
-        name: string,
+        Name: string,
+        externalUserId: string | null,
         meetingID: string,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
+    createdAt: string | null,
+    updatedAt: string | null,
   } | null,
 };
 
@@ -250,15 +264,16 @@ export type DeleteMeetingMutation = {
       items:  Array< {
         __typename: "Attendee",
         id: string,
-        name: string,
+        Name: string,
+        externalUserId: string | null,
         meetingID: string,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
+    createdAt: string | null,
+    updatedAt: string | null,
   } | null,
 };
 
@@ -271,7 +286,8 @@ export type CreateAttendeeMutation = {
   createAttendee:  {
     __typename: "Attendee",
     id: string,
-    name: string,
+    Name: string,
+    externalUserId: string | null,
     meetingID: string,
     meeting:  {
       __typename: "Meeting",
@@ -280,8 +296,8 @@ export type CreateAttendeeMutation = {
         __typename: "ModelAttendeeConnection",
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
+      createdAt: string | null,
+      updatedAt: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -297,7 +313,8 @@ export type UpdateAttendeeMutation = {
   updateAttendee:  {
     __typename: "Attendee",
     id: string,
-    name: string,
+    Name: string,
+    externalUserId: string | null,
     meetingID: string,
     meeting:  {
       __typename: "Meeting",
@@ -306,8 +323,8 @@ export type UpdateAttendeeMutation = {
         __typename: "ModelAttendeeConnection",
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
+      createdAt: string | null,
+      updatedAt: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -323,7 +340,8 @@ export type DeleteAttendeeMutation = {
   deleteAttendee:  {
     __typename: "Attendee",
     id: string,
-    name: string,
+    Name: string,
+    externalUserId: string | null,
     meetingID: string,
     meeting:  {
       __typename: "Meeting",
@@ -332,8 +350,8 @@ export type DeleteAttendeeMutation = {
         __typename: "ModelAttendeeConnection",
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
+      createdAt: string | null,
+      updatedAt: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -369,15 +387,16 @@ export type GetMeetingQuery = {
       items:  Array< {
         __typename: "Attendee",
         id: string,
-        name: string,
+        Name: string,
+        externalUserId: string | null,
         meetingID: string,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
+    createdAt: string | null,
+    updatedAt: string | null,
   } | null,
 };
 
@@ -397,8 +416,8 @@ export type ListMeetingsQuery = {
         __typename: "ModelAttendeeConnection",
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
+      createdAt: string | null,
+      updatedAt: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -412,7 +431,8 @@ export type GetAttendeeQuery = {
   getAttendee:  {
     __typename: "Attendee",
     id: string,
-    name: string,
+    Name: string,
+    externalUserId: string | null,
     meetingID: string,
     meeting:  {
       __typename: "Meeting",
@@ -421,8 +441,8 @@ export type GetAttendeeQuery = {
         __typename: "ModelAttendeeConnection",
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
+      createdAt: string | null,
+      updatedAt: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -441,13 +461,14 @@ export type ListAttendeesQuery = {
     items:  Array< {
       __typename: "Attendee",
       id: string,
-      name: string,
+      Name: string,
+      externalUserId: string | null,
       meetingID: string,
       meeting:  {
         __typename: "Meeting",
         id: string,
-        createdAt: string,
-        updatedAt: string,
+        createdAt: string | null,
+        updatedAt: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
@@ -465,15 +486,16 @@ export type OnCreateMeetingSubscription = {
       items:  Array< {
         __typename: "Attendee",
         id: string,
-        name: string,
+        Name: string,
+        externalUserId: string | null,
         meetingID: string,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
+    createdAt: string | null,
+    updatedAt: string | null,
   } | null,
 };
 
@@ -486,15 +508,16 @@ export type OnUpdateMeetingSubscription = {
       items:  Array< {
         __typename: "Attendee",
         id: string,
-        name: string,
+        Name: string,
+        externalUserId: string | null,
         meetingID: string,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
+    createdAt: string | null,
+    updatedAt: string | null,
   } | null,
 };
 
@@ -507,15 +530,16 @@ export type OnDeleteMeetingSubscription = {
       items:  Array< {
         __typename: "Attendee",
         id: string,
-        name: string,
+        Name: string,
+        externalUserId: string | null,
         meetingID: string,
         createdAt: string,
         updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
+    createdAt: string | null,
+    updatedAt: string | null,
   } | null,
 };
 
@@ -523,7 +547,8 @@ export type OnCreateAttendeeSubscription = {
   onCreateAttendee:  {
     __typename: "Attendee",
     id: string,
-    name: string,
+    Name: string,
+    externalUserId: string | null,
     meetingID: string,
     meeting:  {
       __typename: "Meeting",
@@ -532,8 +557,8 @@ export type OnCreateAttendeeSubscription = {
         __typename: "ModelAttendeeConnection",
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
+      createdAt: string | null,
+      updatedAt: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -544,7 +569,8 @@ export type OnUpdateAttendeeSubscription = {
   onUpdateAttendee:  {
     __typename: "Attendee",
     id: string,
-    name: string,
+    Name: string,
+    externalUserId: string | null,
     meetingID: string,
     meeting:  {
       __typename: "Meeting",
@@ -553,8 +579,8 @@ export type OnUpdateAttendeeSubscription = {
         __typename: "ModelAttendeeConnection",
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
+      createdAt: string | null,
+      updatedAt: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
@@ -565,7 +591,8 @@ export type OnDeleteAttendeeSubscription = {
   onDeleteAttendee:  {
     __typename: "Attendee",
     id: string,
-    name: string,
+    Name: string,
+    externalUserId: string | null,
     meetingID: string,
     meeting:  {
       __typename: "Meeting",
@@ -574,8 +601,8 @@ export type OnDeleteAttendeeSubscription = {
         __typename: "ModelAttendeeConnection",
         nextToken: string | null,
       } | null,
-      createdAt: string,
-      updatedAt: string,
+      createdAt: string | null,
+      updatedAt: string | null,
     } | null,
     createdAt: string,
     updatedAt: string,
