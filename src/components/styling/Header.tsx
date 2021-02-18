@@ -11,7 +11,7 @@ import { useHistory } from "react-router-dom";
 const Header = ({ title }: { title?: string }): ReactElement => {
   const history = useHistory();
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Toolbar>
         <IconButton
           edge="start"

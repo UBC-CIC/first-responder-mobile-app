@@ -3,11 +3,13 @@ import { Button } from "@material-ui/core";
 import {
   LocalVideo,
   MicSelection,
+  RemoteVideo,
   SpeakerSelection,
   useAudioVideo,
   useLocalVideo,
   useMeetingManager,
   useRosterState,
+  VideoTileGrid,
 } from "amazon-chime-sdk-component-library-react";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import React, { ReactElement, useEffect } from "react";
@@ -23,6 +25,7 @@ import { getAttendee } from "../../graphql/queries";
 import "../../styles/VideoCall.css";
 import Layout from "../styling/Layout";
 import RosterDisplay from "./RosterDisplay";
+import { v4 as uuid } from "uuid";
 
 Amplify.configure(config);
 
@@ -31,6 +34,7 @@ const OnlineCall = (): ReactElement => {
   const audioVideo = useAudioVideo();
   const meetingManager = useMeetingManager();
   const { roster } = useRosterState();
+  const meetingId = uuid();
 
   const fetchAttendee = (options: GetAttendeeQueryVariables) => {
     return API.graphql(graphqlOperation(getAttendee, options)) as Promise<
@@ -45,15 +49,21 @@ const OnlineCall = (): ReactElement => {
 
   /** On mount */
   useEffect(() => {
-    handleCreateandJoinMeeting("theboys", "Trevor");
+    handleCreateandJoinMeeting(meetingId, "Trevor");
     meetingManager.getAttendee = async (chimeAttendeeId) => {
-      const res = await fetchAttendee({ id: chimeAttendeeId });
-      console.log(res);
+      try {
+        const res = await fetchAttendee({ id: chimeAttendeeId });
+        console.log(res);
 
-      if (res.errors) {
-        console.error(res.errors);
+        if (res.errors) {
+          console.error(res.errors);
+        }
+        return Promise.resolve({ name: res.data?.getAttendee?.Name });
+      } catch (e) {
+        console.log("Failed to get attendee's name: ", e);
+
+        return {};
       }
-      return Promise.resolve({ name: res.data?.getAttendee?.Name });
     };
   }, []);
 
@@ -109,21 +119,37 @@ const OnlineCall = (): ReactElement => {
         style={{
           objectFit: "contain",
           height: "70%",
-          minHeight: "100px",
-          maxHeight: "300px",
+          // minHeight: "100px",
+          // maxHeight: "300px",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <LocalVideo
-          css={
-            "object-fit: contain; width: 100%; height: 100%; position: relative !important;  "
+        <VideoTileGrid
+          layout="standard"
+          noRemoteVideoView={
+            // TODO Convert into smarter component
+            <div>
+              {/* <LocalVideo />{" "} */}
+              <div style={{ color: "white", minHeight: "300px" }}>
+                Nobody is sharing video at the moment
+              </div>
+            </div>
           }
         />
+        {/* <VideoTileGrid></VideoTileGrid>
+        <LocalVideo
+        // css={
+        // "object-fit: contain; width: 100%; height: 100%; position: relative !important;  "
+        // }
+        />
+        <RemoteVideo tileId={0} /> */}
+        <Button onClick={toggleVideo}>Toggle</Button>
+        <audio id="meeting-audio" style={{ display: "none" }}></audio>
+        <MicSelection />
+        <SpeakerSelection />
+        <RosterDisplay />
       </div>
-      <Button onClick={toggleVideo}>Toggle</Button>
-      <audio id="meeting-audio" style={{ display: "none" }}></audio>
-      <MicSelection />
-      <SpeakerSelection />
-      <RosterDisplay />
     </Layout>
   );
 };

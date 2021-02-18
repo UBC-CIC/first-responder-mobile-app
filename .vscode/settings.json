@@ -18,6 +18,6 @@
     "public/*.svg": true,
     "public/*.png": true,
     "public/*.ico": true,
-    "public/browserconfig.xml": true
+    "public/browserconfig.xml": false
   }
 }
