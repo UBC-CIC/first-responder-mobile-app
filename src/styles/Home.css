@@ -1,4 +1,4 @@
-/* .home-root {
+.home-root {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
@@ -32,4 +32,4 @@
   width: 100%;
   justify-content: center;
   align-items: center;
-} */
+}
