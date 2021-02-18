@@ -14,6 +14,13 @@ type Attendee @model @key(name: "byMeeting", fields: ["meetingID"]) {
   meeting: Meeting @connection(fields: ["meetingID"])
 }
 
+type PhysicianProfile @model {
+  id: ID!
+  FirstName: String!
+  LastName: String!
+  Organization: String
+}
+
 # Private Types
 
 type JoinInfo {

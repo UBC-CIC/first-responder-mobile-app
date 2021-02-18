@@ -10,6 +10,11 @@
       "StackName": "amplify-starspwa-dev-152341",
       "StackId": "arn:aws:cloudformation:us-east-1:676717162865:stack/amplify-starspwa-dev-152341/2fcf7da0-6cc0-11eb-b8b7-0e4936f32daf",
       "AmplifyAppId": "d8lfiqhvfn2jd"
+    },
+    "categories": {
+      "auth": {
+        "starspwa605f04b9": {}
+      }
     }
   }
 }

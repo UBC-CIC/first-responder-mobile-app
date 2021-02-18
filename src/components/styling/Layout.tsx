@@ -2,6 +2,7 @@ import { ReactElement, ReactNode } from "react";
 import Header from "./Header";
 import { SwipeEventData, useSwipeable } from "react-swipeable";
 import { useHistory } from "react-router-dom";
+import Colors from "./Colors";
 const Layout = ({
   noHeader = false,
   children,
@@ -23,7 +24,13 @@ const Layout = ({
     trackMouse: false,
   });
   return (
-    <div {...handlers} style={{ minHeight: "100vh" }}>
+    <div
+      {...handlers}
+      style={{
+        minHeight: "100vh",
+        // backgroundColor: Colors.theme.onyx
+      }}
+    >
       {!noHeader && <Header title={title || history.location.pathname} />}
       {children}
     </div>

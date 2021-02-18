@@ -9,24 +9,16 @@ import {
   useMeetingManager,
   useRosterState,
 } from "amazon-chime-sdk-component-library-react";
-import { AttendeeResponse } from "amazon-chime-sdk-component-library-react/lib/providers/MeetingProvider/types";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import React, { ReactElement, useEffect } from "react";
 import {
-  CreateChimeMeetingMutation,
-  CreateMeetingMutation,
-  CreateMeetingMutationVariables,
   GetAttendeeQuery,
   GetAttendeeQueryVariables,
   JoinChimeMeetingMutation,
   JoinChimeMeetingMutationVariables,
 } from "../../API";
 import config from "../../aws-exports";
-import {
-  createChimeMeeting,
-  createMeeting,
-  joinChimeMeeting,
-} from "../../graphql/mutations";
+import { joinChimeMeeting } from "../../graphql/mutations";
 import { getAttendee } from "../../graphql/queries";
 import "../../styles/VideoCall.css";
 import Layout from "../styling/Layout";
