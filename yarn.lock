@@ -4143,14 +4143,6 @@
   resolved "https://registry.yarnpkg.com/@types/long/-/long-4.0.1.tgz#459c65fa1867dafe6a8f322c4c51695663cc55e9"
   integrity sha512-5tXH6Bx/kNGd3MgffdmP4dy2Z+G4eaXw0SE81Tq3BNadtnMR5/ySMzX4SLEzHJzSmPNn4HIdpQsBvXMUykr58w==
 
-"@types/material-ui@^0.21.8":
-  version "0.21.8"
-  resolved "https://registry.yarnpkg.com/@types/material-ui/-/material-ui-0.21.8.tgz#a550778942b2e9791653aa2c4b1a35127c44cab6"
-  integrity sha512-Rsx3tRNoYkidDKfMfh+cegtOHMl73akzKnQ5pzxTrbx5oaUXLtG6YVlvtS43uebOSTDf8GQNaseB52r3zVagEg==
-  dependencies:
-    "@types/react" "*"
-    "@types/react-addons-linked-state-mixin" "*"
-
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -4202,13 +4194,6 @@
   version "1.5.4"
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
   integrity sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
-
-"@types/react-addons-linked-state-mixin@*":
-  version "0.14.21"
-  resolved "https://registry.yarnpkg.com/@types/react-addons-linked-state-mixin/-/react-addons-linked-state-mixin-0.14.21.tgz#3abf296fe09d036c233ebe55f4562f3e6233af49"
-  integrity sha512-3UF7Szd3JyuU+z90kqu8L4VdDWp7SUC0eRjV2QmMEliaHODGLi5XyO5ctS50K/lG6fjC0dSAPVbvnqv0nPoGMQ==
-  dependencies:
-    "@types/react" "*"
 
 "@types/react-dom@^16.9.8":
   version "16.9.10"
@@ -5093,6 +5078,14 @@ autoprefixer@^9.6.1:
     num2fraction "^1.2.2"
     postcss "^7.0.32"
     postcss-value-parser "^4.1.0"
+
+aws-amplify-react@^4.2.23:
+  version "4.2.23"
+  resolved "https://registry.yarnpkg.com/aws-amplify-react/-/aws-amplify-react-4.2.23.tgz#36cbdc5de80dbdccc1347a1a44993fe41313a3b0"
+  integrity sha512-F5o5RKQ1W0x8Hwb00adZuXZOJPenbejgIBVHNHB9/MBgAXt1bu8uCtqwab6/cAqnB1JTtEkwuDA7jqrdscYArw==
+  dependencies:
+    qrcode.react "^0.8.0"
+    regenerator-runtime "^0.11.1"
 
 aws-amplify@^3.3.18:
   version "3.3.18"
@@ -11877,7 +11870,7 @@ prompts@2.4.0, prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -11979,6 +11972,19 @@ q@^1.1.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qr.js@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/qr.js/-/qr.js-0.0.0.tgz#cace86386f59a0db8050fa90d9b6b0e88a1e364f"
+  integrity sha1-ys6GOG9ZoNuAUPqQ2baw6IoeNk8=
+
+qrcode.react@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/qrcode.react/-/qrcode.react-0.8.0.tgz#413b31cc3b62910e39513f7bead945e01c4c34fb"
+  integrity sha512-16wKpuFvLwciIq2YAsfmPUCnSR8GrYPsXRK5KVdcIuX0+W/MKZbBkFhl44ttRx4TWZHqRjfztoWOxdPF0Hb9JA==
+  dependencies:
+    prop-types "^15.6.0"
+    qr.js "0.0.0"
 
 qs@6.7.0:
   version "6.7.0"
@@ -12405,7 +12411,7 @@ regenerate@^1.4.0:
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.4.2.tgz#b9346d8827e8f5a32f7ba29637d398b69014848a"
   integrity sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==
 
-regenerator-runtime@^0.11.0:
+regenerator-runtime@^0.11.0, regenerator-runtime@^0.11.1:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
   integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==

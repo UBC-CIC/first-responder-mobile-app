@@ -12,8 +12,6 @@ export const onCreateMeeting = /* GraphQL */ `
           Name
           externalUserId
           meetingID
-          createdAt
-          updatedAt
         }
         nextToken
       }
@@ -32,8 +30,6 @@ export const onUpdateMeeting = /* GraphQL */ `
           Name
           externalUserId
           meetingID
-          createdAt
-          updatedAt
         }
         nextToken
       }
@@ -52,8 +48,6 @@ export const onDeleteMeeting = /* GraphQL */ `
           Name
           externalUserId
           meetingID
-          createdAt
-          updatedAt
         }
         nextToken
       }
@@ -77,8 +71,6 @@ export const onCreateAttendee = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -97,8 +89,6 @@ export const onUpdateAttendee = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -117,8 +107,45 @@ export const onDeleteAttendee = /* GraphQL */ `
         createdAt
         updatedAt
       }
+    }
+  }
+`;
+export const onCreatePhysicianProfile = /* GraphQL */ `
+  subscription OnCreatePhysicianProfile($owner: String!) {
+    onCreatePhysicianProfile(owner: $owner) {
+      id
+      FirstName
+      LastName
+      Organization
       createdAt
       updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdatePhysicianProfile = /* GraphQL */ `
+  subscription OnUpdatePhysicianProfile($owner: String!) {
+    onUpdatePhysicianProfile(owner: $owner) {
+      id
+      FirstName
+      LastName
+      Organization
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeletePhysicianProfile = /* GraphQL */ `
+  subscription OnDeletePhysicianProfile($owner: String!) {
+    onDeletePhysicianProfile(owner: $owner) {
+      id
+      FirstName
+      LastName
+      Organization
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;

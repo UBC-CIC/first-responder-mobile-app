@@ -109,6 +109,33 @@ export type DeleteAttendeeInput = {
   id?: string | null,
 };
 
+export type CreatePhysicianProfileInput = {
+  id?: string | null,
+  FirstName: string,
+  LastName: string,
+  Organization?: string | null,
+};
+
+export type ModelPhysicianProfileConditionInput = {
+  FirstName?: ModelStringInput | null,
+  LastName?: ModelStringInput | null,
+  Organization?: ModelStringInput | null,
+  and?: Array< ModelPhysicianProfileConditionInput | null > | null,
+  or?: Array< ModelPhysicianProfileConditionInput | null > | null,
+  not?: ModelPhysicianProfileConditionInput | null,
+};
+
+export type UpdatePhysicianProfileInput = {
+  id: string,
+  FirstName?: string | null,
+  LastName?: string | null,
+  Organization?: string | null,
+};
+
+export type DeletePhysicianProfileInput = {
+  id?: string | null,
+};
+
 export type ModelMeetingFilterInput = {
   id?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
@@ -126,6 +153,16 @@ export type ModelAttendeeFilterInput = {
   and?: Array< ModelAttendeeFilterInput | null > | null,
   or?: Array< ModelAttendeeFilterInput | null > | null,
   not?: ModelAttendeeFilterInput | null,
+};
+
+export type ModelPhysicianProfileFilterInput = {
+  id?: ModelIDInput | null,
+  FirstName?: ModelStringInput | null,
+  LastName?: ModelStringInput | null,
+  Organization?: ModelStringInput | null,
+  and?: Array< ModelPhysicianProfileFilterInput | null > | null,
+  or?: Array< ModelPhysicianProfileFilterInput | null > | null,
+  not?: ModelPhysicianProfileFilterInput | null,
 };
 
 export type CreateChimeMeetingMutationVariables = {
@@ -213,8 +250,6 @@ export type CreateMeetingMutation = {
         Name: string,
         externalUserId: string | null,
         meetingID: string,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -240,8 +275,6 @@ export type UpdateMeetingMutation = {
         Name: string,
         externalUserId: string | null,
         meetingID: string,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -267,8 +300,6 @@ export type DeleteMeetingMutation = {
         Name: string,
         externalUserId: string | null,
         meetingID: string,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -299,8 +330,6 @@ export type CreateAttendeeMutation = {
       createdAt: string | null,
       updatedAt: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -326,8 +355,6 @@ export type UpdateAttendeeMutation = {
       createdAt: string | null,
       updatedAt: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -353,8 +380,60 @@ export type DeleteAttendeeMutation = {
       createdAt: string | null,
       updatedAt: string | null,
     } | null,
+  } | null,
+};
+
+export type CreatePhysicianProfileMutationVariables = {
+  input: CreatePhysicianProfileInput,
+  condition?: ModelPhysicianProfileConditionInput | null,
+};
+
+export type CreatePhysicianProfileMutation = {
+  createPhysicianProfile:  {
+    __typename: "PhysicianProfile",
+    id: string,
+    FirstName: string,
+    LastName: string,
+    Organization: string | null,
     createdAt: string,
     updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type UpdatePhysicianProfileMutationVariables = {
+  input: UpdatePhysicianProfileInput,
+  condition?: ModelPhysicianProfileConditionInput | null,
+};
+
+export type UpdatePhysicianProfileMutation = {
+  updatePhysicianProfile:  {
+    __typename: "PhysicianProfile",
+    id: string,
+    FirstName: string,
+    LastName: string,
+    Organization: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type DeletePhysicianProfileMutationVariables = {
+  input: DeletePhysicianProfileInput,
+  condition?: ModelPhysicianProfileConditionInput | null,
+};
+
+export type DeletePhysicianProfileMutation = {
+  deletePhysicianProfile:  {
+    __typename: "PhysicianProfile",
+    id: string,
+    FirstName: string,
+    LastName: string,
+    Organization: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
   } | null,
 };
 
@@ -390,8 +469,6 @@ export type GetMeetingQuery = {
         Name: string,
         externalUserId: string | null,
         meetingID: string,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -444,8 +521,6 @@ export type GetAttendeeQuery = {
       createdAt: string | null,
       updatedAt: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -470,8 +545,46 @@ export type ListAttendeesQuery = {
         createdAt: string | null,
         updatedAt: string | null,
       } | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
+export type GetPhysicianProfileQueryVariables = {
+  id: string,
+};
+
+export type GetPhysicianProfileQuery = {
+  getPhysicianProfile:  {
+    __typename: "PhysicianProfile",
+    id: string,
+    FirstName: string,
+    LastName: string,
+    Organization: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type ListPhysicianProfilesQueryVariables = {
+  filter?: ModelPhysicianProfileFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListPhysicianProfilesQuery = {
+  listPhysicianProfiles:  {
+    __typename: "ModelPhysicianProfileConnection",
+    items:  Array< {
+      __typename: "PhysicianProfile",
+      id: string,
+      FirstName: string,
+      LastName: string,
+      Organization: string | null,
       createdAt: string,
       updatedAt: string,
+      owner: string | null,
     } | null > | null,
     nextToken: string | null,
   } | null,
@@ -489,8 +602,6 @@ export type OnCreateMeetingSubscription = {
         Name: string,
         externalUserId: string | null,
         meetingID: string,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -511,8 +622,6 @@ export type OnUpdateMeetingSubscription = {
         Name: string,
         externalUserId: string | null,
         meetingID: string,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -533,8 +642,6 @@ export type OnDeleteMeetingSubscription = {
         Name: string,
         externalUserId: string | null,
         meetingID: string,
-        createdAt: string,
-        updatedAt: string,
       } | null > | null,
       nextToken: string | null,
     } | null,
@@ -560,8 +667,6 @@ export type OnCreateAttendeeSubscription = {
       createdAt: string | null,
       updatedAt: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -582,8 +687,6 @@ export type OnUpdateAttendeeSubscription = {
       createdAt: string | null,
       updatedAt: string | null,
     } | null,
-    createdAt: string,
-    updatedAt: string,
   } | null,
 };
 
@@ -604,7 +707,56 @@ export type OnDeleteAttendeeSubscription = {
       createdAt: string | null,
       updatedAt: string | null,
     } | null,
+  } | null,
+};
+
+export type OnCreatePhysicianProfileSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnCreatePhysicianProfileSubscription = {
+  onCreatePhysicianProfile:  {
+    __typename: "PhysicianProfile",
+    id: string,
+    FirstName: string,
+    LastName: string,
+    Organization: string | null,
     createdAt: string,
     updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnUpdatePhysicianProfileSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnUpdatePhysicianProfileSubscription = {
+  onUpdatePhysicianProfile:  {
+    __typename: "PhysicianProfile",
+    id: string,
+    FirstName: string,
+    LastName: string,
+    Organization: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
+  } | null,
+};
+
+export type OnDeletePhysicianProfileSubscriptionVariables = {
+  owner: string,
+};
+
+export type OnDeletePhysicianProfileSubscription = {
+  onDeletePhysicianProfile:  {
+    __typename: "PhysicianProfile",
+    id: string,
+    FirstName: string,
+    LastName: string,
+    Organization: string | null,
+    createdAt: string,
+    updatedAt: string,
+    owner: string | null,
   } | null,
 };

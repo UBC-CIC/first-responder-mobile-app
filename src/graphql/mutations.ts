@@ -67,8 +67,6 @@ export const createMeeting = /* GraphQL */ `
           Name
           externalUserId
           meetingID
-          createdAt
-          updatedAt
         }
         nextToken
       }
@@ -90,8 +88,6 @@ export const updateMeeting = /* GraphQL */ `
           Name
           externalUserId
           meetingID
-          createdAt
-          updatedAt
         }
         nextToken
       }
@@ -113,8 +109,6 @@ export const deleteMeeting = /* GraphQL */ `
           Name
           externalUserId
           meetingID
-          createdAt
-          updatedAt
         }
         nextToken
       }
@@ -141,8 +135,6 @@ export const createAttendee = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -164,8 +156,6 @@ export const updateAttendee = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -187,8 +177,54 @@ export const deleteAttendee = /* GraphQL */ `
         createdAt
         updatedAt
       }
+    }
+  }
+`;
+export const createPhysicianProfile = /* GraphQL */ `
+  mutation CreatePhysicianProfile(
+    $input: CreatePhysicianProfileInput!
+    $condition: ModelPhysicianProfileConditionInput
+  ) {
+    createPhysicianProfile(input: $input, condition: $condition) {
+      id
+      FirstName
+      LastName
+      Organization
       createdAt
       updatedAt
+      owner
+    }
+  }
+`;
+export const updatePhysicianProfile = /* GraphQL */ `
+  mutation UpdatePhysicianProfile(
+    $input: UpdatePhysicianProfileInput!
+    $condition: ModelPhysicianProfileConditionInput
+  ) {
+    updatePhysicianProfile(input: $input, condition: $condition) {
+      id
+      FirstName
+      LastName
+      Organization
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deletePhysicianProfile = /* GraphQL */ `
+  mutation DeletePhysicianProfile(
+    $input: DeletePhysicianProfileInput!
+    $condition: ModelPhysicianProfileConditionInput
+  ) {
+    deletePhysicianProfile(input: $input, condition: $condition) {
+      id
+      FirstName
+      LastName
+      Organization
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;

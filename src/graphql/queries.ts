@@ -22,8 +22,6 @@ export const getMeeting = /* GraphQL */ `
           Name
           externalUserId
           meetingID
-          createdAt
-          updatedAt
         }
         nextToken
       }
@@ -66,8 +64,6 @@ export const getAttendee = /* GraphQL */ `
         createdAt
         updatedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -88,8 +84,43 @@ export const listAttendees = /* GraphQL */ `
           createdAt
           updatedAt
         }
+      }
+      nextToken
+    }
+  }
+`;
+export const getPhysicianProfile = /* GraphQL */ `
+  query GetPhysicianProfile($id: ID!) {
+    getPhysicianProfile(id: $id) {
+      id
+      FirstName
+      LastName
+      Organization
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listPhysicianProfiles = /* GraphQL */ `
+  query ListPhysicianProfiles(
+    $filter: ModelPhysicianProfileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listPhysicianProfiles(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        FirstName
+        LastName
+        Organization
         createdAt
         updatedAt
+        owner
       }
       nextToken
     }
