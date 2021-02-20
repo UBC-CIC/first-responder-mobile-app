@@ -1,15 +1,23 @@
 import { ReactElement, ReactNode } from "react";
+import CSS from "csstype";
 import Header from "./Header";
 import { SwipeEventData, useSwipeable } from "react-swipeable";
 import { useHistory } from "react-router-dom";
+import Colors from "./Colors";
 const Layout = ({
   noHeader = false,
   children,
   title,
+  style,
+  headerStyle,
+  className,
 }: {
   noHeader?: boolean;
   children?: ReactNode;
   title?: string;
+  style?: CSS.Properties;
+  headerStyle?: CSS.Properties;
+  className?: string;
 }): ReactElement => {
   const history = useHistory();
   const handleSwipeRight = (eventData: SwipeEventData) => {
@@ -23,8 +31,21 @@ const Layout = ({
     trackMouse: false,
   });
   return (
-    <div {...handlers} style={{ minHeight: "100vh" }}>
-      {!noHeader && <Header title={title || history.location.pathname} />}
+    <div
+      {...handlers}
+      style={{
+        minHeight: "100vh",
+        backgroundColor: Colors.theme.onyx,
+        ...style,
+      }}
+      className={className}
+    >
+      {!noHeader && (
+        <Header
+          style={headerStyle}
+          title={title || history.location.pathname}
+        />
+      )}
       {children}
     </div>
   );

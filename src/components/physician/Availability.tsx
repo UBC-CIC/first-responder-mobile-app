@@ -27,7 +27,7 @@ type DayIndex = keyof DayMap;
 const Availability = (): ReactElement => {
   const [schedule, setSchedule] = useState([] as Date[]);
   return (
-    <Layout>
+    <Layout title="Availability">
       {/* root */}
       <div
         style={{

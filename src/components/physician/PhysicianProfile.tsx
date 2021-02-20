@@ -2,6 +2,7 @@ import { Button } from "@material-ui/core";
 import { ReactElement } from "react";
 import { useHistory } from "react-router-dom";
 import Layout from "../styling/Layout";
+import { SignOut } from "aws-amplify-react";
 
 const PhysicianProfile = (): ReactElement => {
   const history = useHistory();
@@ -13,6 +14,7 @@ const PhysicianProfile = (): ReactElement => {
       <Button onClick={() => history.push("/physician/availability")}>
         Select Availability
       </Button>
+      <SignOut />
     </Layout>
   );
 };

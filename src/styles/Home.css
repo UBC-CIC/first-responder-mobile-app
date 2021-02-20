@@ -1,0 +1,36 @@
+.home-root {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background-image: url("../assets/homebg.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.header-container {
+  display: flex;
+  flex-basis: 150px;
+  flex: 2;
+  background-color: #0000;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.header-text {
+  margin-top: 20%;
+  color: #fff;
+  font-family: "Signika Negative", sans-serif;
+  font-size: 36px;
+  width: 90%;
+  text-align: center;
+}
+
+.body-container {
+  display: flex;
+  background-color: #0000;
+  flex: 1;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
