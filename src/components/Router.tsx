@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import React, { ReactElement, useContext } from "react";
 import "@aws-amplify/ui/dist/style.css";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import FirstResponderMain from "./firstresponder/FirstResponderMain";
@@ -25,6 +25,7 @@ import {
 
 import { withAuthenticator } from "aws-amplify-react";
 import Header from "./styling/Header";
+import { CircularProgress } from "@material-ui/core";
 const Router = (): ReactElement => {
   return (
     <BrowserRouter>

@@ -1,9 +1,7 @@
 import { GraphQLResult } from "@aws-amplify/api";
 import { Button } from "@material-ui/core";
 import {
-  LocalVideo,
   MicSelection,
-  RemoteVideo,
   SpeakerSelection,
   useAudioVideo,
   useLocalVideo,
@@ -11,7 +9,7 @@ import {
   useRosterState,
   VideoTileGrid,
 } from "amazon-chime-sdk-component-library-react";
-import Amplify, { API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import React, { ReactElement, useEffect } from "react";
 import {
   GetAttendeeQuery,
@@ -19,15 +17,12 @@ import {
   JoinChimeMeetingMutation,
   JoinChimeMeetingMutationVariables,
 } from "../../API";
-import config from "../../aws-exports";
 import { joinChimeMeeting } from "../../graphql/mutations";
 import { getAttendee } from "../../graphql/queries";
 import "../../styles/VideoCall.css";
 import Layout from "../styling/Layout";
 import RosterDisplay from "./RosterDisplay";
-import { v4 as uuid } from "uuid";
-
-Amplify.configure(config);
+// import { v4 as uuid } from "uuid";
 
 const OnlineCall = (): ReactElement => {
   const { toggleVideo } = useLocalVideo();
@@ -101,17 +96,28 @@ const OnlineCall = (): ReactElement => {
       toggleVideo();
     };
     if (audioVideo) f();
+
+    return () => {
+      audioVideo?.stop();
+    };
   }, [audioVideo]);
 
   const handleCreateandJoinMeeting = async (title: string, name: string) => {
     /** Get Meeting data from Lambda call to DynamoDB */
-    const joinRes = await joinMeeting({ title, name });
+    try {
+      const joinRes = await joinMeeting({ title, name });
 
-    const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
-    const attendeeInfo = { ...joinRes.data?.joinChimeMeeting?.Attendee, name };
-    console.log(meetingInfo, attendeeInfo);
+      const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
+      const attendeeInfo = {
+        ...joinRes.data?.joinChimeMeeting?.Attendee,
+        name,
+      };
+      console.log(meetingInfo, attendeeInfo);
 
-    await meetingManager.join({ meetingInfo, attendeeInfo });
+      await meetingManager.join({ meetingInfo, attendeeInfo });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (

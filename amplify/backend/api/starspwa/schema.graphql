@@ -1,12 +1,15 @@
 # Models
-type Meeting @model {
+type Meeting @model @aws_api_key {
   id: ID!
   attendees: [Attendee] @connection(keyName: "byMeeting", fields: ["id"])
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
 
-type Attendee @model @key(name: "byMeeting", fields: ["meetingID"]) {
+type Attendee
+  @aws_api_key
+  @model(timestamps: null)
+  @key(name: "byMeeting", fields: ["meetingID"]) {
   id: ID!
   Name: String!
   externalUserId: String
@@ -14,7 +17,10 @@ type Attendee @model @key(name: "byMeeting", fields: ["meetingID"]) {
   meeting: Meeting @connection(fields: ["meetingID"])
 }
 
-type PhysicianProfile @model {
+type PhysicianProfile
+  @model
+  @aws_cognito_user_pools
+  @auth(rules: [{ allow: owner }]) {
   id: ID!
   FirstName: String!
   LastName: String!

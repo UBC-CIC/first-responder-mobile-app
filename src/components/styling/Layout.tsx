@@ -10,12 +10,14 @@ const Layout = ({
   title,
   style,
   headerStyle,
+  className,
 }: {
   noHeader?: boolean;
   children?: ReactNode;
   title?: string;
   style?: CSS.Properties;
   headerStyle?: CSS.Properties;
+  className?: string;
 }): ReactElement => {
   const history = useHistory();
   const handleSwipeRight = (eventData: SwipeEventData) => {
@@ -36,6 +38,7 @@ const Layout = ({
         backgroundColor: Colors.theme.onyx,
         ...style,
       }}
+      className={className}
     >
       {!noHeader && (
         <Header

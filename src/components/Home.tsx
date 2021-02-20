@@ -1,8 +1,10 @@
 import { Button, makeStyles } from "@material-ui/core";
+import Amplify from "aws-amplify";
 import { ReactElement } from "react";
 import { useHistory } from "react-router-dom";
 import "../styles/Home.css";
 import Layout from "./styling/Layout";
+import config from "../aws-exports";
 
 const useStyles = makeStyles({
   wideButtonContainer: {
@@ -25,6 +27,8 @@ const useStyles = makeStyles({
     color: "#fff",
   },
 });
+
+Amplify.configure(config);
 
 const Home = (): ReactElement => {
   const history = useHistory();

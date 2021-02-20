@@ -3,6 +3,7 @@
   min-height: 100vh;
   flex-direction: column;
   background-image: url("../assets/homebg.svg");
+  background-size: cover;
   background-repeat: no-repeat;
 }
 
