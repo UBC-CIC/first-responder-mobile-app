@@ -21,6 +21,7 @@ const FirstResponderMain = (): ReactElement => {
       title="First Responder Home"
       style={{
         backgroundImage: `url(${bg})`,
+        backgroundSize: "cover",
         display: "flex",
         flexDirection: "column",
       }}

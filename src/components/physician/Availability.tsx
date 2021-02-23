@@ -65,7 +65,7 @@ const Availability = (): ReactElement => {
               console.log(days);
 
               setSchedule(data);
-              //   TODO call to backend, convert Date[] to days of week
+              //   TODO call to backend
             }}
           />
         </div>
