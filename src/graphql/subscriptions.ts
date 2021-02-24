@@ -6,15 +6,6 @@ export const onCreateMeeting = /* GraphQL */ `
   subscription OnCreateMeeting {
     onCreateMeeting {
       id
-      attendees {
-        items {
-          id
-          Name
-          externalUserId
-          meetingID
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -24,15 +15,6 @@ export const onUpdateMeeting = /* GraphQL */ `
   subscription OnUpdateMeeting {
     onUpdateMeeting {
       id
-      attendees {
-        items {
-          id
-          Name
-          externalUserId
-          meetingID
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -42,15 +24,6 @@ export const onDeleteMeeting = /* GraphQL */ `
   subscription OnDeleteMeeting {
     onDeleteMeeting {
       id
-      attendees {
-        items {
-          id
-          Name
-          externalUserId
-          meetingID
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -60,17 +33,10 @@ export const onCreateAttendee = /* GraphQL */ `
   subscription OnCreateAttendee {
     onCreateAttendee {
       id
-      Name
+      name
       externalUserId
       meetingID
-      meeting {
-        id
-        attendees {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      role
     }
   }
 `;
@@ -78,17 +44,10 @@ export const onUpdateAttendee = /* GraphQL */ `
   subscription OnUpdateAttendee {
     onUpdateAttendee {
       id
-      Name
+      name
       externalUserId
       meetingID
-      meeting {
-        id
-        attendees {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      role
     }
   }
 `;
@@ -96,17 +55,10 @@ export const onDeleteAttendee = /* GraphQL */ `
   subscription OnDeleteAttendee {
     onDeleteAttendee {
       id
-      Name
+      name
       externalUserId
       meetingID
-      meeting {
-        id
-        attendees {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      role
     }
   }
 `;

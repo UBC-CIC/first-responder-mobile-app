@@ -1,3 +1,6 @@
+import { RosterAttendeeType } from "amazon-chime-sdk-component-library-react/lib/types";
+import { AttendeeInfo } from "./API";
+
 export type CognitoUser = {
   Session: any;
   attributes: {
@@ -19,3 +22,22 @@ export type CognitoUser = {
   userDataKey: string;
   username: string;
 };
+
+
+export type MeetingType = {
+  id: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  attendees?: any;
+};
+
+export type MeetingStateType = {
+  meetingId: string;
+  name: string;
+  role: string;
+  attendeeInfo?: AttendeeInfoType;
+};
+
+export type AttendeeInfoType = AttendeeInfo & {name: string};
+
+export type AttendeeType = RosterAttendeeType & { role: string };

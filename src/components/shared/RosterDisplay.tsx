@@ -1,23 +1,22 @@
 import {
   Roster,
+  RosterAttendee,
   RosterGroup,
   RosterHeader,
-  RosterCell,
-  useRosterState,
-  RosterAttendee,
 } from "amazon-chime-sdk-component-library-react";
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
+import { AttendeeType } from "../../types";
 
-const RosterDisplay = () => {
-  const { roster } = useRosterState();
-  const attendees = Object.values(roster);
-
+const RosterDisplay = ({
+  attendees,
+}: {
+  attendees: AttendeeType[];
+}): ReactElement => {
   const attendeeItems = attendees.map((attendee) => {
-    const { chimeAttendeeId, name } = attendee;
+    const { chimeAttendeeId, name, role } = attendee;
     return (
       <RosterAttendee
-        subtitle="First Responder"
-        muted={true}
+        subtitle={role}
         key={chimeAttendeeId}
         attendeeId={chimeAttendeeId}
       />
@@ -29,12 +28,6 @@ const RosterDisplay = () => {
       <RosterHeader
         title="Present"
         badge={attendees.length}
-        onClose={() => {
-          return;
-        }}
-        onSearch={() => {
-          return;
-        }}
       />
       <RosterGroup>{attendeeItems}</RosterGroup>
     </Roster>

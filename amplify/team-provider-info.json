@@ -15,6 +15,12 @@
       "auth": {
         "starspwa605f04b9": {},
         "userPoolGroups": {}
+      },
+      "function": {
+        "firstresponderjoinmeeting": {
+          "deploymentBucketName": "amplify-starspwa-dev-152341-deployment",
+          "s3Key": "amplify-builds/firstresponderjoinmeeting-36635a6b554364782f30-build.zip"
+        }
       }
     }
   }
