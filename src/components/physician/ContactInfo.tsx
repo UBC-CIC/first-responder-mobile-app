@@ -15,7 +15,7 @@ import {
 } from "../../graphql/mutations";
 import { getPhysicianProfile } from "../../graphql/queries";
 import "../../styles/physician/ContactInfo.css";
-import { CognitoUser } from "../../styles/types";
+import { CognitoUser } from "../../types";
 import Colors from "../styling/Colors";
 import Layout from "../styling/Layout";
 
@@ -73,9 +73,10 @@ const ContactInfo = (): ReactElement => {
   };
 
   const createProfile = async (options: CreatePhysicianProfileInput) => {
-    const response = (await API.graphql(
-      graphqlOperation(createPhysicianProfile, { input: options })
-    )) as GraphQLResult<CreatePhysicianProfileMutation>;
+    const response = (await API.graphql({
+      ...graphqlOperation(createPhysicianProfile, { input: options }),
+      authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+    })) as GraphQLResult<CreatePhysicianProfileMutation>;
     if (response.errors) {
       console.log(response.errors);
     }
@@ -83,9 +84,10 @@ const ContactInfo = (): ReactElement => {
 
   const updateProfile = async (options: CreatePhysicianProfileInput) => {
     try {
-      const response = (await API.graphql(
-        graphqlOperation(updatePhysicianProfile, { input: options })
-      )) as GraphQLResult<UpdatePhysicianProfileMutation>;
+      const response = (await API.graphql({
+        ...graphqlOperation(updatePhysicianProfile, { input: options }),
+        authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
+      })) as GraphQLResult<UpdatePhysicianProfileMutation>;
       console.log(response);
     } catch (response) {
       console.error(response);
