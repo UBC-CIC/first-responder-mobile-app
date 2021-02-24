@@ -8,11 +8,11 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
-import { clientsClaim } from 'workbox-core';
-import { ExpirationPlugin } from 'workbox-expiration';
-import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import { clientsClaim } from "workbox-core";
+import { ExpirationPlugin } from "workbox-expiration";
+import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
+import { registerRoute } from "workbox-routing";
+import { StaleWhileRevalidate } from "workbox-strategies";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -27,17 +27,17 @@ precacheAndRoute(self.__WB_MANIFEST);
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
 // https://developers.google.com/web/fundamentals/architecture/app-shell
-const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
+const fileExtensionRegexp = new RegExp("/[^/?]+\\.[^/]+$");
 registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
   ({ request, url }: { request: Request; url: URL }) => {
     // If this isn't a navigation, skip.
-    if (request.mode !== 'navigate') {
+    if (request.mode !== "navigate") {
       return false;
     }
 
     // If this is a URL that starts with /_, skip.
-    if (url.pathname.startsWith('/_')) {
+    if (url.pathname.startsWith("/_")) {
       return false;
     }
 
@@ -50,17 +50,18 @@ registerRoute(
     // Return true to signal that we want to use the handler.
     return true;
   },
-  createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
+  createHandlerBoundToURL(process.env.PUBLIC_URL + "/index.html")
 );
 
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png'),
+  ({ url }) =>
+    url.origin === self.location.origin && url.pathname.endsWith(".png"),
   // Customize this strategy as needed, e.g., by changing to CacheFirst.
   new StaleWhileRevalidate({
-    cacheName: 'images',
+    cacheName: "images",
     plugins: [
       // Ensure that once this runtime cache reaches a maximum size the
       // least-recently used images are removed.
@@ -71,10 +72,84 @@ registerRoute(
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+self.addEventListener("message", (event) => {
+  // if (event.data && event.data.type === "SKIP_WAITING") {
+  self.skipWaiting();
+  // }
 });
 
 // Any other custom service worker logic can go here.
+
+// self.addEventListener("activate", (event) => {
+//   event.waitUntil(
+//     navigator.serviceWorker.ready.then(() => {
+//       const applicationServerKey = base64Convert(VAPIDKey);
+//       self.registration.pushManager
+//         .subscribe({
+//           userVisibleOnly: true,
+//           applicationServerKey: applicationServerKey,
+//         })
+//         .then(function (subscription) {
+//           console.log("User is subscribed.");
+//         })
+//         .catch(function (err) {
+//           console.log("Failed to subscribe the user: ", err);
+//         });
+//     })
+//   );
+// });
+
+function getEndpoint() {
+  return self.registration.pushManager
+    .getSubscription()
+    .then(function (subscription) {
+      if (subscription) {
+        return subscription.endpoint;
+      }
+
+      console.log("User not subscribed");
+    });
+}
+
+function base64Convert(base64String: string) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+
+  const rawData = Buffer.from(base64, "base64").toString("binary");
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
+
+// self.addEventListener("push", (event) => {
+//   event.waitUntil(
+//     getEndpoint()
+//       // .then((endpoint) => fetch("./getPayload?endpoint=" + endpoint))
+//       // .then((response) => response.text())
+//       .then((payload) => {
+//         self.registration.showNotification("STARS App", {
+//           body: "hello"
+//         });
+//       })
+//   );
+// });
+
+const VAPIDKey =
+  "BMRDY-O74uuJCNHeUyKdnh5IIG0UULKwvxaGI970tDuzhNP59UYD9pyXyJoNwmmpHcAPyfI7I9TFxenna07KzMw";
+async function subscribeUser() {
+  const applicationServerKey = base64Convert(VAPIDKey);
+  self.registration.pushManager
+    .subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: applicationServerKey,
+    })
+    .then(function (subscription) {
+      console.log("User is subscribed.");
+    })
+    .catch(function (err) {
+      console.log("Failed to subscribe the user: ", err);
+    });
+}

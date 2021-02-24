@@ -1,6 +1,6 @@
 {
     "identityPoolName": "starspwa605f04b9_identitypool_605f04b9",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "starsp605f04b9",
     "userPoolName": "starspwa605f04b9_userpool_605f04b9",
     "autoVerifiedAttributes": [

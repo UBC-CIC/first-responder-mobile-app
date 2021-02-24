@@ -30,7 +30,7 @@ const OnlineCall = (): ReactElement => {
   const meetingManager = useMeetingManager();
   const { roster } = useRosterState();
   // const meetingId = uuid();
-  const meetingId = "theboys";
+  const meetingId = "testmeeting";
 
   const fetchAttendee = (options: GetAttendeeQueryVariables) => {
     return API.graphql(graphqlOperation(getAttendee, options)) as Promise<
