@@ -1,4 +1,3 @@
-import { GraphQLResult } from "@aws-amplify/api";
 import { Button } from "@material-ui/core";
 import {
   MicSelection,
@@ -7,16 +6,14 @@ import {
   useLocalVideo,
   useMeetingManager,
   useRosterState,
-  VideoTileGrid,
+  VideoTileGrid
 } from "amazon-chime-sdk-component-library-react";
-import { API, graphqlOperation } from "aws-amplify";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { ListAttendeesQuery } from "../../API";
-import { listAttendees } from "../../graphql/queries";
+import { DeleteAttendeeInput } from "../../API";
 import "../../styles/VideoCall.css";
 import { AttendeeInfoType, AttendeeType, MeetingStateType } from "../../types";
-import { fetchAttendee, joinMeeting, listMeetingAttendees } from "../calls";
+import { fetchAttendee, joinMeeting, listMeetingAttendees, removeAttendee } from "../calls";
 import Layout from "../styling/Layout";
 import RosterDisplay from "./RosterDisplay";
 
@@ -27,14 +24,14 @@ const OnlineCall = (): ReactElement => {
   const { roster } = useRosterState();
   const history = useHistory<MeetingStateType>();
   const state = history.location?.state;
-
+  const [myAttendeeInfo, setMyAttendeeInfo] = useState<undefined | AttendeeInfoType>();
   /** Must be redirected from some source that has a meeting id etc. */
   if (!state) {
     history.push("/firstResponder");
     return <div></div>;
   }
+  
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
-
   /** On mount */
   useEffect(() => {
     handleCreateandJoinMeeting(state.meetingId, state.name, state.role);
@@ -52,6 +49,12 @@ const OnlineCall = (): ReactElement => {
         return {};
       }
     };
+
+    return () => {
+      if (myAttendeeInfo?.AttendeeId)
+        handleLeaveMeeting(myAttendeeInfo?.AttendeeId);
+    };
+
   }, []);
 
   /** On change of roster */
@@ -100,6 +103,8 @@ const OnlineCall = (): ReactElement => {
     if (audioVideo) f();
 
     return () => {
+      // if (myAttendeeInfo?.AttendeeId)
+      // handleLeaveMeeting(myAttendeeInfo?.AttendeeId);
       audioVideo?.stop();
     };
   }, [audioVideo]);
@@ -119,11 +124,20 @@ const OnlineCall = (): ReactElement => {
         name,
       } as AttendeeInfoType;
 
+      setMyAttendeeInfo(attendeeInfo);
+
       await meetingManager.join({ meetingInfo, attendeeInfo });
     } catch (e) {
       console.error(e);
     }
   };
+
+  const handleLeaveMeeting = async (id: string) => {
+    console.log(id);
+    await removeAttendee({input: {id} as DeleteAttendeeInput});
+    console.log("removed", id);
+    
+  }
 
   return (
     <Layout title="Online Call">

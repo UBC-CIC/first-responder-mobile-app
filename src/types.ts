@@ -35,7 +35,7 @@ export type MeetingStateType = {
   meetingId: string;
   name: string;
   role: string;
-  attendeeInfo?: AttendeeInfoType;
+  attendeeId?: string;
 };
 
 export type AttendeeInfoType = AttendeeInfo & {name: string};
