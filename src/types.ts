@@ -35,9 +35,12 @@ export type MeetingStateType = {
   meetingId: string;
   name: string;
   role: string;
-  attendeeId?: string;
+  attendeeId: string;
 };
 
+export type AlertsStateType= {
+  meetings?: MeetingType[];
+}
 export type AttendeeInfoType = AttendeeInfo & {name: string};
 
 export type AttendeeType = RosterAttendeeType & { role: string };

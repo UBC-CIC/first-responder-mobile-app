@@ -19,7 +19,7 @@
       "function": {
         "firstresponderjoinmeeting": {
           "deploymentBucketName": "amplify-starspwa-dev-152341-deployment",
-          "s3Key": "amplify-builds/firstresponderjoinmeeting-36635a6b554364782f30-build.zip"
+          "s3Key": "amplify-builds/firstresponderjoinmeeting-446d524d765571304871-build.zip"
         }
       }
     }

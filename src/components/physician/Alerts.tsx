@@ -1,20 +1,21 @@
 import { Button } from "@material-ui/core";
 import { ReactElement, useEffect, useState } from "react";
-import Layout from "../styling/Layout";
-import pushNotificationManager from "web-push";
-import keys from "../../push/keys.json";
-import base64Convert from "../../push/keys";
-import { API, graphqlOperation } from "aws-amplify";
-import { listMeetings } from "../../graphql/queries";
-import { GraphQLResult } from "@aws-amplify/api";
-import { ListMeetingsQuery } from "../../API";
-import { MeetingStateType, MeetingType } from "../../types";
 import { useHistory } from "react-router-dom";
+import pushNotificationManager from "web-push";
+import base64Convert from "../../push/keys";
+import keys from "../../push/keys.json";
+import { AlertsStateType, MeetingStateType, MeetingType } from "../../types";
+import listAllMeetings from "../calls/listAllMeetings";
+import Layout from "../styling/Layout";
 
 const Alerts = (): ReactElement => {
   const [meetings, setMeetings] = useState<MeetingType[] | undefined>([]);
-  const history = useHistory();
+  const history = useHistory<AlertsStateType | MeetingStateType>();
 
+  if (!sessionStorage.getItem("physicianid")) {
+    history.push("/physician")
+    return <div></div>
+  }
   const handleNotif = async () => {
     console.log("notif");
     const sw = await navigator.serviceWorker.ready;
@@ -42,14 +43,15 @@ const Alerts = (): ReactElement => {
         meetingId: id,
         name: "John",
         role: "Brain Surgeon",
+        attendeeId: sessionStorage.getItem("physicianid")
       } as MeetingStateType);
   };
 
   useEffect(() => {
     const f = async () => {
-      const res = (await API.graphql(
-        graphqlOperation(listMeetings)
-      )) as GraphQLResult<ListMeetingsQuery>;
+      console.log("call to backend");
+      
+      const res = await listAllMeetings();
       console.log(res);
 
       if (res.data) {
@@ -61,25 +63,33 @@ const Alerts = (): ReactElement => {
         setMeetings(meetingsFromDB);
       }
     };
-    f();
+
+    const stateMeetings = (history.location?.state as AlertsStateType)?.meetings 
+
+    if (!stateMeetings) {
+      f();
+    }
+    else {
+      setMeetings(stateMeetings);
+    }
   }, []);
 
   return (
     <Layout title="Alerts">
-      {/* <Button
-        onClick={() => {
-          handleNotif();
-        }}
-      >
-        Push me a notification
-      </Button> */}
-      {meetings?.map((meeting) => {
-        return (
-          <div key={meeting.id} onClick={() => handleJoin(meeting.id)}>
-            {meeting.id}
-          </div>
-        );
-      })}
+      <div style={{
+        display: "flex",
+        flexDirection:"column",
+        justifyContent: "center"
+      }}>
+        {meetings?.map((meeting, index) => {
+          return (
+            <Button key={meeting.id} onClick={() => handleJoin(meeting.id)}>
+              {/* Call to backend for topic of accident */}
+              {index % 2 == 0 ? "Car Accident" : "Another Emergency"}
+            </Button>
+          );
+        })}
+      </div>
     </Layout>
   );
 };

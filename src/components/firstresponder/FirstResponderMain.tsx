@@ -19,8 +19,9 @@ const FirstResponderMain = (): ReactElement => {
   const classes = useStyles();
 
   useEffect(() => {
-    if (!localStorage.getItem("firstresponderid"))
-      localStorage.setItem("firstresponderid", uuid())
+    if (!sessionStorage.getItem("firstresponderid"))
+      sessionStorage.setItem("firstresponderid", uuid())
+    console.log(sessionStorage.getItem("firstresponderid"));
   })
   return (
     <Layout
@@ -42,7 +43,7 @@ const FirstResponderMain = (): ReactElement => {
               meetingId: uuid(),
               name: "First Responder",
               role: "First Responder",
-              attendeeId: localStorage.getItem("firstresponderid")
+              attendeeId: sessionStorage.getItem("firstresponderid")
             } as MeetingStateType);
           }}
         >

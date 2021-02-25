@@ -112,10 +112,14 @@ const putAttendee = async (title, attendeeId, name, meetingID, role) => {
 };
 
 exports.handler = async (event, context, callback) => {
-  const title = event.arguments.title;
-  const name = event.arguments.name;
-  const role = event.arguments.role;
-  const region = event.arguments.region || "us-east-1";
+  const {
+    title,
+    name,
+    role,
+    externalAttendeeId,
+    region = "us-east-1",
+  } = event.arguments;
+
   console.log("Unique Meeting ID: ", title);
   let meetingInfo = await getMeeting(title);
   if (!meetingInfo) {
@@ -132,7 +136,7 @@ exports.handler = async (event, context, callback) => {
   const attendeeInfo = await chime
     .createAttendee({
       MeetingId: meetingInfo.Meeting.MeetingId,
-      ExternalUserId: uuid(),
+      ExternalUserId: externalAttendeeId,
     })
     .promise();
 

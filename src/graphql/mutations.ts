@@ -34,8 +34,15 @@ export const joinChimeMeeting = /* GraphQL */ `
     $name: String
     $region: String
     $role: String
+    $externalAttendeeId: String
   ) {
-    joinChimeMeeting(title: $title, name: $name, region: $region, role: $role) {
+    joinChimeMeeting(
+      title: $title
+      name: $name
+      region: $region
+      role: $role
+      externalAttendeeId: $externalAttendeeId
+    ) {
       id
       Meeting {
         MeetingId

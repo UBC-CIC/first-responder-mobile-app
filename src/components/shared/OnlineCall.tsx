@@ -34,7 +34,7 @@ const OnlineCall = (): ReactElement => {
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
   /** On mount */
   useEffect(() => {
-    handleCreateandJoinMeeting(state.meetingId, state.name, state.role);
+    handleCreateandJoinMeeting(state.meetingId, state.name, state.role, state.attendeeId);
     meetingManager.getAttendee = async (chimeAttendeeId) => {
       try {
         const res = await fetchAttendee({ id: chimeAttendeeId });
@@ -50,10 +50,7 @@ const OnlineCall = (): ReactElement => {
       }
     };
 
-    return () => {
-      if (myAttendeeInfo?.AttendeeId)
-        handleLeaveMeeting(myAttendeeInfo?.AttendeeId);
-    };
+    return handleLeaveMeeting;
 
   }, []);
 
@@ -81,6 +78,8 @@ const OnlineCall = (): ReactElement => {
       }
     };
     if (meetingManager.meetingId) f();
+    console.log(roster);
+    
   }, [roster]);
 
   /** On change of audio/video when call starts */
@@ -103,8 +102,6 @@ const OnlineCall = (): ReactElement => {
     if (audioVideo) f();
 
     return () => {
-      // if (myAttendeeInfo?.AttendeeId)
-      // handleLeaveMeeting(myAttendeeInfo?.AttendeeId);
       audioVideo?.stop();
     };
   }, [audioVideo]);
@@ -112,18 +109,23 @@ const OnlineCall = (): ReactElement => {
   const handleCreateandJoinMeeting = async (
     title: string,
     name: string,
-    role: string
+    role: string,
+    externalAttendeeId: string
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
     try {
-      const joinRes = await joinMeeting({ title, name, role });
+      const joinRes = await joinMeeting({ title, name, role, externalAttendeeId });
 
+      console.log("joinres", joinRes);
+      
       const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
       const attendeeInfo = {
         ...joinRes.data?.joinChimeMeeting?.Attendee,
         name,
       } as AttendeeInfoType;
 
+      console.log("attendeeInfo", attendeeInfo);
+      
       setMyAttendeeInfo(attendeeInfo);
 
       await meetingManager.join({ meetingInfo, attendeeInfo });
@@ -132,10 +134,11 @@ const OnlineCall = (): ReactElement => {
     }
   };
 
-  const handleLeaveMeeting = async (id: string) => {
-    console.log(id);
-    await removeAttendee({input: {id} as DeleteAttendeeInput});
-    console.log("removed", id);
+  const handleLeaveMeeting = () => {
+    console.log(myAttendeeInfo);
+    
+    removeAttendee({input: {id: myAttendeeInfo?.AttendeeId}});
+    console.log("removed", myAttendeeInfo?.AttendeeId);
     
   }
 
@@ -161,10 +164,9 @@ const OnlineCall = (): ReactElement => {
           }
         />
         <Button onClick={toggleVideo}>Toggle</Button>
-        <audio id="meeting-audio" style={{ display: "none" }}></audio>
         <MicSelection />
         <SpeakerSelection />
-        <RosterDisplay attendees={attendees} />
+        <RosterDisplay roster={roster} attendees={attendees} />
       </div>
     </Layout>
   );

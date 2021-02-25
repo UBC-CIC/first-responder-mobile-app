@@ -68,5 +68,6 @@ type Mutation {
     name: String
     region: String
     role: String
+    externalAttendeeId: String
   ): JoinInfo @function(name: "firstresponderjoinmeeting-${env}")
 }
