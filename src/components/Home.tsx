@@ -5,34 +5,14 @@ import { useHistory } from "react-router-dom";
 import "../styles/Home.css";
 import Layout from "./styling/Layout";
 import config from "../aws-exports";
-
-const useStyles = makeStyles({
-  wideButtonContainer: {
-    width: "75%",
-    display: "flex",
-    height: "100%",
-    minHeight: "200px",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  wideButton: {
-    width: "100%",
-    backgroundColor: "#FF8552",
-    borderRadius: 20,
-    height: "50px",
-    fontFamily: "Montserrat",
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-});
+import { useGlobalStyles } from "./styling/GlobalMuiStyles";
 
 Amplify.configure(config);
 
 const Home = (): ReactElement => {
   const history = useHistory();
-  const classes = useStyles();
+  // const classes = useStyles();
+  const classes = useGlobalStyles();
   return (
     <Layout noHeader>
       <div className="home-root">

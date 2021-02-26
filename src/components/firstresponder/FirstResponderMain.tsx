@@ -26,11 +26,10 @@ const FirstResponderMain = (): ReactElement => {
   return (
     <Layout
       title="First Responder Home"
+      flexColumn
       style={{
         backgroundImage: `url(${bg})`,
         backgroundSize: "cover",
-        display: "flex",
-        flexDirection: "column",
       }}
     >
       <div className="firstresponder-root">
