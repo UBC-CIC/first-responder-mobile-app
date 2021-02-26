@@ -1,25 +1,75 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
-import { Button, makeStyles, TextField } from "@material-ui/core";
+import {
+  Button,
+  Fab,
+  makeStyles,
+  Paper,
+  TextField,
+  TextFieldProps,
+  withStyles,
+} from "@material-ui/core";
 import { API, Auth, graphqlOperation } from "aws-amplify";
-import { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import {
   CreatePhysicianProfileInput,
   CreatePhysicianProfileMutation,
-  UpdatePhysicianProfileMutation
+  UpdatePhysicianProfileMutation,
 } from "../../API";
 import {
   createPhysicianProfile,
-  updatePhysicianProfile
+  updatePhysicianProfile,
 } from "../../graphql/mutations";
 import "../../styles/physician/ContactInfo.css";
 import { CognitoUser, PhysicianProfileType } from "../../types";
 import getProfile from "../calls/fetchPhysicianProfile";
 import Colors from "../styling/Colors";
 import Layout from "../styling/Layout";
+import SaveIcon from "@material-ui/icons/Save";
 
 const useStyles = makeStyles({
-  label: {},
+  textField: {
+    margin: 10,
+    color: Colors.theme.platinum,
+  },
+  contactInfoForm: {
+    display: "flex",
+    flexDirection: "column",
+    // justifyContent: "space-evenly",
+    alignItems: "center",
+    flex: "1",
+    backgroundColor: Colors.theme.space,
+  },
+  inputLabel: {
+    color: Colors.theme.platinum,
+  },
+  button: {
+    backgroundColor: `${Colors.theme.coral} !important`,
+    color: Colors.theme.platinum,
+    fontFamily: "Montserrat",
+    fontWeight: "bold",
+    fontSize: 15,
+    margin: 10,
+  },
+  icon: {
+    margin: 10,
+  },
 });
+
+const DarkModeTextField = (props: TextFieldProps) => {
+  const classes = useStyles();
+  return (
+    <TextField
+      {...props}
+      InputLabelProps={{
+        className: classes.inputLabel,
+      }}
+      InputProps={{
+        className: classes.inputLabel,
+      }}
+      className={classes.textField}
+    />
+  );
+};
 
 const ContactInfo = (): ReactElement => {
   const [form, setForm] = useState<PhysicianProfileType>({
@@ -29,7 +79,6 @@ const ContactInfo = (): ReactElement => {
     Organization: "",
     Occupation: "",
   });
-
 
   const classes = useStyles();
 
@@ -98,60 +147,57 @@ const ContactInfo = (): ReactElement => {
     createProfile(form);
   };
 
+  /** TODO style this more, add more fields */
   return (
     <Layout className="ffc" title="Contact Info">
-      <div className="ffc">
-        <form
-          className="contact-info-form"
-          style={{
-            backgroundColor: Colors.theme.platinum,
-          }}
-        >
-          <TextField
-            className={classes.label}
-            label="First Name"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setForm({ ...form, FirstName: e.currentTarget.value });
-            }}
-            value={form.FirstName}
-            required
-          />
-          <TextField
-            className={classes.label}
-            value={form.LastName}
-            label="Last Name"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setForm({ ...form, LastName: e.currentTarget.value });
-            }}
-            required
-          />
-          <TextField
-            className={classes.label}
-            value={form.Organization}
-            label="Organization"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setForm({ ...form, Organization: e.currentTarget.value });
-            }}
-          />
-          <TextField
-            className={classes.label}
-            value={form.Occupation}
-            label="Occupation"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setForm({ ...form, Occupation: e.currentTarget.value });
-            }}
-          />
-        </form>
-      </div>
-      <div className="ffc">
-        <Button
-          onClick={() => {
-            handleUpdateProfile();
-          }}
-        >
-          Save Profile
-        </Button>
-      </div>
+      <Paper
+        component="form"
+        className={classes.contactInfoForm}
+        onSubmit={() => handleUpdateProfile()}
+      >
+        <div className="ffc">
+          <div className="form-name">
+            <DarkModeTextField
+              label="First Name"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setForm({ ...form, FirstName: e.currentTarget.value });
+              }}
+              value={form.FirstName}
+              required
+            />
+            <DarkModeTextField
+              value={form.LastName}
+              label="Last Name"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setForm({ ...form, LastName: e.currentTarget.value });
+              }}
+              required
+            />
+          </div>
+          <div className="form-name">
+            <DarkModeTextField
+              value={form.Organization}
+              label="Organization"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setForm({ ...form, Organization: e.currentTarget.value });
+              }}
+            />
+            <DarkModeTextField
+              value={form.Occupation}
+              label="Occupation"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setForm({ ...form, Occupation: e.currentTarget.value });
+              }}
+            />
+          </div>
+        </div>
+        <div className="ffc" style={{ flex: "0.3" }}>
+          <Fab type="submit" variant="extended" className={classes.button}>
+            <SaveIcon className={classes.icon} />
+            Save Profile
+          </Fab>
+        </div>
+      </Paper>
     </Layout>
   );
 };

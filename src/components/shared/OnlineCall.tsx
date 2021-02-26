@@ -137,7 +137,7 @@ const OnlineCall = (): ReactElement => {
   const handleLeaveMeeting = () => {
     console.log(myAttendeeInfo);
     
-    removeAttendee({input: {id: myAttendeeInfo?.AttendeeId}});
+    // removeAttendee({input: {id: myAttendeeInfo?.AttendeeId}});
     console.log("removed", myAttendeeInfo?.AttendeeId);
     
   }

@@ -1,7 +1,5 @@
-.contact-info-form {
+.form-name {
   display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  flex: 1;
+  flex-direction: row;
+  justify-content: center;
 }

@@ -67,7 +67,7 @@ const PhysicianMain = (): ReactElement => {
       <div className={classes.root}>
         <IconButton
           className={classes.bellButton}
-          onClick={() => history.push("/physician/alerts", { meetings })}
+          onClick={() => history.push("/physician/alerts")}
         >
           <Badge
             badgeContent={meetings?.length}
