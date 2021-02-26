@@ -16,15 +16,6 @@ export const getMeeting = /* GraphQL */ `
   query GetMeeting($id: ID!) {
     getMeeting(id: $id) {
       id
-      attendees {
-        items {
-          id
-          Name
-          externalUserId
-          meetingID
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -39,9 +30,6 @@ export const listMeetings = /* GraphQL */ `
     listMeetings(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        attendees {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -53,17 +41,10 @@ export const getAttendee = /* GraphQL */ `
   query GetAttendee($id: ID!) {
     getAttendee(id: $id) {
       id
-      Name
+      name
       externalUserId
       meetingID
-      meeting {
-        id
-        attendees {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      role
     }
   }
 `;
@@ -76,14 +57,10 @@ export const listAttendees = /* GraphQL */ `
     listAttendees(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        Name
+        name
         externalUserId
         meetingID
-        meeting {
-          id
-          createdAt
-          updatedAt
-        }
+        role
       }
       nextToken
     }
@@ -96,6 +73,7 @@ export const getPhysicianProfile = /* GraphQL */ `
       FirstName
       LastName
       Organization
+      Occupation
       createdAt
       updatedAt
       owner
@@ -118,6 +96,7 @@ export const listPhysicianProfiles = /* GraphQL */ `
         FirstName
         LastName
         Organization
+        Occupation
         createdAt
         updatedAt
         owner

@@ -58,15 +58,9 @@ const putMeeting = async (title, meetingInfo) => {
       Item: {
         id: { S: title },
         MeetingId: { S: Meeting.MeetingId },
-        ExternalMeetingId: { S: Meeting.ExternalMeetingId || "" },
+        ExternalMeetingId: { S: title },
         MediaRegion: { S: Meeting.MediaRegion },
         MediaPlacement: { S: JSON.stringify(Meeting.MediaPlacement) },
-        createdAt: {
-          S: "" + new Date(Date.now()),
-        },
-        updatedAt: {
-          S: "" + new Date(Date.now()),
-        },
         TTL: {
           N: "" + oneDayFromNow,
         },
@@ -89,10 +83,10 @@ const getAttendee = async (title, attendeeId) => {
   if (!result.Item) {
     return "Unknown";
   }
-  return result.Item.Name.S;
+  return result.Item.name.S;
 };
 
-const putAttendee = async (title, attendeeId, name, meetingID) => {
+const putAttendee = async (title, attendeeId, name, meetingID, role) => {
   await ddb
     .putItem({
       TableName: attendeesTableName,
@@ -100,8 +94,15 @@ const putAttendee = async (title, attendeeId, name, meetingID) => {
         id: {
           S: `${attendeeId}`,
         },
-        Name: { S: name },
+        createdAt: {
+          N: "" + Date.now(),
+        },
+        updatedAt: {
+          N: "" + Date.now(),
+        },
+        name: { S: name },
         meetingID: { S: meetingID },
+        role: { S: role },
         TTL: {
           N: "" + oneDayFromNow,
         },
@@ -111,9 +112,14 @@ const putAttendee = async (title, attendeeId, name, meetingID) => {
 };
 
 exports.handler = async (event, context, callback) => {
-  const title = event.arguments.title;
-  const name = event.arguments.name;
-  const region = event.arguments.region || "us-east-1";
+  const {
+    title,
+    name,
+    role,
+    externalAttendeeId,
+    region = "us-east-1",
+  } = event.arguments;
+
   console.log("Unique Meeting ID: ", title);
   let meetingInfo = await getMeeting(title);
   if (!meetingInfo) {
@@ -130,7 +136,7 @@ exports.handler = async (event, context, callback) => {
   const attendeeInfo = await chime
     .createAttendee({
       MeetingId: meetingInfo.Meeting.MeetingId,
-      ExternalUserId: uuid(),
+      ExternalUserId: externalAttendeeId,
     })
     .promise();
 
@@ -138,7 +144,8 @@ exports.handler = async (event, context, callback) => {
     title,
     attendeeInfo.Attendee.AttendeeId,
     name,
-    meetingInfo.Meeting.MeetingId
+    meetingInfo.Meeting.MeetingId,
+    role
   );
 
   const joinInfo = {

@@ -1,20 +1,16 @@
 # Models
 type Meeting @model @aws_api_key {
   id: ID!
-  attendees: [Attendee] @connection(keyName: "byMeeting", fields: ["id"])
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
 }
 
-type Attendee
-  @aws_api_key
-  @model(timestamps: null)
-  @key(name: "byMeeting", fields: ["meetingID"]) {
+type Attendee @aws_api_key @model(timestamps: null) {
   id: ID!
-  Name: String!
+  name: String!
   externalUserId: String
   meetingID: ID!
-  meeting: Meeting @connection(fields: ["meetingID"])
+  role: String!
 }
 
 type PhysicianProfile
@@ -25,6 +21,7 @@ type PhysicianProfile
   FirstName: String!
   LastName: String!
   Organization: String
+  Occupation: String
 }
 
 # Private Types
@@ -67,6 +64,11 @@ type Query {
 type Mutation {
   createChimeMeeting(title: String): JoinInfo
     @function(name: "firstrespondercreatemeeting-${env}")
-  joinChimeMeeting(title: String, name: String, region: String): JoinInfo
-    @function(name: "firstresponderjoinmeeting-${env}")
+  joinChimeMeeting(
+    title: String
+    name: String
+    region: String
+    role: String
+    externalAttendeeId: String
+  ): JoinInfo @function(name: "firstresponderjoinmeeting-${env}")
 }
