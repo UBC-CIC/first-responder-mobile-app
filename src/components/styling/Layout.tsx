@@ -11,6 +11,7 @@ const Layout = ({
   style,
   headerStyle,
   className,
+  flexColumn=false,
 }: {
   noHeader?: boolean;
   children?: ReactNode;
@@ -18,6 +19,7 @@ const Layout = ({
   style?: CSS.Properties;
   headerStyle?: CSS.Properties;
   className?: string;
+  flexColumn?:boolean;
 }): ReactElement => {
   const history = useHistory();
   const handleSwipeRight = (eventData: SwipeEventData) => {
@@ -36,6 +38,8 @@ const Layout = ({
       style={{
         minHeight: "100vh",
         backgroundColor: Colors.theme.onyx,
+        display: flexColumn ? "flex" : undefined,
+        flexDirection: flexColumn ? "column" : undefined,
         ...style,
       }}
       className={className}

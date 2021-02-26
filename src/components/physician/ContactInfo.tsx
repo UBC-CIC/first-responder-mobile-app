@@ -5,17 +5,15 @@ import { ReactElement, useEffect, useState } from "react";
 import {
   CreatePhysicianProfileInput,
   CreatePhysicianProfileMutation,
-  GetPhysicianProfileQuery,
-  GetPhysicianProfileQueryVariables,
-  UpdatePhysicianProfileMutation,
+  UpdatePhysicianProfileMutation
 } from "../../API";
 import {
   createPhysicianProfile,
-  updatePhysicianProfile,
+  updatePhysicianProfile
 } from "../../graphql/mutations";
-import { getPhysicianProfile } from "../../graphql/queries";
 import "../../styles/physician/ContactInfo.css";
-import { CognitoUser } from "../../types";
+import { CognitoUser, PhysicianProfileType } from "../../types";
+import getProfile from "../calls/fetchPhysicianProfile";
 import Colors from "../styling/Colors";
 import Layout from "../styling/Layout";
 
@@ -24,12 +22,14 @@ const useStyles = makeStyles({
 });
 
 const ContactInfo = (): ReactElement => {
-  const [form, setForm] = useState<CreatePhysicianProfileInput>({
+  const [form, setForm] = useState<PhysicianProfileType>({
     id: "",
     FirstName: "",
     LastName: "",
     Organization: "",
+    Occupation: "",
   });
+
 
   const classes = useStyles();
 
@@ -38,7 +38,6 @@ const ContactInfo = (): ReactElement => {
     const f = async () => {
       try {
         const u: CognitoUser = await Auth.currentAuthenticatedUser();
-        console.log(u);
         const id = u.attributes.sub;
 
         const profile = await getProfile({ id });
@@ -53,24 +52,6 @@ const ContactInfo = (): ReactElement => {
     };
     f();
   }, []);
-
-  const getProfile = async (options: GetPhysicianProfileQueryVariables) => {
-    const response = (await API.graphql({
-      ...graphqlOperation(getPhysicianProfile, options),
-      authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-    })) as GraphQLResult<GetPhysicianProfileQuery>;
-    if (response.errors) {
-      console.log(response.errors);
-    } else {
-      const profile = response.data?.getPhysicianProfile;
-      return {
-        id: profile?.id,
-        FirstName: profile?.FirstName,
-        LastName: profile?.LastName,
-        Organization: profile?.Organization,
-      } as CreatePhysicianProfileInput;
-    }
-  };
 
   const createProfile = async (options: CreatePhysicianProfileInput) => {
     const response = (await API.graphql({
@@ -152,12 +133,19 @@ const ContactInfo = (): ReactElement => {
               setForm({ ...form, Organization: e.currentTarget.value });
             }}
           />
+          <TextField
+            className={classes.label}
+            value={form.Occupation}
+            label="Occupation"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              setForm({ ...form, Occupation: e.currentTarget.value });
+            }}
+          />
         </form>
       </div>
       <div className="ffc">
         <Button
           onClick={() => {
-            console.log(form);
             handleUpdateProfile();
           }}
         >

@@ -29,8 +29,20 @@ export const createChimeMeeting = /* GraphQL */ `
   }
 `;
 export const joinChimeMeeting = /* GraphQL */ `
-  mutation JoinChimeMeeting($title: String, $name: String, $region: String) {
-    joinChimeMeeting(title: $title, name: $name, region: $region) {
+  mutation JoinChimeMeeting(
+    $title: String
+    $name: String
+    $region: String
+    $role: String
+    $externalAttendeeId: String
+  ) {
+    joinChimeMeeting(
+      title: $title
+      name: $name
+      region: $region
+      role: $role
+      externalAttendeeId: $externalAttendeeId
+    ) {
       id
       Meeting {
         MeetingId
@@ -61,15 +73,6 @@ export const createMeeting = /* GraphQL */ `
   ) {
     createMeeting(input: $input, condition: $condition) {
       id
-      attendees {
-        items {
-          id
-          Name
-          externalUserId
-          meetingID
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -82,15 +85,6 @@ export const updateMeeting = /* GraphQL */ `
   ) {
     updateMeeting(input: $input, condition: $condition) {
       id
-      attendees {
-        items {
-          id
-          Name
-          externalUserId
-          meetingID
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -103,15 +97,6 @@ export const deleteMeeting = /* GraphQL */ `
   ) {
     deleteMeeting(input: $input, condition: $condition) {
       id
-      attendees {
-        items {
-          id
-          Name
-          externalUserId
-          meetingID
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -124,17 +109,10 @@ export const createAttendee = /* GraphQL */ `
   ) {
     createAttendee(input: $input, condition: $condition) {
       id
-      Name
+      name
       externalUserId
       meetingID
-      meeting {
-        id
-        attendees {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      role
     }
   }
 `;
@@ -145,17 +123,10 @@ export const updateAttendee = /* GraphQL */ `
   ) {
     updateAttendee(input: $input, condition: $condition) {
       id
-      Name
+      name
       externalUserId
       meetingID
-      meeting {
-        id
-        attendees {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      role
     }
   }
 `;
@@ -166,17 +137,10 @@ export const deleteAttendee = /* GraphQL */ `
   ) {
     deleteAttendee(input: $input, condition: $condition) {
       id
-      Name
+      name
       externalUserId
       meetingID
-      meeting {
-        id
-        attendees {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      role
     }
   }
 `;
@@ -190,6 +154,7 @@ export const createPhysicianProfile = /* GraphQL */ `
       FirstName
       LastName
       Organization
+      Occupation
       createdAt
       updatedAt
       owner
@@ -206,6 +171,7 @@ export const updatePhysicianProfile = /* GraphQL */ `
       FirstName
       LastName
       Organization
+      Occupation
       createdAt
       updatedAt
       owner
@@ -222,6 +188,7 @@ export const deletePhysicianProfile = /* GraphQL */ `
       FirstName
       LastName
       Organization
+      Occupation
       createdAt
       updatedAt
       owner
