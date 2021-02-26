@@ -9,10 +9,16 @@ import { useGlobalStyles } from "./styling/GlobalMuiStyles";
 
 Amplify.configure(config);
 
+const useStyles = makeStyles({
+  button: {
+    margin: "20px"
+  }
+})
+
 const Home = (): ReactElement => {
   const history = useHistory();
-  // const classes = useStyles();
-  const classes = useGlobalStyles();
+  const classes = useStyles();
+  const globalClasses = useGlobalStyles();
   return (
     <Layout noHeader>
       <div className="home-root">
@@ -20,9 +26,9 @@ const Home = (): ReactElement => {
           <div className="header-text">STARS Emergency Support</div>
         </div>
         <div className="body-container">
-          <div className={classes.wideButtonContainer}>
+          <div className={`${globalClasses.wideButtonContainer} `}>
             <Button
-              className={classes.wideButton}
+              className={`${globalClasses.wideButton} ${classes.button}`}
               onClick={() => {
                 history.push("/firstresponder");
               }}
@@ -30,7 +36,7 @@ const Home = (): ReactElement => {
               first responder
             </Button>
             <Button
-              className={classes.wideButton}
+              className={`${globalClasses.wideButton} ${classes.button}`}
               onClick={() => {
                 history.push("/physician");
               }}

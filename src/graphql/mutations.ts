@@ -154,6 +154,7 @@ export const createPhysicianProfile = /* GraphQL */ `
       FirstName
       LastName
       Organization
+      Occupation
       createdAt
       updatedAt
       owner
@@ -170,6 +171,7 @@ export const updatePhysicianProfile = /* GraphQL */ `
       FirstName
       LastName
       Organization
+      Occupation
       createdAt
       updatedAt
       owner
@@ -186,6 +188,7 @@ export const deletePhysicianProfile = /* GraphQL */ `
       FirstName
       LastName
       Organization
+      Occupation
       createdAt
       updatedAt
       owner

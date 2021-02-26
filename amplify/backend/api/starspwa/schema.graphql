@@ -21,6 +21,7 @@ type PhysicianProfile
   FirstName: String!
   LastName: String!
   Organization: String
+  Occupation: String
 }
 
 # Private Types

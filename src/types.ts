@@ -1,5 +1,6 @@
 import { RosterAttendeeType } from "amazon-chime-sdk-component-library-react/lib/types";
 import { AttendeeInfo } from "./API";
+import {CreatePhysicianProfileInput} from "./API";
 
 export type CognitoUser = {
   Session: any;
@@ -44,3 +45,5 @@ export type AlertsStateType= {
 export type AttendeeInfoType = AttendeeInfo & {name: string};
 
 export type AttendeeType = RosterAttendeeType & { role: string };
+
+export type {CreatePhysicianProfileInput as PhysicianProfileType};

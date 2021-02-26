@@ -58,7 +58,7 @@ const putMeeting = async (title, meetingInfo) => {
       Item: {
         id: { S: title },
         MeetingId: { S: Meeting.MeetingId },
-        ExternalMeetingId: { S: Meeting.ExternalMeetingId || "" },
+        ExternalMeetingId: { S: title },
         MediaRegion: { S: Meeting.MediaRegion },
         MediaPlacement: { S: JSON.stringify(Meeting.MediaPlacement) },
         TTL: {

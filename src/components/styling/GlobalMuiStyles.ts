@@ -5,7 +5,6 @@ const useStyles = makeStyles({
     width: "75%",
     display: "flex",
     height: "100%",
-    minHeight: "200px",
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",

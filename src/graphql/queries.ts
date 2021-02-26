@@ -73,6 +73,7 @@ export const getPhysicianProfile = /* GraphQL */ `
       FirstName
       LastName
       Organization
+      Occupation
       createdAt
       updatedAt
       owner
@@ -95,6 +96,7 @@ export const listPhysicianProfiles = /* GraphQL */ `
         FirstName
         LastName
         Organization
+        Occupation
         createdAt
         updatedAt
         owner

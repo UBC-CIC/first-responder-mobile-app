@@ -1,17 +1,42 @@
-import { Button } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
+import { Auth } from "aws-amplify";
 import { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import pushNotificationManager from "web-push";
 import base64Convert from "../../push/keys";
 import keys from "../../push/keys.json";
-import { AlertsStateType, MeetingStateType, MeetingType } from "../../types";
+import { AlertsStateType, CognitoUser, MeetingStateType, MeetingType, PhysicianProfileType } from "../../types";
+import getProfile from "../calls/fetchPhysicianProfile";
 import listAllMeetings from "../calls/listAllMeetings";
+import Colors from "../styling/Colors";
+import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../styling/Layout";
+
+
+const useStyles = makeStyles({
+  button:{
+    margin: 10
+  }
+})
 
 const Alerts = (): ReactElement => {
   const [meetings, setMeetings] = useState<MeetingType[] | undefined>([]);
   const history = useHistory<AlertsStateType | MeetingStateType>();
+  const globalClasses = useGlobalStyles();
+  const classes = useStyles();
+  const [profile, setProfile] = useState<PhysicianProfileType>();
 
+
+  useEffect(() => {
+    const f = async () => {
+      const u: CognitoUser = await Auth.currentAuthenticatedUser();
+      const id = u.attributes.sub;
+      const fetchedProfile = await getProfile({id});
+      setProfile(fetchedProfile)
+    }
+
+    f();
+  }, [])
   if (!sessionStorage.getItem("physicianid")) {
     history.push("/physician")
     return <div></div>
@@ -41,16 +66,14 @@ const Alerts = (): ReactElement => {
     if (id)
       history.push("/call", {
         meetingId: id,
-        name: "John",
-        role: "Brain Surgeon",
+        name: profile ? `${profile.FirstName} ${profile.LastName}` : "Professional",
+        role: profile?.Occupation || "Professional",
         attendeeId: sessionStorage.getItem("physicianid")
       } as MeetingStateType);
   };
 
   useEffect(() => {
     const f = async () => {
-      console.log("call to backend");
-      
       const res = await listAllMeetings();
       console.log(res);
 
@@ -75,20 +98,27 @@ const Alerts = (): ReactElement => {
   }, []);
 
   return (
-    <Layout title="Alerts">
+    <Layout title="Alerts" flexColumn>
       <div style={{
         display: "flex",
+        flex: 1,
         flexDirection:"column",
-        justifyContent: "center"
+        alignItems: "center",
       }}>
-        {meetings?.map((meeting, index) => {
+        {meetings && meetings.length > 0 && meetings?.map((meeting, index) => {
           return (
-            <Button key={meeting.id} onClick={() => handleJoin(meeting.id)}>
-              {/* Call to backend for topic of accident */}
-              {index % 2 == 0 ? "Car Accident" : "Another Emergency"}
-            </Button>
+            <div className={globalClasses.wideButtonContainer} key={meeting.id}>
+              <Button
+                className={`${globalClasses.wideButton} ${classes.button}`}
+                onClick={() => handleJoin(meeting.id)}
+              >
+                {/* TODO Call to backend for topic of accident */}
+                {index % 2 == 0 ? "Emergency A" : "Emergency B"}
+              </Button>
+            </div>
           );
         })}
+        {!meetings?.length && <p style={{color: Colors.theme.platinum}}>You have no alerts at this time</p>}
       </div>
     </Layout>
   );
