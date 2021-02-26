@@ -6,11 +6,20 @@ import bg from "../../assets/first-responder-home-bg.svg";
 import "../../styles/firstresponder/Home.css";
 import Colors from "../styling/Colors";
 import PhoneIcon from "@material-ui/icons/Phone";
+import ProfileIcon from "@material-ui/icons/Person";
+
 import { MeetingStateType } from "../../types";
 import { v4 as uuid } from "uuid";
 const useStyles = makeStyles({
   button: {
     backgroundColor: `${Colors.theme.coral} !important`,
+    color: Colors.theme.platinum,
+    fontFamily: "Montserrat",
+    fontWeight: "bold",
+    fontSize: 15
+  },
+  icon: {
+    marginRight: 10,
   },
 });
 
@@ -42,12 +51,23 @@ const FirstResponderMain = (): ReactElement => {
               meetingId: uuid(),
               name: "First Responder",
               role: "First Responder",
-              attendeeId: sessionStorage.getItem("firstresponderid")
+              attendeeId: sessionStorage.getItem("firstresponderid"),
             } as MeetingStateType);
           }}
         >
-          <PhoneIcon />
+          <PhoneIcon className={classes.icon} />
           Call STARS
+        </Fab>
+        <Fab
+          variant="extended"
+          id="callStars"
+          className={classes.button}
+          onClick={() => {
+            console.log("profile");
+          }}
+        >
+          <ProfileIcon className={classes.icon} />
+          Create / Edit Profile
         </Fab>
       </div>
     </Layout>

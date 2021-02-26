@@ -21,8 +21,6 @@
     "public/browserconfig.xml": false
   },
   "editor.codeActionsOnSave": {
-    "editor.formatOnSave": false,
     "source.fixAll.eslint": true
   },
-  "editor.formatOnSave": false
 }

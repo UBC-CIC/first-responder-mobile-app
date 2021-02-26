@@ -1,10 +1,15 @@
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, Fab, makeStyles } from "@material-ui/core";
 import { ReactElement } from "react";
 import { useHistory } from "react-router-dom";
 import Layout from "../styling/Layout";
 // import { SignOut } from "aws-amplify-react";
 import { Auth } from "@aws-amplify/auth";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
+import ProfileIcon from "@material-ui/icons/Person";
+import CalendarIcon from "@material-ui/icons/EventNote";
+import SignOutIcon from "@material-ui/icons/ExitToApp";
+
+import Colors from "../styling/Colors";
 
 const useStyles = makeStyles({
   root: {
@@ -15,8 +20,34 @@ const useStyles = makeStyles({
     alignItems: "center",
   },
   button: {
-    margin: 10
-  }
+    backgroundColor: `${Colors.theme.coral} !important`,
+    color: Colors.theme.platinum,
+    fontFamily: "Montserrat",
+    fontWeight: "bold",
+    fontSize: 15,
+    margin: 10,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  signOutButton: {
+    backgroundColor: `${Colors.theme.skobeloff} !important`,
+  },
+  mainContainer: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+  },
+  signOutContainer: {
+    display: "flex",
+    flex: 0.3,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  signOutIcon: {
+    marginLeft: 10,
+  },
 });
 
 const PhysicianProfile = (): ReactElement => {
@@ -26,31 +57,34 @@ const PhysicianProfile = (): ReactElement => {
   return (
     <Layout title="Profile" flexColumn>
       <div className={classes.root}>
-        <div className={globalClasses.wideButtonContainer}>
-          <Button
-            className={`${globalClasses.wideButton} ${classes.button}`}
+        <div className={classes.mainContainer}>
+          <Fab
+            variant="extended"
+            className={classes.button}
             onClick={() => history.push("/physician/contactinfo")}
           >
-            Contact Info
-          </Button>
-        </div>
-        <div className={globalClasses.wideButtonContainer}>
-          <Button
-            className={`${globalClasses.wideButton} ${classes.button}`}
+            <ProfileIcon className={classes.icon} />
+            Edit Contact Info
+          </Fab>
+          <Fab
+            variant="extended"
+            className={classes.button}
             onClick={() => history.push("/physician/availability")}
           >
-            Select Availability
-          </Button>
+            <CalendarIcon className={classes.icon} />
+            Hours of Availability
+          </Fab>
         </div>
-        <div className={globalClasses.wideButtonContainer}>
-          <Button
-            className={`${globalClasses.wideButton} ${classes.button}`}
+        <div className={classes.signOutContainer}>
+          <Fab
+            variant="extended"
+            className={`${classes.button} ${classes.signOutButton}`}
             onClick={() => Auth.signOut()}
           >
-            Sign out
-          </Button>
+            Sign Out
+            <SignOutIcon className={classes.signOutIcon} />
+          </Fab>
         </div>
-        {/* <SignOut /> */}
       </div>
     </Layout>
   );
