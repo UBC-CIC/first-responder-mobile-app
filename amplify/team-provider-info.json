@@ -20,6 +20,38 @@
         "firstresponderjoinmeeting": {
           "deploymentBucketName": "amplify-starspwa-dev-152341-deployment",
           "s3Key": "amplify-builds/firstresponderjoinmeeting-734931636c304745536c-build.zip"
+        },
+        "sendpushnotification": {
+          "deploymentBucketName": "amplify-starspwa-dev-152341-deployment",
+          "s3Key": "amplify-builds/sendpushnotification-4a6c45785a4961745846-build.zip"
+        },
+        "firstresponderlayer": {
+          "deploymentBucketName": "amplify-starspwa-dev-152341-deployment",
+          "s3Key": "amplify-builds/firstresponderlayer-build.zip"
+        }
+      }
+    },
+    "nonCFNdata": {
+      "function": {
+        "firstresponderlayer": {
+          "layerVersionMap": {
+            "1": {
+              "permissions": [
+                {
+                  "type": "private"
+                }
+              ],
+              "hash": "WA7ifF3fry3Zgyj1nlgwepgxhvMKbuDxllQdC2DrcK0="
+            },
+            "2": {
+              "permissions": [
+                {
+                  "type": "private"
+                }
+              ],
+              "hash": "csbV9vjN6XyY88x8oxKQrdlC4YAIpIzk4VMPvjteDaY="
+            }
+          }
         }
       }
     }

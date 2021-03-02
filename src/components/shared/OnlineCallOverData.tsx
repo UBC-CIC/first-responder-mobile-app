@@ -6,35 +6,42 @@ import {
   useLocalVideo,
   useMeetingManager,
   useRosterState,
-  VideoTileGrid
+  VideoTileGrid,
 } from "amazon-chime-sdk-component-library-react";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { DeleteAttendeeInput } from "../../API";
 import "../../styles/VideoCall.css";
 import { AttendeeInfoType, AttendeeType, MeetingStateType } from "../../types";
-import { fetchAttendee, joinMeeting, listMeetingAttendees, removeAttendee } from "../calls";
+import {
+  fetchAttendee,
+  joinMeeting,
+  listMeetingAttendees,
+  removeAttendee,
+} from "../calls";
 import Layout from "../styling/Layout";
 import RosterDisplay from "./RosterDisplay";
 
-const OnlineCall = (): ReactElement => {
+const OnlineCallOverData = (): ReactElement => {
   const { toggleVideo } = useLocalVideo();
   const audioVideo = useAudioVideo();
   const meetingManager = useMeetingManager();
   const { roster } = useRosterState();
   const history = useHistory<MeetingStateType>();
   const state = history.location?.state;
-  const [myAttendeeInfo, setMyAttendeeInfo] = useState<undefined | AttendeeInfoType>();
-  /** Must be redirected from some source that has a meeting id etc. */
-  if (!state) {
-    history.push("/firstResponder");
-    return <div></div>;
-  }
-  
+  const [myAttendeeInfo, setMyAttendeeInfo] = useState<
+    undefined | AttendeeInfoType
+  >();
+
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
   /** On mount */
   useEffect(() => {
-    handleCreateandJoinMeeting(state.meetingId, state.name, state.role, state.attendeeId);
+    handleCreateandJoinMeeting(
+      state.meetingId,
+      state.name,
+      state.role,
+      state.attendeeId
+    );
     meetingManager.getAttendee = async (chimeAttendeeId) => {
       try {
         const res = await fetchAttendee({ id: chimeAttendeeId });
@@ -51,7 +58,6 @@ const OnlineCall = (): ReactElement => {
     };
 
     return handleLeaveMeeting;
-
   }, []);
 
   /** On change of roster */
@@ -79,7 +85,6 @@ const OnlineCall = (): ReactElement => {
     };
     if (meetingManager.meetingId) f();
     console.log(roster);
-    
   }, [roster]);
 
   /** On change of audio/video when call starts */
@@ -114,10 +119,15 @@ const OnlineCall = (): ReactElement => {
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
     try {
-      const joinRes = await joinMeeting({ title, name, role, externalAttendeeId });
+      const joinRes = await joinMeeting({
+        title,
+        name,
+        role,
+        externalAttendeeId,
+      });
 
       console.log("joinres", joinRes);
-      
+
       const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
       const attendeeInfo = {
         ...joinRes.data?.joinChimeMeeting?.Attendee,
@@ -125,7 +135,7 @@ const OnlineCall = (): ReactElement => {
       } as AttendeeInfoType;
 
       console.log("attendeeInfo", attendeeInfo);
-      
+
       setMyAttendeeInfo(attendeeInfo);
 
       await meetingManager.join({ meetingInfo, attendeeInfo });
@@ -136,11 +146,10 @@ const OnlineCall = (): ReactElement => {
 
   const handleLeaveMeeting = () => {
     console.log(myAttendeeInfo);
-    
+
     // removeAttendee({input: {id: myAttendeeInfo?.AttendeeId}});
     console.log("removed", myAttendeeInfo?.AttendeeId);
-    
-  }
+  };
 
   return (
     <Layout title="Online Call">
@@ -172,4 +181,4 @@ const OnlineCall = (): ReactElement => {
   );
 };
 
-export default OnlineCall;
+export default OnlineCallOverData;

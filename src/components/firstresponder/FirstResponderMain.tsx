@@ -7,6 +7,7 @@ import "../../styles/firstresponder/Home.css";
 import Colors from "../styling/Colors";
 import PhoneIcon from "@material-ui/icons/Phone";
 import ProfileIcon from "@material-ui/icons/Person";
+import WifiIcon from "@material-ui/icons/Wifi";
 
 import { MeetingStateType } from "../../types";
 import { v4 as uuid } from "uuid";
@@ -16,7 +17,8 @@ const useStyles = makeStyles({
     color: Colors.theme.platinum,
     fontFamily: "Montserrat",
     fontWeight: "bold",
-    fontSize: 15
+    fontSize: 15,
+    margin: 10,
   },
   icon: {
     marginRight: 10,
@@ -29,9 +31,9 @@ const FirstResponderMain = (): ReactElement => {
 
   useEffect(() => {
     if (!sessionStorage.getItem("firstresponderid"))
-      sessionStorage.setItem("firstresponderid", uuid())
+      sessionStorage.setItem("firstresponderid", uuid());
     console.log(sessionStorage.getItem("firstresponderid"));
-  })
+  });
   return (
     <Layout
       title="First Responder Home"
@@ -42,25 +44,44 @@ const FirstResponderMain = (): ReactElement => {
       }}
     >
       <div className="firstresponder-root">
-        <Fab
-          variant="extended"
-          id="callStars"
-          className={classes.button}
-          onClick={() => {
-            history.push("/call", {
-              meetingId: uuid(),
-              name: "First Responder",
-              role: "First Responder",
-              attendeeId: sessionStorage.getItem("firstresponderid"),
-            } as MeetingStateType);
-          }}
+        <div
+          className="ffc"
+          style={{ flex: 0, justifyContent: "space-between" }}
         >
-          <PhoneIcon className={classes.icon} />
-          Call STARS
-        </Fab>
+          <Fab
+            variant="extended"
+            className={classes.button}
+            onClick={() => {
+              history.push("/call", {
+                meetingId: uuid(),
+                name: "First Responder",
+                role: "First Responder",
+                attendeeId: sessionStorage.getItem("firstresponderid"),
+              } as MeetingStateType);
+            }}
+            disabled={!navigator.onLine}
+          >
+            <WifiIcon className={classes.icon} />
+            Call STARS over DATA
+          </Fab>
+          <Fab
+            variant="extended"
+            className={classes.button}
+            onClick={() => {
+              history.push("/call", {
+                meetingId: uuid(),
+                name: "First Responder",
+                role: "First Responder",
+                attendeeId: sessionStorage.getItem("firstresponderid"),
+              } as MeetingStateType);
+            }}
+          >
+            <PhoneIcon className={classes.icon} />
+            Call STARS over PHONE LINE
+          </Fab>
+        </div>
         <Fab
           variant="extended"
-          id="callStars"
           className={classes.button}
           onClick={() => {
             console.log("profile");

@@ -8,9 +8,10 @@ import {
 } from "@material-ui/core";
 import React, { ReactElement } from "react";
 import { ArrowBack } from "@material-ui/icons";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import Colors from "./Colors";
 import CSS from "csstype";
+import { Router } from "workbox-routing";
 const Header = ({
   title,
   style,
@@ -29,6 +30,8 @@ const Header = ({
   });
   const history = useHistory();
   const classes = useStyles();
+  const location = useLocation();
+
   return (
     <AppBar position="sticky" className={classes.header}>
       <Toolbar>
