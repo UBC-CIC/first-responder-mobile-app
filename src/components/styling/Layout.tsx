@@ -11,7 +11,7 @@ const Layout = ({
   style,
   headerStyle,
   className,
-  flexColumn=false,
+  flexColumn = false,
 }: {
   noHeader?: boolean;
   children?: ReactNode;
@@ -19,22 +19,11 @@ const Layout = ({
   style?: CSS.Properties;
   headerStyle?: CSS.Properties;
   className?: string;
-  flexColumn?:boolean;
+  flexColumn?: boolean;
 }): ReactElement => {
   const history = useHistory();
-  const handleSwipeRight = (eventData: SwipeEventData) => {
-    if (eventData.initial[0] <= 25) {
-      if (history.location.pathname !== "/") history.goBack();
-    }
-  };
-  const handlers = useSwipeable({
-    onSwipedRight: handleSwipeRight,
-    preventDefaultTouchmoveEvent: true,
-    trackMouse: false,
-  });
   return (
     <div
-      {...handlers}
       style={{
         minHeight: "100vh",
         backgroundColor: Colors.theme.onyx,

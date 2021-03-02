@@ -73,83 +73,23 @@ registerRoute(
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener("message", (event) => {
-  // if (event.data && event.data.type === "SKIP_WAITING") {
-  self.skipWaiting();
-  // }
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
 
 // Any other custom service worker logic can go here.
 
-// self.addEventListener("activate", (event) => {
-//   event.waitUntil(
-//     navigator.serviceWorker.ready.then(() => {
-//       const applicationServerKey = base64Convert(VAPIDKey);
-//       self.registration.pushManager
-//         .subscribe({
-//           userVisibleOnly: true,
-//           applicationServerKey: applicationServerKey,
-//         })
-//         .then(function (subscription) {
-//           console.log("User is subscribed.");
-//         })
-//         .catch(function (err) {
-//           console.log("Failed to subscribe the user: ", err);
-//         });
-//     })
-//   );
-// });
+self.addEventListener("push", e => {
+  console.log("push");
+  if (!e.data) return;
 
-function getEndpoint() {
-  return self.registration.pushManager
-    .getSubscription()
-    .then(function (subscription) {
-      if (subscription) {
-        return subscription.endpoint;
-      }
 
-      console.log("User not subscribed");
-    });
-}
+  const data = e.data.json();
+  console.log("Push Recieved...");
 
-function base64Convert(base64String: string) {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-
-  const rawData = Buffer.from(base64, "base64").toString("binary");
-  const outputArray = new Uint8Array(rawData.length);
-
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-  return outputArray;
-}
-
-// self.addEventListener("push", (event) => {
-//   event.waitUntil(
-//     getEndpoint()
-//       // .then((endpoint) => fetch("./getPayload?endpoint=" + endpoint))
-//       // .then((response) => response.text())
-//       .then((payload) => {
-//         self.registration.showNotification("STARS App", {
-//           body: "hello"
-//         });
-//       })
-//   );
-// });
-
-const VAPIDKey =
-  "BMRDY-O74uuJCNHeUyKdnh5IIG0UULKwvxaGI970tDuzhNP59UYD9pyXyJoNwmmpHcAPyfI7I9TFxenna07KzMw";
-async function subscribeUser() {
-  const applicationServerKey = base64Convert(VAPIDKey);
-  self.registration.pushManager
-    .subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: applicationServerKey,
-    })
-    .then(function (subscription) {
-      console.log("User is subscribed.");
-    })
-    .catch(function (err) {
-      console.log("Failed to subscribe the user: ", err);
-    });
-}
+  self.registration.showNotification(data.title, {
+    body: "Notified by Trev",
+    icon: "http://image.ibb.co/frYOFd/tmlogo.png"
+  })
+});
