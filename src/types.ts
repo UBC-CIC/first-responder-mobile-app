@@ -47,3 +47,10 @@ export type AttendeeInfoType = AttendeeInfo & {name: string};
 export type AttendeeType = RosterAttendeeType & { role: string };
 
 export type {CreatePhysicianProfileInput as PhysicianProfileType};
+
+export enum ConnectionState {
+  POOR,
+  FAIR,
+  GOOD,
+  UNKNOWN
+}

@@ -1,8 +1,9 @@
-import { Button } from "@material-ui/core";
+import { Button, makeStyles, Snackbar } from "@material-ui/core";
 import {
   MicSelection,
   SpeakerSelection,
   useAudioVideo,
+  useBandwidthMetrics,
   useLocalVideo,
   useMeetingManager,
   useRosterState,
@@ -10,30 +11,49 @@ import {
 } from "amazon-chime-sdk-component-library-react";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { DeleteAttendeeInput } from "../../API";
 import "../../styles/VideoCall.css";
-import { AttendeeInfoType, AttendeeType, MeetingStateType } from "../../types";
 import {
-  fetchAttendee,
-  joinMeeting,
-  listMeetingAttendees,
-  removeAttendee,
-} from "../calls";
+  AttendeeInfoType,
+  AttendeeType,
+  ConnectionState,
+  MeetingStateType,
+} from "../../types";
+import { fetchAttendee, joinMeeting, listMeetingAttendees } from "../calls";
+import Colors from "../styling/Colors";
 import Layout from "../styling/Layout";
+import SnackBarActions from "../ui/Alert";
 import RosterDisplay from "./RosterDisplay";
 
+const MAX_LOSS = 10;
+
+const useStyles = makeStyles({
+  snackBar: {
+    backgroundColor: Colors.theme.warning,
+    color: Colors.theme.onyx,
+  },
+});
+
 const OnlineCallOverData = (): ReactElement => {
-  const { toggleVideo } = useLocalVideo();
+  const { toggleVideo: toggleLocalVideo } = useLocalVideo();
+  const classes = useStyles();
   const audioVideo = useAudioVideo();
   const meetingManager = useMeetingManager();
   const { roster } = useRosterState();
   const history = useHistory<MeetingStateType>();
   const state = history.location?.state;
+  const metrics = useBandwidthMetrics();
   const [myAttendeeInfo, setMyAttendeeInfo] = useState<
     undefined | AttendeeInfoType
   >();
-
+  const [localVideoShown, setLocalVideoShown] = useState(false);
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
+  const [snackbarShown, setSnackbarShown] = React.useState(false);
+  const [connectionState, setConnectionState] = useState<ConnectionState>(
+    ConnectionState.UNKNOWN
+  );
+  const [packetLoss, setPacketLoss] = useState(0);
+  const [lossCount, setLossCount] = useState(0);
+
   /** On mount */
   useEffect(() => {
     handleCreateandJoinMeeting(
@@ -84,32 +104,51 @@ const OnlineCallOverData = (): ReactElement => {
       }
     };
     if (meetingManager.meetingId) f();
-    console.log(roster);
   }, [roster]);
 
   /** On change of audio/video when call starts */
   useEffect(() => {
     const f = async () => {
       /** Get and Bind User Devices to Chime Infrastructure */
-      if (!audioVideo) return;
-      try {
-        const audioInputs: MediaDeviceInfo[] = await audioVideo.listAudioInputDevices();
-        const videoInputs: MediaDeviceInfo[] = await audioVideo.listVideoInputDevices();
-        await audioVideo.chooseVideoInputDevice(videoInputs[0].deviceId);
-        await audioVideo.chooseAudioInputDevice(audioInputs[0].deviceId);
-      } catch (err) {
-        // handle error - unable to acquire audio device perhaps due to permissions blocking
-      }
-
-      audioVideo.start();
-      toggleVideo();
+      if (!meetingManager) return;
+      meetingManager.audioVideoObservers.metricsDidReceive = (metric) => {
+        const loss = metric.getObservableMetrics()
+          .audioPacketsReceivedFractionLoss;
+        setPacketLoss(loss);
+      };
+      meetingManager.start();
     };
-    if (audioVideo) f();
 
-    return () => {
-      audioVideo?.stop();
-    };
+    f();
   }, [audioVideo]);
+  /** On change of Bandwidth upload speed */
+  useEffect(() => {
+    if (packetLoss > 0) {
+      if (lossCount + 1 > MAX_LOSS) {
+        handleSuggestPSTN();
+      } else {
+        setLossCount(lossCount + 1);
+      }
+    }
+
+    if (metrics.availableOutgoingBandwidth == null || packetLoss > 0) {
+      setConnectionState(ConnectionState.POOR);
+    } else if (metrics.availableOutgoingBandwidth < 100 || packetLoss > 0) {
+      handleDisableVideo();
+      setConnectionState(ConnectionState.POOR);
+    } else if (metrics.availableOutgoingBandwidth < 500) {
+      setConnectionState(ConnectionState.FAIR);
+    } else {
+      setSnackbarShown(false);
+      setConnectionState(ConnectionState.GOOD);
+    }
+  }, [metrics.availableOutgoingBandwidth, packetLoss]);
+
+  const handleSuggestPSTN = () => {
+    console.log("I suggest using PSTN");
+    handleDisableVideo();
+    setConnectionState(ConnectionState.POOR);
+  };
 
   const handleCreateandJoinMeeting = async (
     title: string,
@@ -126,15 +165,11 @@ const OnlineCallOverData = (): ReactElement => {
         externalAttendeeId,
       });
 
-      console.log("joinres", joinRes);
-
       const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
       const attendeeInfo = {
         ...joinRes.data?.joinChimeMeeting?.Attendee,
         name,
       } as AttendeeInfoType;
-
-      console.log("attendeeInfo", attendeeInfo);
 
       setMyAttendeeInfo(attendeeInfo);
 
@@ -145,14 +180,50 @@ const OnlineCallOverData = (): ReactElement => {
   };
 
   const handleLeaveMeeting = () => {
-    console.log(myAttendeeInfo);
+    meetingManager.leave();
+  };
 
-    // removeAttendee({input: {id: myAttendeeInfo?.AttendeeId}});
-    console.log("removed", myAttendeeInfo?.AttendeeId);
+  const handleToggleCamera = () => {
+    if (connectionState === ConnectionState.POOR) {
+      setSnackbarShown(true);
+    } else {
+      toggleVideo();
+    }
+  };
+
+  const toggleVideo = (toSet?: boolean) => {
+    if (toSet === undefined || toSet != localVideoShown) toggleLocalVideo();
+    setLocalVideoShown(toSet || !localVideoShown);
+  };
+
+  const handleDisableVideo = () => {
+    console.log("disable video");
+    audioVideo
+      ?.getAllRemoteVideoTiles()
+      .forEach((tile) => audioVideo.pauseVideoTile(tile.id()));
+    audioVideo?.stopLocalVideoTile();
+    setSnackbarShown(true);
+  };
+
+  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackbarShown(false);
   };
 
   return (
     <Layout title="Online Call">
+      <div style={{ color: "white" }}>
+        Incoming: {metrics.availableIncomingBandwidth}
+      </div>
+      <div style={{ color: "white" }}>
+        Outgoing: {metrics.availableOutgoingBandwidth}
+      </div>
+      <div style={{ color: "white" }}>
+        Connection State: {ConnectionState[connectionState]}
+      </div>
       <div
         style={{
           objectFit: "contain",
@@ -172,11 +243,19 @@ const OnlineCallOverData = (): ReactElement => {
             </div>
           }
         />
-        <Button onClick={toggleVideo}>Toggle</Button>
+        <Button onClick={() => handleToggleCamera()}>Toggle</Button>
         <MicSelection />
         <SpeakerSelection />
         <RosterDisplay roster={roster} attendees={attendees} />
       </div>
+      <Snackbar
+        open={snackbarShown}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        ContentProps={{ className: classes.snackBar }}
+        action={<SnackBarActions handleClose={handleClose} />}
+        message="Current connection cannot support video."
+      ></Snackbar>
     </Layout>
   );
 };
