@@ -12,6 +12,8 @@ const Layout = ({
   headerStyle,
   className,
   flexColumn = false,
+  parent,
+  headerOfflineClickable = true,
 }: {
   noHeader?: boolean;
   children?: ReactNode;
@@ -20,6 +22,8 @@ const Layout = ({
   headerStyle?: CSS.Properties;
   className?: string;
   flexColumn?: boolean;
+  parent?: string;
+  headerOfflineClickable?: boolean;
 }): ReactElement => {
   const history = useHistory();
   return (
@@ -35,6 +39,7 @@ const Layout = ({
     >
       {!noHeader && (
         <Header
+          parent={parent}
           style={headerStyle}
           title={title || history.location.pathname}
         />

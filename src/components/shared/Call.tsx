@@ -1,21 +1,26 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { MeetingStateType } from "../../types";
-import Layout from "../styling/Layout";
+import OfflineContext from "../context/OfflineContext";
 import OfflineCall from "./OfflineCall";
 import OnlineCallOverData from "./OnlineCallOverData";
-import OnlineCallOverPhone from "./OnlineCallOverPhone";
 
 const Call = (): ReactElement => {
   const history = useHistory<MeetingStateType>();
   const state = history.location?.state;
-
+  const { offline } = useContext(OfflineContext);
   /** Must have some kind of state */
   if (!state) {
     history.push("/firstResponder");
     return <div></div>;
   }
-  return navigator.onLine ? <OnlineCallOverData /> : <OnlineCallOverPhone />;
+  console.log(offline);
+
+  return !offline && navigator.onLine ? (
+    <OnlineCallOverData />
+  ) : (
+    <OfflineCall />
+  );
 };
 
 export default Call;

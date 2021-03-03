@@ -1,5 +1,5 @@
 import { Button, Fab, makeStyles } from "@material-ui/core";
-import { ReactElement, useEffect } from "react";
+import React, { ReactElement, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Layout from "../styling/Layout";
 import bg from "../../assets/first-responder-home-bg.svg";
@@ -11,6 +11,8 @@ import WifiIcon from "@material-ui/icons/Wifi";
 
 import { MeetingStateType } from "../../types";
 import { v4 as uuid } from "uuid";
+import OfflineContext from "../context/OfflineContext";
+import PhoneNumberModal from "./PhoneNumberModal";
 const useStyles = makeStyles({
   button: {
     backgroundColor: `${Colors.theme.coral} !important`,
@@ -28,7 +30,15 @@ const useStyles = makeStyles({
 const FirstResponderMain = (): ReactElement => {
   const history = useHistory();
   const classes = useStyles();
+  const { offline } = useContext(OfflineContext);
 
+  const renderPhoneModal = (): ReactElement | undefined => {
+    if (!localStorage.getItem("firstresponderphonenumber")) {
+      return <PhoneNumberModal />;
+    } else {
+      return undefined;
+    }
+  };
   useEffect(() => {
     if (!sessionStorage.getItem("firstresponderid"))
       sessionStorage.setItem("firstresponderid", uuid());
@@ -37,6 +47,7 @@ const FirstResponderMain = (): ReactElement => {
   return (
     <Layout
       title="First Responder Home"
+      parent="/"
       flexColumn
       style={{
         backgroundImage: `url(${bg})`,
@@ -57,9 +68,10 @@ const FirstResponderMain = (): ReactElement => {
                 name: "First Responder",
                 role: "First Responder",
                 attendeeId: sessionStorage.getItem("firstresponderid"),
+                parent: "/firstresponder",
               } as MeetingStateType);
             }}
-            disabled={!navigator.onLine}
+            disabled={!navigator.onLine || offline}
           >
             <WifiIcon className={classes.icon} />
             Call STARS over DATA
@@ -73,6 +85,7 @@ const FirstResponderMain = (): ReactElement => {
                 name: "First Responder",
                 role: "First Responder",
                 attendeeId: sessionStorage.getItem("firstresponderid"),
+                parent: "/firstresponder",
               } as MeetingStateType);
             }}
           >
@@ -83,14 +96,13 @@ const FirstResponderMain = (): ReactElement => {
         <Fab
           variant="extended"
           className={classes.button}
-          onClick={() => {
-            console.log("profile");
-          }}
+          onClick={() => history.push("/firstresponder/profile")}
         >
           <ProfileIcon className={classes.icon} />
           Create / Edit Profile
         </Fab>
       </div>
+      {/* {renderPhoneModal()} */}
     </Layout>
   );
 };

@@ -41,6 +41,7 @@ const useStyles = makeStyles({
   },
   inputLabel: {
     color: Colors.theme.platinum,
+    fontFamily: "Montserrat",
   },
   button: {
     backgroundColor: `${Colors.theme.coral} !important`,
@@ -55,7 +56,7 @@ const useStyles = makeStyles({
   },
 });
 
-const DarkModeTextField = (props: TextFieldProps) => {
+export const DarkModeTextField = (props: TextFieldProps) => {
   const classes = useStyles();
   return (
     <TextField
@@ -149,11 +150,14 @@ const ContactInfo = (): ReactElement => {
 
   /** TODO style this more, add more fields */
   return (
-    <Layout className="ffc" title="Contact Info">
+    <Layout className="ffc" title="Contact Info" parent="/physician/profile">
       <Paper
         component="form"
         className={classes.contactInfoForm}
-        onSubmit={() => handleUpdateProfile()}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleUpdateProfile();
+        }}
       >
         <div className="ffc">
           <div className="form-name">

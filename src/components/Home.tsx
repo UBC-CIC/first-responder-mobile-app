@@ -6,7 +6,6 @@ import "../styles/Home.css";
 import Layout from "./styling/Layout";
 import config from "../aws-exports";
 import { useGlobalStyles } from "./styling/GlobalMuiStyles";
-import isFastNet from "isfastnet";
 Amplify.configure(config);
 
 const useStyles = makeStyles({
@@ -23,9 +22,6 @@ const Home = (): ReactElement => {
   useEffect(() => {
     const f = async () => {
       //todo find a way to get user's connection speed
-      isFastNet((value: number) => {
-        console.log(value);
-      });
     };
     f();
   }, []);

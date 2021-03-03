@@ -24,7 +24,7 @@ import Layout from "../styling/Layout";
 import SnackBarActions from "../ui/Alert";
 import RosterDisplay from "./RosterDisplay";
 
-const MAX_LOSS = 10;
+const MAX_LOSS = 5;
 
 const useStyles = makeStyles({
   snackBar: {
@@ -214,13 +214,13 @@ const OnlineCallOverData = (): ReactElement => {
   };
 
   return (
-    <Layout title="Online Call">
-      <div style={{ color: "white" }}>
+    <Layout title="Online Call" parent={state.parent}>
+      {/* <div style={{ color: "white" }}>
         Incoming: {metrics.availableIncomingBandwidth}
       </div>
       <div style={{ color: "white" }}>
         Outgoing: {metrics.availableOutgoingBandwidth}
-      </div>
+      </div> */}
       <div style={{ color: "white" }}>
         Connection State: {ConnectionState[connectionState]}
       </div>
