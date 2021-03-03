@@ -10,6 +10,10 @@ import BellIcon from "@material-ui/icons/Notifications";
 import Colors from "../styling/Colors";
 import bg from "../../assets/physician-home-bg.svg";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
+import pushNotificationManager from "web-push";
+import base64Convert from "../../push/keys";
+import keys from "../../push/keys.json";
+
 const useStyles = makeStyles({
   bellIcon: {
     width: "100px",
@@ -27,18 +31,42 @@ const useStyles = makeStyles({
     justifyContent: "space-evenly",
     alignItems: "center",
     backgroundSize: "cover",
-    backgroundImage: `url(${bg})`
+    backgroundImage: `url(${bg})`,
   },
   badge: {
     textAlign: "center",
   },
 });
 
+const testKey =
+  "BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo";
 const PhysicianMain = (): ReactElement => {
   const history = useHistory();
   const classes = useStyles();
   const globalClasses = useGlobalStyles();
   const [meetings, setMeetings] = useState<MeetingType[] | undefined | null>();
+
+  const handleNotif = async () => {
+    console.log("notif");
+    const sw = await navigator.serviceWorker.ready;
+
+    const push = await sw.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: base64Convert(testKey),
+    });
+    console.log("Public Key: ", keys.publicKey);
+
+    const sub = await sw.pushManager.getSubscription();
+
+    console.log("sub", sub);
+
+    // console.log("push", push);
+
+    // if (push) {
+    //   pushNotificationManager.sendNotification(push.toJSON(), "test");
+    // }
+    console.log(JSON.stringify(push));
+  };
 
   useEffect(() => {
     const f = async () => {
@@ -60,10 +88,7 @@ const PhysicianMain = (): ReactElement => {
     console.log(sessionStorage.getItem("physicianid"));
   });
   return (
-    <Layout
-      title="Physician Home"
-      flexColumn
-    >
+    <Layout title="Physician Home" flexColumn parent="/">
       <div className={classes.root}>
         <IconButton
           className={classes.bellButton}
@@ -83,6 +108,11 @@ const PhysicianMain = (): ReactElement => {
             onClick={() => history.push("/physician/profile")}
           >
             Edit Profile
+          </Button>
+        </div>
+        <div className={globalClasses.wideButtonContainer}>
+          <Button className={globalClasses.wideButton} onClick={handleNotif}>
+            Allow Notifications
           </Button>
         </div>
       </div>
