@@ -26,6 +26,7 @@ import {
 import { withAuthenticator } from "aws-amplify-react";
 import Header from "./styling/Header";
 import { CircularProgress } from "@material-ui/core";
+import FirstResponderProfile from "./firstresponder/FirstResponderProfile";
 const Router = (): ReactElement => {
   return (
     <BrowserRouter>
@@ -34,38 +35,24 @@ const Router = (): ReactElement => {
           <Home />
         </Route>
 
-        {/* Physician */}
+        {/* Physician w/ Authenticator */}
 
         <Route path="/physician">
           <PhysicianRoutes />
         </Route>
-        {/* <Route exact path="/physician">
-          <PhysicianMain />
-        </Route>
-        <Route exact path="/physician/alerts">
-          <Alerts />
-        </Route>
-        <Route exact path="/physician/profile">
-          <PhysicianProfile />
-        </Route>
-        <Route exact path="/physician/availability">
-          <Availability />
-        </Route>
-        <Route exact path="/physician/contactinfo">
-          <ContactInfo />
-        </Route> */}
 
         {/* First Responder */}
         <Route exact path="/firstresponder">
           <FirstResponderMain />
         </Route>
+        <Route exact path="/firstresponder/profile">
+          <FirstResponderProfile />
+        </Route>
         {/* Shared */}
 
         <Route exact path="/call">
           <MeetingProvider>
-            {/* <RosterProvider> */}
             <Call />
-            {/* </RosterProvider> */}
           </MeetingProvider>
         </Route>
 
@@ -112,5 +99,18 @@ const PhysicianRoutes = withAuthenticator(
     <RequireNewPassword key={6} />,
   ]
 );
+
+const FirstResponderRoutes = () => {
+  return (
+    <>
+      <Route exact path="/firstresponder">
+        <FirstResponderMain />
+      </Route>
+      <Route exact path="/firstresponder/profile">
+        <FirstResponderProfile />
+      </Route>
+    </>
+  );
+};
 
 export default Router;

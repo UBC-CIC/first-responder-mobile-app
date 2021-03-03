@@ -5,6 +5,7 @@ export default {
     coral: "#FF8552",
     platinum: "#E6E6E6",
     onyx: "#39393A",
-    space: "#3F3D56"
+    space: "#3F3D56",
+    warning: "#FFCC00"
   },
 };
