@@ -1,23 +1,24 @@
 import {
-  IconButton,
   AppBar,
+  IconButton,
+  makeStyles,
   Toolbar,
   Typography,
-  Button,
-  makeStyles,
 } from "@material-ui/core";
-import React, { ReactElement } from "react";
-import { ArrowBack } from "@material-ui/icons";
-import { useHistory, useLocation } from "react-router-dom";
-import Colors from "./Colors";
+import { ArrowBack, Wifi, WifiOff } from "@material-ui/icons";
 import CSS from "csstype";
-import { Router } from "workbox-routing";
+import React, { ReactElement, useContext } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import OfflineContext from "../context/OfflineContext";
+import Colors from "./Colors";
 const Header = ({
   title,
   style,
+  parent,
 }: {
   title?: string;
   style?: CSS.Properties;
+  parent?: string;
 }): ReactElement => {
   const useStyles = makeStyles({
     header: {
@@ -26,25 +27,44 @@ const Header = ({
     },
     title: {
       fontFamily: "Signika Negative",
+      width: "70%",
+    },
+    toolbar: {
+      width: "100%",
     },
   });
   const history = useHistory();
   const classes = useStyles();
   const location = useLocation();
+  const { offline, setOffline } = useContext(OfflineContext);
 
+  const handleBackButtonPressed = () => {
+    if (parent) {
+      history.replace(parent);
+    } else {
+      history.goBack();
+    }
+  };
   return (
     <AppBar position="sticky" className={classes.header}>
-      <Toolbar>
+      <Toolbar className={classes.toolbar}>
         <IconButton
           edge="start"
           color="inherit"
-          onClick={() => history.goBack()}
+          onClick={() => handleBackButtonPressed()}
         >
           <ArrowBack />
         </IconButton>
         <Typography variant="h6" className={classes.title}>
           {title}
         </Typography>
+        <IconButton
+          edge="end"
+          color="inherit"
+          onClick={() => setOffline(!offline)}
+        >
+          {offline || !navigator.onLine ? <WifiOff /> : <Wifi />}
+        </IconButton>
       </Toolbar>
     </AppBar>
   );

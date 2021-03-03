@@ -88,7 +88,7 @@ const PhysicianMain = (): ReactElement => {
     console.log(sessionStorage.getItem("physicianid"));
   });
   return (
-    <Layout title="Physician Home" flexColumn>
+    <Layout title="Physician Home" flexColumn parent="/">
       <div className={classes.root}>
         <IconButton
           className={classes.bellButton}

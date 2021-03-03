@@ -20,7 +20,7 @@ const OfflineCall = (): ReactElement => {
     document.location.href = "tel:1-888-651-1946";
   }, []);
   return (
-    <Layout title="Offline Call" flexColumn>
+    <Layout title="Offline Call" flexColumn parent="/firstresponder">
       <div
         className="ffc"
         style={{ justifyContent: "center", alignItems: "center" }}

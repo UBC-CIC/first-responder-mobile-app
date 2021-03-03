@@ -66,6 +66,7 @@ const Alerts = (): ReactElement => {
           : "Professional",
         role: profile?.Occupation || "Professional",
         attendeeId: sessionStorage.getItem("physicianid"),
+        parent: "/physician/alerts",
       } as MeetingStateType);
   };
 
@@ -94,7 +95,7 @@ const Alerts = (): ReactElement => {
   };
 
   return (
-    <Layout title="Alerts" flexColumn>
+    <Layout title="Alerts" flexColumn parent="/physician">
       <div
         style={{
           display: "flex",

@@ -55,7 +55,7 @@ const PhysicianProfile = (): ReactElement => {
   const globalClasses = useGlobalStyles();
   const classes = useStyles();
   return (
-    <Layout title="Profile" flexColumn>
+    <Layout title="Profile" flexColumn parent="/physician">
       <div className={classes.root}>
         <div className={classes.mainContainer}>
           <Fab
