@@ -31,7 +31,6 @@ const FirstResponderMain = (): ReactElement => {
   const history = useHistory();
   const classes = useStyles();
   const { offline } = useContext(OfflineContext);
-
   const renderPhoneModal = (): ReactElement | undefined => {
     if (!localStorage.getItem("firstresponderphonenumber")) {
       return <PhoneNumberModal />;
@@ -64,7 +63,7 @@ const FirstResponderMain = (): ReactElement => {
             className={classes.button}
             onClick={() => {
               history.push("/call", {
-                meetingId: uuid(),
+                meetingId: localStorage.getItem("firstresponderphonenumber"),
                 name: "First Responder",
                 role: "First Responder",
                 attendeeId: sessionStorage.getItem("firstresponderid"),
@@ -86,6 +85,7 @@ const FirstResponderMain = (): ReactElement => {
                 role: "First Responder",
                 attendeeId: sessionStorage.getItem("firstresponderid"),
                 parent: "/firstresponder",
+                offline: true,
               } as MeetingStateType);
             }}
           >
@@ -102,7 +102,7 @@ const FirstResponderMain = (): ReactElement => {
           Create / Edit Profile
         </Fab>
       </div>
-      {/* {renderPhoneModal()} */}
+      {renderPhoneModal()}
     </Layout>
   );
 };

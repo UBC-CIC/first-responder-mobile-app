@@ -1,8 +1,9 @@
-import { makeStyles, TextField } from "@material-ui/core";
+import { Fab, makeStyles, TextField } from "@material-ui/core";
 import React, { ReactElement, useState } from "react";
 import Colors from "../styling/Colors";
 import Layout from "../styling/Layout";
 import { DarkModeTextField } from "../physician/ContactInfo";
+import { Save } from "@material-ui/icons";
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -11,40 +12,27 @@ const useStyles = makeStyles({
     flex: "1",
     alignItems: "center",
   },
-  // button: {
-  //   backgroundColor: `${Colors.theme.coral} !important`,
-  //   color: Colors.theme.platinum,
-  //   fontFamily: "Montserrat",
-  //   fontWeight: "bold",
-  //   fontSize: 15,
-  //   margin: 10,
-  // },
-  // icon: {
-  //   marginRight: 10,
-  // },
-  // signOutButton: {
-  //   backgroundColor: `${Colors.theme.skobeloff} !important`,
-  // },
-  // mainContainer: {
-  //   flex: 1,
-  //   display: "flex",
-  //   alignItems: "center",
-  //   flexDirection: "column",
-  // },
-  // signOutContainer: {
-  //   display: "flex",
-  //   flex: 0.3,
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // },
-  // signOutIcon: {
-  //   marginLeft: 10,
-  // },
+  button: {
+    backgroundColor: `${Colors.theme.coral} !important`,
+    color: Colors.theme.platinum,
+    fontFamily: "Montserrat",
+    fontWeight: "bold",
+    fontSize: 15,
+    margin: 10,
+  },
+  icon: {
+    marginRight: 10,
+  },
 });
 
 const FirstResponderProfile = (): ReactElement => {
   const classes = useStyles();
-  const [phone, setPhone] = useState("");
+  const [form, setForm] = useState({
+    phone: localStorage.getItem("firstresponderphonenumber"),
+    firstName: "",
+    lastName: "",
+    occupation: "",
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -52,7 +40,7 @@ const FirstResponderProfile = (): ReactElement => {
     e.preventDefault();
     const tryString = e.target.value;
     if (tryString.length == 0) {
-      setPhone(tryString);
+      setForm({ ...form, phone: tryString });
       return;
     }
     if (tryString.length > 10) {
@@ -60,7 +48,7 @@ const FirstResponderProfile = (): ReactElement => {
     }
     if (!tryString.charAt(tryString.length - 1).match(/[0-9]/)) return;
 
-    setPhone(tryString);
+    setForm({ ...form, phone: tryString });
   };
   return (
     <Layout title="First Responder Profile" parent="/firstresponder" flexColumn>
@@ -69,10 +57,26 @@ const FirstResponderProfile = (): ReactElement => {
           label="Phone Number"
           type="tel"
           onChange={handleChange}
-          value={phone}
+          value={form.phone}
           inputProps={{ pattern: "[0-9]{3}-[0-9]{3}-[0-9]{4}" }}
         />
+        <DarkModeTextField
+          label="First Name"
+          type="tel"
+          onChange={(e) => setForm({ ...form, firstName: e.target.value })}
+          value={form.firstName}
+        />
+        <DarkModeTextField
+          label="Last Name"
+          type="tel"
+          onChange={(e) => setForm({ ...form, lastName: e.target.value })}
+          value={form.lastName}
+        />
       </div>
+      <Fab variant="extended" className={classes.button}>
+        <Save className={classes.icon} />
+        Create / Edit Profile
+      </Fab>
     </Layout>
   );
 };

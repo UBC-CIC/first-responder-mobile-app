@@ -35,6 +35,7 @@ export const joinChimeMeeting = /* GraphQL */ `
     $region: String
     $role: String
     $externalAttendeeId: String
+    $phoneNumber: String
   ) {
     joinChimeMeeting(
       title: $title
@@ -42,6 +43,7 @@ export const joinChimeMeeting = /* GraphQL */ `
       region: $region
       role: $role
       externalAttendeeId: $externalAttendeeId
+      phoneNumber: $phoneNumber
     ) {
       id
       Meeting {

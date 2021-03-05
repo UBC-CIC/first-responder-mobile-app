@@ -14,13 +14,9 @@ const Call = (): ReactElement => {
     history.push("/firstResponder");
     return <div></div>;
   }
-  console.log(offline);
 
-  return !offline && navigator.onLine ? (
-    <OnlineCallOverData />
-  ) : (
-    <OfflineCall />
-  );
+  if (offline || state.offline || !navigator.onLine) return <OfflineCall />;
+  else return <OnlineCallOverData />;
 };
 
 export default Call;

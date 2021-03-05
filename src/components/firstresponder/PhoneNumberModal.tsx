@@ -1,8 +1,9 @@
 import { Backdrop, Fade, Modal } from "@material-ui/core";
 import React, { ReactElement, useState } from "react";
+import PhoneNumberModalContent from "./PhoneNumberModalContent";
 
 const PhoneNumberModal = (): ReactElement => {
-  const state = useState();
+  const [state, setState] = useState({ reload: false });
   const open = !localStorage.getItem("firstresponderphonenumber");
   return (
     <Modal
@@ -16,19 +17,13 @@ const PhoneNumberModal = (): ReactElement => {
       }}
     >
       <Fade in={open}>
-        <div>
-          <h2 id="transition-modal-title">Transition modal</h2>
-          <p id="transition-modal-description">
-            react-transition-group animates me.
-          </p>
-          <button
-            onClick={() =>
-              localStorage.setItem("firstresponderphonenumber", "6043189666")
-            }
-          >
-            Submit
-          </button>
-        </div>
+        <PhoneNumberModalContent
+          onClick={(phoneNumber) => {
+            localStorage.setItem("firstresponderphonenumber", phoneNumber);
+            console.log("hello");
+            setState({ reload: !state.reload });
+          }}
+        />
       </Fade>
     </Modal>
   );

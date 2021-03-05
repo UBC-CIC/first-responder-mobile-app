@@ -291,6 +291,7 @@ export type JoinChimeMeetingMutationVariables = {
   region?: string | null,
   role?: string | null,
   externalAttendeeId?: string | null,
+  phoneNumber?: string | null,
 };
 
 export type JoinChimeMeetingMutation = {

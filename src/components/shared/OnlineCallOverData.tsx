@@ -60,7 +60,8 @@ const OnlineCallOverData = (): ReactElement => {
       state.meetingId,
       state.name,
       state.role,
-      state.attendeeId
+      state.attendeeId,
+      localStorage.getItem("firstresponderphonenumber") as string
     );
     meetingManager.getAttendee = async (chimeAttendeeId) => {
       try {
@@ -154,7 +155,8 @@ const OnlineCallOverData = (): ReactElement => {
     title: string,
     name: string,
     role: string,
-    externalAttendeeId: string
+    externalAttendeeId: string,
+    phoneNumber: string
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
     try {
@@ -163,6 +165,7 @@ const OnlineCallOverData = (): ReactElement => {
         name,
         role,
         externalAttendeeId,
+        phoneNumber,
       });
 
       const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
