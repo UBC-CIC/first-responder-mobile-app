@@ -161,6 +161,58 @@ export type DeleteAttendeeInput = {
   id?: string | null,
 };
 
+export type CreateFirstResponderProfileInput = {
+  id?: string | null,
+  verified: boolean,
+  phoneNumber?: string | null,
+  FirstName?: string | null,
+  LastName?: string | null,
+  Occupation?: string | null,
+};
+
+export type ModelFirstResponderProfileConditionInput = {
+  verified?: ModelBooleanInput | null,
+  phoneNumber?: ModelStringInput | null,
+  FirstName?: ModelStringInput | null,
+  LastName?: ModelStringInput | null,
+  Occupation?: ModelStringInput | null,
+  and?: Array< ModelFirstResponderProfileConditionInput | null > | null,
+  or?: Array< ModelFirstResponderProfileConditionInput | null > | null,
+  not?: ModelFirstResponderProfileConditionInput | null,
+};
+
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type FirstResponderProfile = {
+  __typename: "FirstResponderProfile",
+  id?: string,
+  verified?: boolean,
+  phoneNumber?: string | null,
+  FirstName?: string | null,
+  LastName?: string | null,
+  Occupation?: string | null,
+  createdAt?: string,
+  updatedAt?: string,
+};
+
+export type UpdateFirstResponderProfileInput = {
+  id: string,
+  verified?: boolean | null,
+  phoneNumber?: string | null,
+  FirstName?: string | null,
+  LastName?: string | null,
+  Occupation?: string | null,
+};
+
+export type DeleteFirstResponderProfileInput = {
+  id?: string | null,
+};
+
 export type CreatePhysicianProfileInput = {
   id?: string | null,
   FirstName: string,
@@ -232,6 +284,24 @@ export type ModelAttendeeFilterInput = {
 export type ModelAttendeeConnection = {
   __typename: "ModelAttendeeConnection",
   items?:  Array<Attendee | null > | null,
+  nextToken?: string | null,
+};
+
+export type ModelFirstResponderProfileFilterInput = {
+  id?: ModelIDInput | null,
+  verified?: ModelBooleanInput | null,
+  phoneNumber?: ModelStringInput | null,
+  FirstName?: ModelStringInput | null,
+  LastName?: ModelStringInput | null,
+  Occupation?: ModelStringInput | null,
+  and?: Array< ModelFirstResponderProfileFilterInput | null > | null,
+  or?: Array< ModelFirstResponderProfileFilterInput | null > | null,
+  not?: ModelFirstResponderProfileFilterInput | null,
+};
+
+export type ModelFirstResponderProfileConnection = {
+  __typename: "ModelFirstResponderProfileConnection",
+  items?:  Array<FirstResponderProfile | null > | null,
   nextToken?: string | null,
 };
 
@@ -413,6 +483,63 @@ export type DeleteAttendeeMutation = {
   } | null,
 };
 
+export type CreateFirstResponderProfileMutationVariables = {
+  input?: CreateFirstResponderProfileInput,
+  condition?: ModelFirstResponderProfileConditionInput | null,
+};
+
+export type CreateFirstResponderProfileMutation = {
+  createFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    id: string,
+    verified: boolean,
+    phoneNumber?: string | null,
+    FirstName?: string | null,
+    LastName?: string | null,
+    Occupation?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateFirstResponderProfileMutationVariables = {
+  input?: UpdateFirstResponderProfileInput,
+  condition?: ModelFirstResponderProfileConditionInput | null,
+};
+
+export type UpdateFirstResponderProfileMutation = {
+  updateFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    id: string,
+    verified: boolean,
+    phoneNumber?: string | null,
+    FirstName?: string | null,
+    LastName?: string | null,
+    Occupation?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteFirstResponderProfileMutationVariables = {
+  input?: DeleteFirstResponderProfileInput,
+  condition?: ModelFirstResponderProfileConditionInput | null,
+};
+
+export type DeleteFirstResponderProfileMutation = {
+  deleteFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    id: string,
+    verified: boolean,
+    phoneNumber?: string | null,
+    FirstName?: string | null,
+    LastName?: string | null,
+    Occupation?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
 export type CreatePhysicianProfileMutationVariables = {
   input?: CreatePhysicianProfileInput,
   condition?: ModelPhysicianProfileConditionInput | null,
@@ -554,6 +681,48 @@ export type ListAttendeesQuery = {
   } | null,
 };
 
+export type GetFirstResponderProfileQueryVariables = {
+  id?: string,
+};
+
+export type GetFirstResponderProfileQuery = {
+  getFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    id: string,
+    verified: boolean,
+    phoneNumber?: string | null,
+    FirstName?: string | null,
+    LastName?: string | null,
+    Occupation?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListFirstResponderProfilesQueryVariables = {
+  filter?: ModelFirstResponderProfileFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListFirstResponderProfilesQuery = {
+  listFirstResponderProfiles?:  {
+    __typename: "ModelFirstResponderProfileConnection",
+    items?:  Array< {
+      __typename: "FirstResponderProfile",
+      id: string,
+      verified: boolean,
+      phoneNumber?: string | null,
+      FirstName?: string | null,
+      LastName?: string | null,
+      Occupation?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null > | null,
+    nextToken?: string | null,
+  } | null,
+};
+
 export type GetPhysicianProfileQueryVariables = {
   id?: string,
 };
@@ -653,6 +822,48 @@ export type OnDeleteAttendeeSubscription = {
     externalUserId?: string | null,
     meetingID: string,
     role: string,
+  } | null,
+};
+
+export type OnCreateFirstResponderProfileSubscription = {
+  onCreateFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    id: string,
+    verified: boolean,
+    phoneNumber?: string | null,
+    FirstName?: string | null,
+    LastName?: string | null,
+    Occupation?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateFirstResponderProfileSubscription = {
+  onUpdateFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    id: string,
+    verified: boolean,
+    phoneNumber?: string | null,
+    FirstName?: string | null,
+    LastName?: string | null,
+    Occupation?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteFirstResponderProfileSubscription = {
+  onDeleteFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    id: string,
+    verified: boolean,
+    phoneNumber?: string | null,
+    FirstName?: string | null,
+    LastName?: string | null,
+    Occupation?: string | null,
+    createdAt: string,
+    updatedAt: string,
   } | null,
 };
 

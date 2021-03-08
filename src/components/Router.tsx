@@ -24,7 +24,7 @@ import {
 } from "amazon-chime-sdk-component-library-react";
 
 import { withAuthenticator } from "aws-amplify-react";
-import Header from "./styling/Header";
+import Header from "./ui/Header";
 import { CircularProgress } from "@material-ui/core";
 import FirstResponderProfile from "./firstresponder/FirstResponderProfile";
 const Router = (): ReactElement => {

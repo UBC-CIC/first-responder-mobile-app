@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { Meeting } from "../../API";
 import { MeetingType } from "../../types";
 import listAllMeetings from "../calls/listAllMeetings";
-import Layout from "../styling/Layout";
+import Layout from "../ui/Layout";
 import { v4 as uuid } from "uuid";
 import BellIcon from "@material-ui/icons/Notifications";
 import Colors from "../styling/Colors";
@@ -13,6 +13,7 @@ import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import pushNotificationManager from "web-push";
 import base64Convert from "../../push/keys";
 import keys from "../../push/keys.json";
+import useSessionId from "../hooks/useSessionId";
 
 const useStyles = makeStyles({
   bellIcon: {
@@ -45,7 +46,7 @@ const PhysicianMain = (): ReactElement => {
   const classes = useStyles();
   const globalClasses = useGlobalStyles();
   const [meetings, setMeetings] = useState<MeetingType[] | undefined | null>();
-
+  const sessionId = useSessionId();
   const handleNotif = async () => {
     console.log("notif");
     const sw = await navigator.serviceWorker.ready;
@@ -60,11 +61,6 @@ const PhysicianMain = (): ReactElement => {
 
     console.log("sub", sub);
 
-    // console.log("push", push);
-
-    // if (push) {
-    //   pushNotificationManager.sendNotification(push.toJSON(), "test");
-    // }
     console.log(JSON.stringify(push));
   };
 
@@ -82,11 +78,6 @@ const PhysicianMain = (): ReactElement => {
     f();
   }, []);
 
-  useEffect(() => {
-    if (!sessionStorage.getItem("physicianid"))
-      sessionStorage.setItem("physicianid", uuid());
-    console.log(sessionStorage.getItem("physicianid"));
-  });
   return (
     <Layout title="Physician Home" flexColumn parent="/">
       <div className={classes.root}>

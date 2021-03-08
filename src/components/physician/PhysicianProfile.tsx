@@ -1,7 +1,7 @@
 import { Button, Fab, makeStyles } from "@material-ui/core";
 import { ReactElement } from "react";
 import { useHistory } from "react-router-dom";
-import Layout from "../styling/Layout";
+import Layout from "../ui/Layout";
 // import { SignOut } from "aws-amplify-react";
 import { Auth } from "@aws-amplify/auth";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";

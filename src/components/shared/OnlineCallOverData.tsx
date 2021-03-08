@@ -19,8 +19,9 @@ import {
   MeetingStateType,
 } from "../../types";
 import { fetchAttendee, joinMeeting, listMeetingAttendees } from "../calls";
+import usePhoneNumber from "../hooks/usePhoneNumber";
 import Colors from "../styling/Colors";
-import Layout from "../styling/Layout";
+import Layout from "../ui/Layout";
 import SnackBarActions from "../ui/Alert";
 import RosterDisplay from "./RosterDisplay";
 
@@ -39,6 +40,7 @@ const OnlineCallOverData = (): ReactElement => {
   const audioVideo = useAudioVideo();
   const meetingManager = useMeetingManager();
   const { roster } = useRosterState();
+  const phone = usePhoneNumber();
   const history = useHistory<MeetingStateType>();
   const state = history.location?.state;
   const metrics = useBandwidthMetrics();
@@ -61,7 +63,7 @@ const OnlineCallOverData = (): ReactElement => {
       state.name,
       state.role,
       state.attendeeId,
-      localStorage.getItem("firstresponderphonenumber") as string
+      phone as string
     );
     meetingManager.getAttendee = async (chimeAttendeeId) => {
       try {

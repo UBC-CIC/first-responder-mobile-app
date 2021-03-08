@@ -10,7 +10,8 @@ import CSS from "csstype";
 import React, { ReactElement, useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import OfflineContext from "../context/OfflineContext";
-import Colors from "./Colors";
+import Colors from "../styling/Colors";
+
 const Header = ({
   title,
   style,

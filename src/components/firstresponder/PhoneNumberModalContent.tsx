@@ -1,7 +1,7 @@
-import { Button, Fab, makeStyles, Paper, TextField } from "@material-ui/core";
-import React, { useState } from "react";
-import { DarkModeTextField } from "../physician/ContactInfo";
+import { Fab, makeStyles, Paper } from "@material-ui/core";
+import React, { ReactElement, useState } from "react";
 import Colors from "../styling/Colors";
+import { DarkModeTextField } from "../ui/DarkModeTextField";
 
 const useStyles = makeStyles({
   paper: {
@@ -27,7 +27,7 @@ const PhoneNumberModalContent = ({
   onClick,
 }: {
   onClick: (phoneNumber: string) => void;
-}) => {
+}): ReactElement => {
   const classes = useStyles();
   const [phone, setPhone] = useState("");
 

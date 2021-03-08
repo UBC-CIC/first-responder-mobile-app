@@ -4,7 +4,7 @@ import { GetPhysicianProfileQuery, GetPhysicianProfileQueryVariables } from "../
 import { getPhysicianProfile } from "../../graphql/queries";
 import { PhysicianProfileType } from "../../types";
 
-const getProfile = async (options: GetPhysicianProfileQueryVariables):Promise<PhysicianProfileType | undefined> => {
+const fetchPhysicianProfile = async (options: GetPhysicianProfileQueryVariables):Promise<PhysicianProfileType | undefined> => {
   const response = (await API.graphql({
     ...graphqlOperation(getPhysicianProfile, options),
     authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
@@ -26,4 +26,4 @@ const getProfile = async (options: GetPhysicianProfileQueryVariables):Promise<Ph
   }
 };
 
-export default getProfile;
+export default fetchPhysicianProfile;

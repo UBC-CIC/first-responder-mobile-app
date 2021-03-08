@@ -50,8 +50,9 @@ const getMeeting = async (meetingId) => {
   return meetingData;
 };
 
-const putMeeting = async (title, meetingInfo) => {
+const putMeeting = async (title, meetingInfo, phoneNumber) => {
   const { Meeting } = meetingInfo;
+  console.log("NUMBER: ", phoneNumber);
   await ddb
     .putItem({
       TableName: meetingsTableName,
@@ -64,6 +65,7 @@ const putMeeting = async (title, meetingInfo) => {
         TTL: {
           N: "" + oneDayFromNow,
         },
+        phoneNumber: { S: phoneNumber },
       },
     })
     .promise();
@@ -118,6 +120,7 @@ exports.handler = async (event, context, callback) => {
     role,
     externalAttendeeId,
     region = "us-east-1",
+    phoneNumber,
   } = event.arguments;
 
   console.log("Unique Meeting ID: ", title);
@@ -129,7 +132,7 @@ exports.handler = async (event, context, callback) => {
     };
     console.info("Creating new meeting: " + JSON.stringify(request));
     meetingInfo = await chime.createMeeting(request).promise();
-    await putMeeting(title, meetingInfo);
+    await putMeeting(title, meetingInfo, phoneNumber);
   }
 
   console.info("Adding new attendee");

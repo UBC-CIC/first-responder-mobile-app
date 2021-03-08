@@ -146,6 +146,57 @@ export const deleteAttendee = /* GraphQL */ `
     }
   }
 `;
+export const createFirstResponderProfile = /* GraphQL */ `
+  mutation CreateFirstResponderProfile(
+    $input: CreateFirstResponderProfileInput!
+    $condition: ModelFirstResponderProfileConditionInput
+  ) {
+    createFirstResponderProfile(input: $input, condition: $condition) {
+      id
+      verified
+      phoneNumber
+      FirstName
+      LastName
+      Occupation
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateFirstResponderProfile = /* GraphQL */ `
+  mutation UpdateFirstResponderProfile(
+    $input: UpdateFirstResponderProfileInput!
+    $condition: ModelFirstResponderProfileConditionInput
+  ) {
+    updateFirstResponderProfile(input: $input, condition: $condition) {
+      id
+      verified
+      phoneNumber
+      FirstName
+      LastName
+      Occupation
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteFirstResponderProfile = /* GraphQL */ `
+  mutation DeleteFirstResponderProfile(
+    $input: DeleteFirstResponderProfileInput!
+    $condition: ModelFirstResponderProfileConditionInput
+  ) {
+    deleteFirstResponderProfile(input: $input, condition: $condition) {
+      id
+      verified
+      phoneNumber
+      FirstName
+      LastName
+      Occupation
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const createPhysicianProfile = /* GraphQL */ `
   mutation CreatePhysicianProfile(
     $input: CreatePhysicianProfileInput!

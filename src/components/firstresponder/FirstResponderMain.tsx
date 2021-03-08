@@ -1,7 +1,7 @@
 import { Button, Fab, makeStyles } from "@material-ui/core";
 import React, { ReactElement, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import Layout from "../styling/Layout";
+import Layout from "../ui/Layout";
 import bg from "../../assets/first-responder-home-bg.svg";
 import "../../styles/firstresponder/Home.css";
 import Colors from "../styling/Colors";
@@ -13,6 +13,8 @@ import { MeetingStateType } from "../../types";
 import { v4 as uuid } from "uuid";
 import OfflineContext from "../context/OfflineContext";
 import PhoneNumberModal from "./PhoneNumberModal";
+import usePhoneNumber from "../hooks/usePhoneNumber";
+import useSessionId from "../hooks/useSessionId";
 const useStyles = makeStyles({
   button: {
     backgroundColor: `${Colors.theme.coral} !important`,
@@ -31,18 +33,16 @@ const FirstResponderMain = (): ReactElement => {
   const history = useHistory();
   const classes = useStyles();
   const { offline } = useContext(OfflineContext);
+
+  const phone = usePhoneNumber();
+  const sessionId = useSessionId();
   const renderPhoneModal = (): ReactElement | undefined => {
-    if (!localStorage.getItem("firstresponderphonenumber")) {
+    if (!phone) {
       return <PhoneNumberModal />;
     } else {
       return undefined;
     }
   };
-  useEffect(() => {
-    if (!sessionStorage.getItem("firstresponderid"))
-      sessionStorage.setItem("firstresponderid", uuid());
-    console.log(sessionStorage.getItem("firstresponderid"));
-  });
   return (
     <Layout
       title="First Responder Home"
@@ -63,10 +63,10 @@ const FirstResponderMain = (): ReactElement => {
             className={classes.button}
             onClick={() => {
               history.push("/call", {
-                meetingId: localStorage.getItem("firstresponderphonenumber"),
+                meetingId: phone,
                 name: "First Responder",
                 role: "First Responder",
-                attendeeId: sessionStorage.getItem("firstresponderid"),
+                attendeeId: sessionId,
                 parent: "/firstresponder",
               } as MeetingStateType);
             }}
@@ -83,7 +83,7 @@ const FirstResponderMain = (): ReactElement => {
                 meetingId: uuid(),
                 name: "First Responder",
                 role: "First Responder",
-                attendeeId: sessionStorage.getItem("firstresponderid"),
+                attendeeId: sessionId,
                 parent: "/firstresponder",
                 offline: true,
               } as MeetingStateType);

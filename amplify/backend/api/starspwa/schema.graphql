@@ -24,6 +24,15 @@ type PhysicianProfile
   Occupation: String
 }
 
+type FirstResponderProfile @model @aws_api_key {
+  id: ID!
+  verified: Boolean!
+  phoneNumber: String
+  FirstName: String
+  LastName: String
+  Occupation: String
+}
+
 # Private Types
 
 type JoinInfo {

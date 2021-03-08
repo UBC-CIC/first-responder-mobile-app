@@ -3,7 +3,7 @@ import Amplify from "aws-amplify";
 import { ReactElement, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "../styles/Home.css";
-import Layout from "./styling/Layout";
+import Layout from "./ui/Layout";
 import config from "../aws-exports";
 import { useGlobalStyles } from "./styling/GlobalMuiStyles";
 Amplify.configure(config);

@@ -1,7 +1,7 @@
 import { Button, makeStyles } from "@material-ui/core";
 import { ReactElement, useEffect } from "react";
 import Colors from "../styling/Colors";
-import Layout from "../styling/Layout";
+import Layout from "../ui/Layout";
 
 const useStyles = makeStyles({
   button: {

@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
 import ScheduleSelector from "react-schedule-selector";
-import Layout from "../styling/Layout";
+import Layout from "../ui/Layout";
 
 const DAYS_OF_WEEK: DayIndex[] = [
   "Monday",

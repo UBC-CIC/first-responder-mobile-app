@@ -1,9 +1,8 @@
-import { ReactElement, ReactNode } from "react";
 import CSS from "csstype";
-import Header from "./Header";
-import { SwipeEventData, useSwipeable } from "react-swipeable";
+import { ReactElement, ReactNode } from "react";
 import { useHistory } from "react-router-dom";
-import Colors from "./Colors";
+import Colors from "../styling/Colors";
+import Header from "./Header";
 const Layout = ({
   noHeader = false,
   children,

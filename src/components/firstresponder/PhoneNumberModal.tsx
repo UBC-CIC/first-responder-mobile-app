@@ -1,10 +1,12 @@
 import { Backdrop, Fade, Modal } from "@material-ui/core";
 import React, { ReactElement, useState } from "react";
+import usePhoneNumber from "../hooks/usePhoneNumber";
 import PhoneNumberModalContent from "./PhoneNumberModalContent";
 
 const PhoneNumberModal = (): ReactElement => {
   const [state, setState] = useState({ reload: false });
-  const open = !localStorage.getItem("firstresponderphonenumber");
+  const phone = usePhoneNumber();
+  const open = !phone;
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -20,7 +22,6 @@ const PhoneNumberModal = (): ReactElement => {
         <PhoneNumberModalContent
           onClick={(phoneNumber) => {
             localStorage.setItem("firstresponderphonenumber", phoneNumber);
-            console.log("hello");
             setState({ reload: !state.reload });
           }}
         />

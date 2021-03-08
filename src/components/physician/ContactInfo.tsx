@@ -1,13 +1,12 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import {
-  Button,
   Fab,
   makeStyles,
   Paper,
   TextField,
   TextFieldProps,
-  withStyles,
 } from "@material-ui/core";
+import SaveIcon from "@material-ui/icons/Save";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import React, { ReactElement, useEffect, useState } from "react";
 import {
@@ -21,16 +20,12 @@ import {
 } from "../../graphql/mutations";
 import "../../styles/physician/ContactInfo.css";
 import { CognitoUser, PhysicianProfileType } from "../../types";
-import getProfile from "../calls/fetchPhysicianProfile";
+import fetchPhysicianProfile from "../calls/fetchPhysicianProfile";
 import Colors from "../styling/Colors";
-import Layout from "../styling/Layout";
-import SaveIcon from "@material-ui/icons/Save";
+import { DarkModeTextField } from "../ui/DarkModeTextField";
+import Layout from "../ui/Layout";
 
 const useStyles = makeStyles({
-  textField: {
-    margin: 10,
-    color: Colors.theme.platinum,
-  },
   contactInfoForm: {
     display: "flex",
     flexDirection: "column",
@@ -38,10 +33,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     flex: "1",
     backgroundColor: Colors.theme.space,
-  },
-  inputLabel: {
-    color: Colors.theme.platinum,
-    fontFamily: "Montserrat",
   },
   button: {
     backgroundColor: `${Colors.theme.coral} !important`,
@@ -55,22 +46,6 @@ const useStyles = makeStyles({
     margin: 10,
   },
 });
-
-export const DarkModeTextField = (props: TextFieldProps) => {
-  const classes = useStyles();
-  return (
-    <TextField
-      {...props}
-      InputLabelProps={{
-        className: classes.inputLabel,
-      }}
-      InputProps={{
-        className: classes.inputLabel,
-      }}
-      className={classes.textField}
-    />
-  );
-};
 
 const ContactInfo = (): ReactElement => {
   const [form, setForm] = useState<PhysicianProfileType>({
@@ -90,7 +65,7 @@ const ContactInfo = (): ReactElement => {
         const u: CognitoUser = await Auth.currentAuthenticatedUser();
         const id = u.attributes.sub;
 
-        const profile = await getProfile({ id });
+        const profile = await fetchPhysicianProfile({ id });
         if (profile) {
           setForm({ ...profile, id });
         } else {
@@ -121,7 +96,7 @@ const ContactInfo = (): ReactElement => {
       })) as GraphQLResult<UpdatePhysicianProfileMutation>;
       console.log(response);
     } catch (response) {
-      console.error(response);
+      console.warn("UpdateProfile failed, creating profile instead");
 
       if (
         response.errors[0].errorType ===

@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RosterAttendeeType } from "amazon-chime-sdk-component-library-react/lib/types";
 import { AttendeeInfo } from "./API";
 import {CreatePhysicianProfileInput} from "./API";
+import {CreateFirstResponderProfileInput} from "./API";
 
 export type CognitoUser = {
   Session: any;
@@ -13,7 +15,7 @@ export type CognitoUser = {
   };
   authenticationFlowType: string;
   client: {
-    endpoint: "https://cognito-idp.us-east-1.amazonaws.com/";
+    endpoint: string;
     fetchOptions: any;
   };
   keyPrefix: string;
@@ -49,6 +51,8 @@ export type AttendeeInfoType = AttendeeInfo & {name: string};
 export type AttendeeType = RosterAttendeeType & { role: string };
 
 export type {CreatePhysicianProfileInput as PhysicianProfileType};
+
+export type {CreateFirstResponderProfileInput as FirstResponderProfileType};
 
 export enum ConnectionState {
   POOR,

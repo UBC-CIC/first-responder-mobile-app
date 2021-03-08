@@ -14,9 +14,10 @@ import {
 } from "../../types";
 import getProfile from "../calls/fetchPhysicianProfile";
 import listAllMeetings from "../calls/listAllMeetings";
+import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
-import Layout from "../styling/Layout";
+import Layout from "../ui/Layout";
 
 const useStyles = makeStyles({
   button: {
@@ -29,6 +30,7 @@ const Alerts = (): ReactElement => {
   const history = useHistory<MeetingStateType>();
   const globalClasses = useGlobalStyles();
   const classes = useStyles();
+  const sessionId = useSessionId();
   const [profile, setProfile] = useState<PhysicianProfileType>();
 
   useEffect(() => {
@@ -52,10 +54,6 @@ const Alerts = (): ReactElement => {
     f();
     g();
   }, []);
-  if (!sessionStorage.getItem("physicianid")) {
-    history.push("/physician");
-    return <div></div>;
-  }
 
   const handleJoin = (id: string) => {
     if (id)
@@ -65,7 +63,7 @@ const Alerts = (): ReactElement => {
           ? `${profile.FirstName} ${profile.LastName}`
           : "Professional",
         role: profile?.Occupation || "Professional",
-        attendeeId: sessionStorage.getItem("physicianid"),
+        attendeeId: sessionId,
         parent: "/physician/alerts",
       } as MeetingStateType);
   };

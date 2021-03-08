@@ -66,6 +66,45 @@ export const listAttendees = /* GraphQL */ `
     }
   }
 `;
+export const getFirstResponderProfile = /* GraphQL */ `
+  query GetFirstResponderProfile($id: ID!) {
+    getFirstResponderProfile(id: $id) {
+      id
+      verified
+      phoneNumber
+      FirstName
+      LastName
+      Occupation
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listFirstResponderProfiles = /* GraphQL */ `
+  query ListFirstResponderProfiles(
+    $filter: ModelFirstResponderProfileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listFirstResponderProfiles(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        verified
+        phoneNumber
+        FirstName
+        LastName
+        Occupation
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
 export const getPhysicianProfile = /* GraphQL */ `
   query GetPhysicianProfile($id: ID!) {
     getPhysicianProfile(id: $id) {
