@@ -1,6 +1,7 @@
 import { ReactElement, useState } from "react";
 import ScheduleSelector from "react-schedule-selector";
 import Layout from "../ui/Layout";
+import "../../styles/physician/Availability.css";
 
 const DAYS_OF_WEEK: DayIndex[] = [
   "Monday",
@@ -29,14 +30,8 @@ const Availability = (): ReactElement => {
   return (
     <Layout title="Availability" parent="/physician/profile">
       {/* root */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <div style={{ width: "90%", height: "100%", marginTop: 10 }}>
+      <div className="ffc">
+        <div className="availability-container">
           {/* TODO might need to implement this myself */}
           <ScheduleSelector
             selection={schedule}

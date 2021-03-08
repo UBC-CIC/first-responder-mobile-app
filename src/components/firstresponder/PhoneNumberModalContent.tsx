@@ -2,7 +2,7 @@ import { Fab, makeStyles, Paper } from "@material-ui/core";
 import React, { ReactElement, useState } from "react";
 import Colors from "../styling/Colors";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
-
+import "../../styles/firstresponder/PhoneModal.css";
 const useStyles = makeStyles({
   paper: {
     padding: 20,
@@ -49,10 +49,7 @@ const PhoneNumberModalContent = ({
   };
 
   return (
-    <div
-      className="ffc"
-      style={{ height: "100%", justifyContent: "center", alignItems: "center" }}
-    >
+    <div className="ffc backdrop">
       <Paper className={classes.paper}>
         <p style={{ color: Colors.theme.platinum }}> Register Phone Number </p>
         <DarkModeTextField

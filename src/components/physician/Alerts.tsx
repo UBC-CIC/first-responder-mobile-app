@@ -2,11 +2,7 @@ import { Button, makeStyles } from "@material-ui/core";
 import { Auth } from "aws-amplify";
 import { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import pushNotificationManager from "web-push";
-import base64Convert from "../../push/keys";
-import keys from "../../push/keys.json";
 import {
-  AlertsStateType,
   CognitoUser,
   MeetingStateType,
   MeetingType,
@@ -94,16 +90,7 @@ const Alerts = (): ReactElement => {
 
   return (
     <Layout title="Alerts" flexColumn parent="/physician">
-      <div
-        style={{
-          display: "flex",
-          flex: 1,
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        {renderMeetings()}
-      </div>
+      <div className="ffc align">{renderMeetings()}</div>
     </Layout>
   );
 };

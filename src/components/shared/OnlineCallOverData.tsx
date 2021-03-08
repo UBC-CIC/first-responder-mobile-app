@@ -44,9 +44,6 @@ const OnlineCallOverData = (): ReactElement => {
   const history = useHistory<MeetingStateType>();
   const state = history.location?.state;
   const metrics = useBandwidthMetrics();
-  const [myAttendeeInfo, setMyAttendeeInfo] = useState<
-    undefined | AttendeeInfoType
-  >();
   const [localVideoShown, setLocalVideoShown] = useState(false);
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
   const [snackbarShown, setSnackbarShown] = React.useState(false);
@@ -176,8 +173,6 @@ const OnlineCallOverData = (): ReactElement => {
         name,
       } as AttendeeInfoType;
 
-      setMyAttendeeInfo(attendeeInfo);
-
       await meetingManager.join({ meetingInfo, attendeeInfo });
     } catch (e) {
       console.error(e);
@@ -220,23 +215,10 @@ const OnlineCallOverData = (): ReactElement => {
 
   return (
     <Layout title="Online Call" parent={state.parent}>
-      {/* <div style={{ color: "white" }}>
-        Incoming: {metrics.availableIncomingBandwidth}
-      </div>
-      <div style={{ color: "white" }}>
-        Outgoing: {metrics.availableOutgoingBandwidth}
-      </div> */}
       <div style={{ color: "white" }}>
         Connection State: {ConnectionState[connectionState]}
       </div>
-      <div
-        style={{
-          objectFit: "contain",
-          height: "70%",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <div className="video-container">
         <VideoTileGrid
           layout="standard"
           noRemoteVideoView={

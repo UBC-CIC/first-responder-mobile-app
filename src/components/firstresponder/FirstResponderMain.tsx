@@ -1,20 +1,21 @@
-import { Button, Fab, makeStyles } from "@material-ui/core";
-import React, { ReactElement, useContext, useEffect } from "react";
+import { Fab, makeStyles } from "@material-ui/core";
+import ProfileIcon from "@material-ui/icons/Person";
+import PhoneIcon from "@material-ui/icons/Phone";
+import WifiIcon from "@material-ui/icons/Wifi";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Layout from "../ui/Layout";
+import { v4 as uuid } from "uuid";
 import bg from "../../assets/first-responder-home-bg.svg";
 import "../../styles/firstresponder/Home.css";
-import Colors from "../styling/Colors";
-import PhoneIcon from "@material-ui/icons/Phone";
-import ProfileIcon from "@material-ui/icons/Person";
-import WifiIcon from "@material-ui/icons/Wifi";
-
-import { MeetingStateType } from "../../types";
-import { v4 as uuid } from "uuid";
+import { FirstResponderProfileType, MeetingStateType } from "../../types";
+import fetchFirstResponderProfile from "../calls/fetchFirstResponderProfile";
 import OfflineContext from "../context/OfflineContext";
-import PhoneNumberModal from "./PhoneNumberModal";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import useSessionId from "../hooks/useSessionId";
+import Colors from "../styling/Colors";
+import Layout from "../ui/Layout";
+import PhoneNumberModal from "./PhoneNumberModal";
+
 const useStyles = makeStyles({
   button: {
     backgroundColor: `${Colors.theme.coral} !important`,
@@ -36,6 +37,37 @@ const FirstResponderMain = (): ReactElement => {
 
   const phone = usePhoneNumber();
   const sessionId = useSessionId();
+  const [profile, setProfile] = useState<FirstResponderProfileType>();
+  /** Fetch Profile Info */
+  useEffect(() => {
+    const f = async () => {
+      if (phone) {
+        try {
+          const profile = await fetchFirstResponderProfile({ id: phone });
+          setProfile(profile);
+        } catch {
+          setProfile({
+            id: phone,
+            verified: false,
+            phoneNumber: phone,
+            FirstName: "First",
+            LastName: "Responder",
+            Occupation: "First Responder",
+          });
+        }
+      }
+    };
+    if (!offline) f();
+    else
+      setProfile({
+        id: phone,
+        verified: false,
+        phoneNumber: phone,
+        FirstName: "First",
+        LastName: "Responder",
+        Occupation: "First Responder",
+      });
+  }, []);
   const renderPhoneModal = (): ReactElement | undefined => {
     if (!phone) {
       return <PhoneNumberModal />;
@@ -64,8 +96,8 @@ const FirstResponderMain = (): ReactElement => {
             onClick={() => {
               history.push("/call", {
                 meetingId: phone,
-                name: "First Responder",
-                role: "First Responder",
+                name: `${profile?.FirstName} ${profile?.LastName}`,
+                role: profile?.Occupation,
                 attendeeId: sessionId,
                 parent: "/firstresponder",
               } as MeetingStateType);

@@ -32,3 +32,10 @@ code {
   flex-direction: column;
   flex: 1;
 }
+.align {
+  align-items: center;
+}
+
+.justify {
+  justify-content: center;
+}

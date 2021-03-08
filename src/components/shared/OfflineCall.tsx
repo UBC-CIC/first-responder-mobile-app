@@ -21,10 +21,7 @@ const OfflineCall = (): ReactElement => {
   }, []);
   return (
     <Layout title="Offline Call" flexColumn parent="/firstresponder">
-      <div
-        className="ffc"
-        style={{ justifyContent: "center", alignItems: "center" }}
-      >
+      <div className="ffc justify align">
         <Button
           className={classes.button}
           component="a"

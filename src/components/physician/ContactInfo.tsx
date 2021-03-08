@@ -1,11 +1,5 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
-import {
-  Fab,
-  makeStyles,
-  Paper,
-  TextField,
-  TextFieldProps,
-} from "@material-ui/core";
+import { Fab, makeStyles, Paper } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import React, { ReactElement, useEffect, useState } from "react";
@@ -29,7 +23,6 @@ const useStyles = makeStyles({
   contactInfoForm: {
     display: "flex",
     flexDirection: "column",
-    // justifyContent: "space-evenly",
     alignItems: "center",
     flex: "1",
     backgroundColor: Colors.theme.space,
