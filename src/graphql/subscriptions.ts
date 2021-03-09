@@ -62,6 +62,48 @@ export const onDeleteAttendee = /* GraphQL */ `
     }
   }
 `;
+export const onCreateFirstResponderProfile = /* GraphQL */ `
+  subscription OnCreateFirstResponderProfile {
+    onCreateFirstResponderProfile {
+      id
+      verified
+      phoneNumber
+      FirstName
+      LastName
+      Occupation
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateFirstResponderProfile = /* GraphQL */ `
+  subscription OnUpdateFirstResponderProfile {
+    onUpdateFirstResponderProfile {
+      id
+      verified
+      phoneNumber
+      FirstName
+      LastName
+      Occupation
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteFirstResponderProfile = /* GraphQL */ `
+  subscription OnDeleteFirstResponderProfile {
+    onDeleteFirstResponderProfile {
+      id
+      verified
+      phoneNumber
+      FirstName
+      LastName
+      Occupation
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreatePhysicianProfile = /* GraphQL */ `
   subscription OnCreatePhysicianProfile($owner: String!) {
     onCreatePhysicianProfile(owner: $owner) {

@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-firstrespondermobile-dev-140746-authRole",
+      "UnauthRoleArn": "arn:aws:iam::676717162865:role/amplify-firstrespondermobile-dev-140746-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::676717162865:role/amplify-firstrespondermobile-dev-140746-authRole",
+      "Region": "ca-central-1",
+      "DeploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+      "UnauthRoleName": "amplify-firstrespondermobile-dev-140746-unauthRole",
+      "StackName": "amplify-firstrespondermobile-dev-140746",
+      "StackId": "arn:aws:cloudformation:ca-central-1:676717162865:stack/amplify-firstrespondermobile-dev-140746/e274dc80-8123-11eb-aafd-0e75e71712c2",
+      "AmplifyAppId": "dn4tcmp6sezds"
+    },
+    "categories": {
+      "auth": {
+        "firstrespondermobilecbc374ce": {}
+      },
+      "function": {
+        "firstresponderjoinmeeting": {
+          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+          "s3Key": "amplify-builds/firstresponderjoinmeeting-5a594b6144344c326673-build.zip"
+        }
+      }
+    }
+  }
+}
