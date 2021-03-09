@@ -1,7 +1,7 @@
 // TODO put this shared code into a lambda layer
 var AWS = require("aws-sdk");
 var ddb = new AWS.DynamoDB();
-const chime = new AWS.Chime({ region: "us-east-1" });
+const chime = new AWS.Chime({ region: "ca-central-1" });
 chime.endpoint = new AWS.Endpoint(
   "https://service.chime.aws.amazon.com/console"
 );
@@ -119,7 +119,7 @@ exports.handler = async (event, context, callback) => {
     name,
     role,
     externalAttendeeId,
-    region = "us-east-1",
+    region = "ca-central-1",
     phoneNumber,
   } = event.arguments;
 

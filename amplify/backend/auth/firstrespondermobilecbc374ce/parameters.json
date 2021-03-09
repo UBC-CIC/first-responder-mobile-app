@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "starspwa605f04b9_identitypool_605f04b9",
-    "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "starsp605f04b9",
-    "userPoolName": "starspwa605f04b9_userpool_605f04b9",
+    "identityPoolName": "firstrespondermobilecbc374ce_identitypool_cbc374ce",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "firstrcbc374ce",
+    "userPoolName": "firstrespondermobilecbc374ce_userpool_cbc374ce",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -20,7 +20,7 @@
     "requiredAttributes": [
         "email"
     ],
-    "userpoolClientGenerateSecret": true,
+    "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
         "email"
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "starsp605f04b9_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "firstrcbc374ce_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "605f04b9",
-    "resourceName": "starspwa605f04b9",
+    "sharedId": "cbc374ce",
+    "resourceName": "firstrespondermobilecbc374ce",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -47,10 +47,15 @@
     },
     "useDefault": "default",
     "usernameAttributes": [
-        "email, phone_number"
+        "email"
     ],
+    "triggers": "{}",
     "userPoolGroupList": [],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [],
     "dependsOn": []
 }

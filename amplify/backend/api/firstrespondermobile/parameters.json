@@ -1,10 +1,10 @@
 {
-  "AppSyncApiName": "starspwa",
+  "AppSyncApiName": "firstrespondermobile",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
-      "authstarspwa605f04b9",
+      "authfirstrespondermobilecbc374ce",
       "Outputs.UserPoolId"
     ]
   }
