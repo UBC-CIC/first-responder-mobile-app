@@ -71,6 +71,8 @@ type Query {
 }
 
 type Mutation {
+  createChimeMeeting(title: String): JoinInfo
+    @function(name: "firstrespondercreatemeeting-${env}")
   joinChimeMeeting(
     title: String
     name: String

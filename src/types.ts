@@ -13,7 +13,7 @@ export type CognitoUser = {
   };
   authenticationFlowType: string;
   client: {
-    endpoint: "https://cognito-idp.us-east-1.amazonaws.com/";
+    endpoint: string;
     fetchOptions: any;
   };
   keyPrefix: string;
