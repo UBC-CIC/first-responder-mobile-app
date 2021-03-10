@@ -55,6 +55,8 @@ const OnlineCallOverData = (): ReactElement => {
 
   /** On mount */
   useEffect(() => {
+    console.log({ ...state, phone });
+
     handleCreateandJoinMeeting(
       state.meetingId,
       state.name,

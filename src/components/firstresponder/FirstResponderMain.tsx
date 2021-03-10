@@ -44,8 +44,15 @@ const FirstResponderMain = (): ReactElement => {
       if (phone) {
         try {
           const profile = await fetchFirstResponderProfile({ id: phone });
-          setProfile(profile);
-        } catch {
+          setProfile({
+            id: phone,
+            verified: profile?.verified || false,
+            phoneNumber: profile?.phoneNumber,
+            FirstName: profile?.FirstName || "First",
+            LastName: profile?.LastName || "Responder",
+            Occupation: profile?.Occupation || "First Responder",
+          });
+        } catch (e) {
           setProfile({
             id: phone,
             verified: false,
@@ -68,6 +75,15 @@ const FirstResponderMain = (): ReactElement => {
         Occupation: "First Responder",
       });
   }, []);
+
+  const getName = () => {
+    if (profile?.FirstName && profile.LastName) {
+      return profile.FirstName + profile.LastName;
+    }
+    if (profile?.FirstName) return profile.FirstName;
+    if (profile?.LastName) return profile.LastName;
+    return "First Responder";
+  };
   const renderPhoneModal = (): ReactElement | undefined => {
     if (!phone) {
       return <PhoneNumberModal />;
@@ -96,8 +112,8 @@ const FirstResponderMain = (): ReactElement => {
             onClick={() => {
               history.push("/call", {
                 meetingId: phone,
-                name: `${profile?.FirstName} ${profile?.LastName}`,
-                role: profile?.Occupation,
+                name: getName(),
+                role: profile?.Occupation || "First Responder",
                 attendeeId: sessionId,
                 parent: "/firstresponder",
               } as MeetingStateType);

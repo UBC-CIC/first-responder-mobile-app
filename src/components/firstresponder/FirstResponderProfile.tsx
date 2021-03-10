@@ -71,7 +71,16 @@ const FirstResponderProfile = (): ReactElement => {
           setForm({ ...form, id });
         }
       } catch (e) {
-        console.log(e);
+        console.log("e");
+        console.log(phone);
+
+        setForm({
+          id: phone,
+          verified: false,
+          FirstName: "",
+          LastName: "",
+          Occupation: "",
+        });
       }
     };
     if (navigator.onLine && !offline) {
