@@ -14,7 +14,7 @@ import {
   ConfirmSignUp,
   ForgotPassword,
   RequireNewPassword,
-  SignIn,
+  SignIn as SignIn2,
   SignUp,
   VerifyContact,
 } from "aws-amplify-react";
@@ -27,6 +27,8 @@ import { withAuthenticator } from "aws-amplify-react";
 import Header from "./ui/Header";
 import { CircularProgress } from "@material-ui/core";
 import FirstResponderProfile from "./firstresponder/FirstResponderProfile";
+import SignIn from "./ui/SignIn";
+import Colors from "./styling/Colors";
 const Router = (): ReactElement => {
   return (
     <BrowserRouter>
@@ -87,17 +89,39 @@ const PhysicianRoutes = withAuthenticator(
       </>
     );
   },
-  false,
-  [
-    <Header title="Sign In" key={-1}></Header>,
-    <SignIn key={0} />,
-    <ConfirmSignIn key={1} />,
-    <VerifyContact key={2} />,
-    <SignUp key={3} />,
-    <ConfirmSignUp key={4} />,
-    <ForgotPassword key={5} />,
-    <RequireNewPassword key={6} />,
-  ]
+  {
+    includeGreetings: false,
+    authenticatorComponents: [
+      <Header title="Sign In" key={-1}></Header>,
+      // <SignIn key={0} />,
+      <SignIn2 key={0} />,
+      //   <ConfirmSignIn key={1} />,
+      <VerifyContact key={2} />,
+      //   // <SignUp key={3} />,
+      //   <ConfirmSignUp key={4} />,
+      <ForgotPassword key={5} />,
+      //   <RequireNewPassword key={6} />,
+    ],
+    theme: {
+      signInButtonIcon: { display: "none" },
+      formSection: { backgroundColor: Colors.theme.onyx },
+      sectionHeader: {
+        color: Colors.theme.platinum,
+        fontFamily: "Signika Negative",
+      },
+      input: {
+        fontFamily: "Montserrat",
+        color: Colors.theme.space,
+      },
+      inputLabel: { color: Colors.theme.platinum, fontFamily: "Montserrat" },
+      button: { backgroundColor: Colors.theme.coral, borderRadius: 5 },
+      a: { color: Colors.theme.coral },
+      footer: {
+        height: "100%",
+        backgroundColor: Colors.theme.onyx,
+      },
+    },
+  } as any
 );
 
 const FirstResponderRoutes = () => {

@@ -24,6 +24,8 @@ import Colors from "../styling/Colors";
 import Layout from "../ui/Layout";
 import SnackBarActions from "../ui/Alert";
 import RosterDisplay from "./RosterDisplay";
+import CloseIcon from "@material-ui/icons/Close";
+import PhoneIcon from "@material-ui/icons/Phone";
 
 const MAX_LOSS = 5;
 
@@ -31,6 +33,10 @@ const useStyles = makeStyles({
   snackBar: {
     backgroundColor: Colors.theme.warning,
     color: Colors.theme.onyx,
+  },
+  suggestion: {
+    backgroundColor: Colors.theme.error,
+    color: Colors.theme.platinum,
   },
 });
 
@@ -46,7 +52,8 @@ const OnlineCallOverData = (): ReactElement => {
   const metrics = useBandwidthMetrics();
   const [localVideoShown, setLocalVideoShown] = useState(false);
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
-  const [snackbarShown, setSnackbarShown] = React.useState(false);
+  const [warningShown, setWarningShown] = React.useState(false);
+  const [suggestionShown, setSuggestionShown] = React.useState(false);
   const [connectionState, setConnectionState] = useState<ConnectionState>(
     ConnectionState.UNKNOWN
   );
@@ -56,14 +63,16 @@ const OnlineCallOverData = (): ReactElement => {
   /** On mount */
   useEffect(() => {
     console.log({ ...state, phone });
-
-    handleCreateandJoinMeeting(
-      state.meetingId,
-      state.name,
-      state.role,
-      state.attendeeId,
-      phone as string
-    );
+    const f = async () => {
+      await handleCreateandJoinMeeting(
+        state.meetingId,
+        state.name,
+        state.role,
+        state.attendeeId,
+        phone as string
+      );
+    };
+    f();
     meetingManager.getAttendee = async (chimeAttendeeId) => {
       try {
         const res = await fetchAttendee({ id: chimeAttendeeId });
@@ -118,7 +127,10 @@ const OnlineCallOverData = (): ReactElement => {
           .audioPacketsReceivedFractionLoss;
         setPacketLoss(loss);
       };
-      meetingManager.start();
+      const first = Date.now();
+      await meetingManager.start();
+      const second = Date.now();
+      console.log(second - first);
     };
 
     f();
@@ -141,13 +153,13 @@ const OnlineCallOverData = (): ReactElement => {
     } else if (metrics.availableOutgoingBandwidth < 500) {
       setConnectionState(ConnectionState.FAIR);
     } else {
-      setSnackbarShown(false);
+      setWarningShown(false);
       setConnectionState(ConnectionState.GOOD);
     }
   }, [metrics.availableOutgoingBandwidth, packetLoss]);
 
   const handleSuggestPSTN = () => {
-    console.log("I suggest using PSTN");
+    setSuggestionShown(true);
     handleDisableVideo();
     setConnectionState(ConnectionState.POOR);
   };
@@ -177,6 +189,7 @@ const OnlineCallOverData = (): ReactElement => {
 
       await meetingManager.join({ meetingInfo, attendeeInfo });
     } catch (e) {
+      setSuggestionShown(true);
       console.error(e);
     }
   };
@@ -187,7 +200,7 @@ const OnlineCallOverData = (): ReactElement => {
 
   const handleToggleCamera = () => {
     if (connectionState === ConnectionState.POOR) {
-      setSnackbarShown(true);
+      setWarningShown(true);
     } else {
       toggleVideo();
     }
@@ -195,16 +208,22 @@ const OnlineCallOverData = (): ReactElement => {
 
   const toggleVideo = (toSet?: boolean) => {
     if (toSet === undefined || toSet != localVideoShown) toggleLocalVideo();
-    setLocalVideoShown(toSet || !localVideoShown);
+    setLocalVideoShown(toSet !== undefined ? toSet : !localVideoShown);
   };
 
   const handleDisableVideo = () => {
     console.log("disable video");
+    toggleVideo(false);
     audioVideo
       ?.getAllRemoteVideoTiles()
       .forEach((tile) => audioVideo.pauseVideoTile(tile.id()));
     audioVideo?.stopLocalVideoTile();
-    setSnackbarShown(true);
+    setWarningShown(true);
+  };
+
+  const handleSwitch = () => {
+    console.log("calling +1 888 651 1946");
+    document.location.href = "tel:1-888-651-1946";
   };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
@@ -212,7 +231,7 @@ const OnlineCallOverData = (): ReactElement => {
       return;
     }
 
-    setSnackbarShown(false);
+    setWarningShown(false);
   };
 
   return (
@@ -220,29 +239,54 @@ const OnlineCallOverData = (): ReactElement => {
       <div style={{ color: "white" }}>
         Connection State: {ConnectionState[connectionState]}
       </div>
-      <div className="video-container">
-        <VideoTileGrid
-          layout="standard"
-          noRemoteVideoView={
-            // TODO Convert into smarter component
-            <div>
-              <div style={{ color: "white", minHeight: "300px" }}>
-                Nobody is sharing video at the moment
+      {!suggestionShown ? (
+        <div className="video-container">
+          <VideoTileGrid
+            layout="standard"
+            noRemoteVideoView={
+              // TODO Convert into smarter component
+              <div>
+                <div style={{ color: "white", minHeight: "300px" }}>
+                  Nobody is sharing video at the moment
+                </div>
               </div>
-            </div>
+            }
+          />
+          <Button onClick={() => handleToggleCamera()}>Toggle</Button>
+          <MicSelection />
+          <SpeakerSelection />
+          <RosterDisplay roster={roster} attendees={attendees} />
+        </div>
+      ) : (
+        <Snackbar
+          open={suggestionShown}
+          onClose={handleClose}
+          ContentProps={{ className: classes.suggestion }}
+          action={
+            <SnackBarActions
+              icon={<PhoneIcon fontSize="small" />}
+              handleClose={() => {
+                handleSwitch();
+              }}
+            />
           }
-        />
-        <Button onClick={() => handleToggleCamera()}>Toggle</Button>
-        <MicSelection />
-        <SpeakerSelection />
-        <RosterDisplay roster={roster} attendees={attendees} />
-      </div>
+          message="Click to switch to Voice over Telephone."
+          onClick={() => {
+            handleSwitch();
+          }}
+        ></Snackbar>
+      )}
       <Snackbar
-        open={snackbarShown}
+        open={warningShown && !suggestionShown}
         autoHideDuration={6000}
         onClose={handleClose}
         ContentProps={{ className: classes.snackBar }}
-        action={<SnackBarActions handleClose={handleClose} />}
+        action={
+          <SnackBarActions
+            icon={<CloseIcon fontSize="small" />}
+            handleClose={handleClose}
+          />
+        }
         message="Current connection cannot support video."
       ></Snackbar>
     </Layout>

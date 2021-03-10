@@ -1,14 +1,14 @@
 import { Button, IconButton } from "@material-ui/core";
-import React from "react";
-import CloseIcon from "@material-ui/icons/Close";
+import React, { ReactNode } from "react";
 
 type AlertProps = {
   handleClose?: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
+  icon: ReactNode;
 };
 
-const SnackBarActions = ({ handleClose }: AlertProps) => {
+const SnackBarActions = ({ handleClose, icon }: AlertProps) => {
   return (
     <React.Fragment>
       <IconButton
@@ -17,7 +17,7 @@ const SnackBarActions = ({ handleClose }: AlertProps) => {
         color="inherit"
         onClick={handleClose}
       >
-        <CloseIcon fontSize="small" />
+        {icon}
       </IconButton>
     </React.Fragment>
   );

@@ -19,7 +19,7 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  overflow: auto;
+  overflow: hidden;
 }
 
 code {
@@ -38,4 +38,9 @@ code {
 
 .justify {
   justify-content: center;
+}
+
+#root {
+  background-color: #39393a;
+  height: 100%;
 }
