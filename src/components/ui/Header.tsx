@@ -16,10 +16,12 @@ const Header = ({
   title,
   style,
   parent,
+  hideBackButton,
 }: {
   title?: string;
   style?: CSS.Properties;
   parent?: string;
+  hideBackButton?: boolean;
 }): ReactElement => {
   const useStyles = makeStyles({
     header: {
@@ -49,13 +51,15 @@ const Header = ({
   return (
     <AppBar position="sticky" className={classes.header}>
       <Toolbar className={classes.toolbar}>
-        <IconButton
+        {!hideBackButton ? <IconButton
           edge="start"
           color="inherit"
           onClick={() => handleBackButtonPressed()}
         >
           <ArrowBack />
-        </IconButton>
+        </IconButton> : <div
+          style={{width: 30}}
+        /> }
         <Typography variant="h6" className={classes.title}>
           {title}
         </Typography>

@@ -1,11 +1,15 @@
 import { Fab, makeStyles } from "@material-ui/core";
+import SignOutIcon from "@material-ui/icons/ExitToApp";
 import ProfileIcon from "@material-ui/icons/Person";
 import PhoneIcon from "@material-ui/icons/Phone";
 import WifiIcon from "@material-ui/icons/Wifi";
+import Amplify, { Auth } from "aws-amplify";
 import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import bg from "../../assets/first-responder-home-bg.svg";
+import config from "../../aws-exports";
+import passwordless from "../../passwordless-aws-exports";
 import "../../styles/firstresponder/Home.css";
 import { FirstResponderProfileType, MeetingStateType } from "../../types";
 import fetchFirstResponderProfile from "../calls/fetchFirstResponderProfile";
@@ -14,7 +18,13 @@ import usePhoneNumber from "../hooks/usePhoneNumber";
 import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
 import Layout from "../ui/Layout";
-import PhoneNumberModal from "./PhoneNumberModal";
+
+Amplify.configure({
+  ...config,
+  Auth: {
+    ...passwordless,
+  },
+});
 
 const useStyles = makeStyles({
   button: {
@@ -27,6 +37,12 @@ const useStyles = makeStyles({
   },
   icon: {
     marginRight: 10,
+  },
+  signOutButton: {
+    backgroundColor: `${Colors.theme.skobeloff} !important`,
+  },
+  signOutIcon: {
+    marginLeft: 10,
   },
 });
 
@@ -78,21 +94,22 @@ const FirstResponderMain = (): ReactElement => {
 
   const getName = () => {
     if (profile?.FirstName && profile.LastName) {
-      return profile.FirstName + profile.LastName;
+      return `${profile.FirstName} ${profile.LastName}`;
     }
     if (profile?.FirstName) return profile.FirstName;
     if (profile?.LastName) return profile.LastName;
     return "First Responder";
   };
-  const renderPhoneModal = (): ReactElement | undefined => {
-    if (!phone) {
-      return <PhoneNumberModal />;
-    } else {
-      return undefined;
-    }
-  };
+
+  const handleSignOut = () => {
+    localStorage.removeItem("firstresponderphonenumber");
+    Auth.signOut();
+  }
   return (
     <Layout
+      hideBackButton={
+        localStorage.getItem("firstresponderphonenumber") ? true : false
+      }
       title="First Responder Home"
       parent="/"
       flexColumn
@@ -147,10 +164,17 @@ const FirstResponderMain = (): ReactElement => {
           onClick={() => history.push("/firstresponder/profile")}
         >
           <ProfileIcon className={classes.icon} />
-          Create / Edit Profile
+          Edit Profile
+        </Fab>
+        <Fab
+          variant="extended"
+          className={`${classes.button} ${classes.signOutButton}`}
+          onClick={() => handleSignOut()}
+        >
+          Sign Out
+          <SignOutIcon className={classes.signOutIcon} />
         </Fab>
       </div>
-      {renderPhoneModal()}
     </Layout>
   );
 };

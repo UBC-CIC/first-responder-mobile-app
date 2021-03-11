@@ -13,6 +13,7 @@ const Layout = ({
   flexColumn = false,
   parent,
   headerOfflineClickable = true,
+  hideBackButton = false,
 }: {
   noHeader?: boolean;
   children?: ReactNode;
@@ -23,6 +24,7 @@ const Layout = ({
   flexColumn?: boolean;
   parent?: string;
   headerOfflineClickable?: boolean;
+  hideBackButton?: boolean;
 }): ReactElement => {
   const history = useHistory();
   return (
@@ -38,6 +40,7 @@ const Layout = ({
     >
       {!noHeader && (
         <Header
+          hideBackButton={hideBackButton}
           parent={parent}
           style={headerStyle}
           title={title || history.location.pathname}
