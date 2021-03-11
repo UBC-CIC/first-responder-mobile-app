@@ -16,8 +16,6 @@ import keys from "../../push/keys.json";
 import useSessionId from "../hooks/useSessionId";
 import Amplify from "aws-amplify";
 import config from "../../aws-exports";
-Amplify.configure(config);
-
 const useStyles = makeStyles({
   bellIcon: {
     width: "100px",
@@ -68,6 +66,12 @@ const PhysicianMain = (): ReactElement => {
   };
 
   useEffect(() => {
+    if(!localStorage.getItem("physiciansessionid")){
+      localStorage.setItem("physiciansessionid", uuid());
+    }
+  }, []);
+
+  useEffect(() => {
     const f = async () => {
       const res = await listAllMeetings();
       if (res.data) {
@@ -82,7 +86,12 @@ const PhysicianMain = (): ReactElement => {
   }, []);
 
   return (
-    <Layout title="Physician Home" flexColumn parent="/">
+    <Layout
+      title="Physician Home"
+      flexColumn
+      hideBackButton={localStorage.getItem("physiciansessionid") ? true : false}
+      parent="/"
+    >
       <div className={classes.root}>
         <IconButton
           className={classes.bellButton}

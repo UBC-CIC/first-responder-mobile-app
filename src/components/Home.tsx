@@ -4,12 +4,25 @@ import { useHistory } from "react-router-dom";
 import "../styles/Home.css";
 import Layout from "./ui/Layout";
 import { useGlobalStyles } from "./styling/GlobalMuiStyles";
-
+import config from "../aws-exports";
+import passwordless from "../passwordless-aws-exports";
+import Amplify from "aws-amplify";
 const useStyles = makeStyles({
   button: {
     margin: "20px",
   },
 });
+
+if (localStorage.getItem("firstresponderphonenumber")) {
+  Amplify.configure({
+    ...config,
+    Auth: {
+      ...passwordless,
+    },
+  });
+} else if (localStorage.getItem("physiciansessionid")) {
+  Amplify.configure(config);
+}
 
 const Home = (): ReactElement => {
   const history = useHistory();
@@ -18,6 +31,10 @@ const Home = (): ReactElement => {
 
   if (localStorage.getItem("firstresponderphonenumber")) {
     history.replace("/firstresponder");
+  }
+
+  else if (localStorage.getItem("physiciansessionid")) {
+    history.replace("/physician");
   }
 
   return (
@@ -31,6 +48,12 @@ const Home = (): ReactElement => {
             <Button
               className={`${globalClasses.wideButton} ${classes.button}`}
               onClick={() => {
+                Amplify.configure({
+                  ...config,
+                  Auth: {
+                    ...passwordless,
+                  },
+                });
                 history.push("/firstresponder");
               }}
             >
@@ -39,6 +62,7 @@ const Home = (): ReactElement => {
             <Button
               className={`${globalClasses.wideButton} ${classes.button}`}
               onClick={() => {
+                Amplify.configure(config);
                 history.push("/physician");
               }}
             >

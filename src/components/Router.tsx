@@ -91,7 +91,7 @@ const PhysicianRoutes = withAuthenticator(
   {
     includeGreetings: false,
     authenticatorComponents: [
-      <Header title="Sign In" key={-1}></Header>,
+      <Header title="Sign In" key={-1} parent="/" ></Header>,
       <SignIn key={0} />,
       <VerifyContact key={2} />,
       <ForgotPassword key={5} />,
@@ -116,7 +116,7 @@ const FirstResponderRoutes = withAuthenticator(
   {
     includeGreetings: false,
     authenticatorComponents: [
-      <Header title="Sign In" key={-1}></Header>,
+      <Header title="Sign In" key={-1} parent="/"></Header>,
       <PhoneSignIn key={0} />,
     ],
     theme: AuthTheme

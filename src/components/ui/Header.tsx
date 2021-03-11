@@ -42,6 +42,8 @@ const Header = ({
   const { offline, setOffline } = useContext(OfflineContext);
 
   const handleBackButtonPressed = () => {
+    console.log(parent);
+    
     if (parent) {
       history.replace(parent);
     } else {

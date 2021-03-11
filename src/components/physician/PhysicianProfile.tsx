@@ -54,6 +54,11 @@ const PhysicianProfile = (): ReactElement => {
   const history = useHistory();
   const globalClasses = useGlobalStyles();
   const classes = useStyles();
+
+  const handleSignOut = () => {
+    localStorage.removeItem("physiciansessionid");
+    Auth.signOut();
+  }
   return (
     <Layout title="Profile" flexColumn parent="/physician">
       <div className={classes.root}>
@@ -79,7 +84,7 @@ const PhysicianProfile = (): ReactElement => {
           <Fab
             variant="extended"
             className={`${classes.button} ${classes.signOutButton}`}
-            onClick={() => Auth.signOut()}
+            onClick={() => handleSignOut()}
           >
             Sign Out
             <SignOutIcon className={classes.signOutIcon} />

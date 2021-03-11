@@ -8,8 +8,6 @@ import React, { ReactElement, useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import bg from "../../assets/first-responder-home-bg.svg";
-import config from "../../aws-exports";
-import passwordless from "../../passwordless-aws-exports";
 import "../../styles/firstresponder/Home.css";
 import { FirstResponderProfileType, MeetingStateType } from "../../types";
 import fetchFirstResponderProfile from "../calls/fetchFirstResponderProfile";
@@ -19,12 +17,7 @@ import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
 import Layout from "../ui/Layout";
 
-Amplify.configure({
-  ...config,
-  Auth: {
-    ...passwordless,
-  },
-});
+
 
 const useStyles = makeStyles({
   button: {
