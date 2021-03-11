@@ -1,7 +1,18 @@
-import React, { ReactElement, useContext } from "react";
 import "@aws-amplify/ui/dist/style.css";
+import {
+  MeetingProvider
+} from "amazon-chime-sdk-component-library-react";
+import {
+  ForgotPassword,
+
+  SignIn,
+
+  VerifyContact, withAuthenticator
+} from "aws-amplify-react";
+import React, { ReactElement } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import FirstResponderMain from "./firstresponder/FirstResponderMain";
+import FirstResponderProfile from "./firstresponder/FirstResponderProfile";
 import Home from "./Home";
 import Alerts from "./physician/Alerts";
 import Availability from "./physician/Availability";
@@ -9,26 +20,11 @@ import ContactInfo from "./physician/ContactInfo";
 import PhysicianMain from "./physician/PhysicianMain";
 import PhysicianProfile from "./physician/PhysicianProfile";
 import Call from "./shared/Call";
-import {
-  ConfirmSignIn,
-  ConfirmSignUp,
-  ForgotPassword,
-  RequireNewPassword,
-  SignIn as SignIn2,
-  SignUp,
-  VerifyContact,
-} from "aws-amplify-react";
-import {
-  RosterProvider,
-  MeetingProvider,
-} from "amazon-chime-sdk-component-library-react";
-
-import { withAuthenticator } from "aws-amplify-react";
-import Header from "./ui/Header";
-import { CircularProgress } from "@material-ui/core";
-import FirstResponderProfile from "./firstresponder/FirstResponderProfile";
-import SignIn from "./ui/SignIn";
 import Colors from "./styling/Colors";
+import AuthTheme from "./ui/AuthTheme";
+import Header from "./ui/Header";
+import PhoneSignIn from "./ui/SignIn";
+
 const Router = (): ReactElement => {
   return (
     <BrowserRouter>
@@ -44,11 +40,14 @@ const Router = (): ReactElement => {
         </Route>
 
         {/* First Responder */}
-        <Route exact path="/firstresponder">
+        {/* <Route exact path="/firstresponder">
           <FirstResponderMain />
         </Route>
         <Route exact path="/firstresponder/profile">
           <FirstResponderProfile />
+        </Route> */}
+        <Route path="/firstresponder">
+          <FirstResponderRoutes />
         </Route>
         {/* Shared */}
 
@@ -93,48 +92,35 @@ const PhysicianRoutes = withAuthenticator(
     includeGreetings: false,
     authenticatorComponents: [
       <Header title="Sign In" key={-1}></Header>,
-      // <SignIn key={0} />,
-      <SignIn2 key={0} />,
-      //   <ConfirmSignIn key={1} />,
+      <SignIn key={0} />,
       <VerifyContact key={2} />,
-      //   // <SignUp key={3} />,
-      //   <ConfirmSignUp key={4} />,
       <ForgotPassword key={5} />,
-      //   <RequireNewPassword key={6} />,
     ],
-    theme: {
-      signInButtonIcon: { display: "none" },
-      formSection: { backgroundColor: Colors.theme.onyx },
-      sectionHeader: {
-        color: Colors.theme.platinum,
-        fontFamily: "Signika Negative",
-      },
-      input: {
-        fontFamily: "Montserrat",
-        color: Colors.theme.space,
-      },
-      inputLabel: { color: Colors.theme.platinum, fontFamily: "Montserrat" },
-      button: { backgroundColor: Colors.theme.coral, borderRadius: 5 },
-      a: { color: Colors.theme.coral },
-      footer: {
-        height: "100%",
-        backgroundColor: Colors.theme.onyx,
-      },
-    },
+    theme: AuthTheme
   } as any
 );
 
-const FirstResponderRoutes = () => {
-  return (
-    <>
-      <Route exact path="/firstresponder">
-        <FirstResponderMain />
-      </Route>
-      <Route exact path="/firstresponder/profile">
-        <FirstResponderProfile />
-      </Route>
-    </>
-  );
-};
+const FirstResponderRoutes = withAuthenticator(
+  () => {
+    return (
+      <>
+        <Route exact path="/firstresponder">
+          <FirstResponderMain />
+        </Route>
+        <Route exact path="/firstresponder/profile">
+          <FirstResponderProfile />
+        </Route>
+      </>
+    );
+  },
+  {
+    includeGreetings: false,
+    authenticatorComponents: [
+      <Header title="Sign In" key={-1}></Header>,
+      <PhoneSignIn key={0} />,
+    ],
+    theme: AuthTheme
+  } as any
+);
 
 export default Router;

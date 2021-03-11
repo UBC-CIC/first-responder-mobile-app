@@ -20,6 +20,8 @@
     "axios": "^0.21.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-phone-input-2": "^2.13.9",
+    "react-phone-number-input": "^3.1.17",
     "react-router-dom": "^5.2.0",
     "react-schedule-selector": "^3.0.0",
     "react-scripts": "4.0.1",
@@ -69,6 +71,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-phone-number-input": "^3.0.6",
     "@types/react-router-dom": "^5.1.7",
     "@types/react-swipeable": "^5.2.0",
     "@types/styled-components": "^5.1.7",

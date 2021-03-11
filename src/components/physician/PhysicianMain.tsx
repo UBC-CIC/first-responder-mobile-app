@@ -14,6 +14,9 @@ import pushNotificationManager from "web-push";
 import base64Convert from "../../push/keys";
 import keys from "../../push/keys.json";
 import useSessionId from "../hooks/useSessionId";
+import Amplify from "aws-amplify";
+import config from "../../aws-exports";
+Amplify.configure(config);
 
 const useStyles = makeStyles({
   bellIcon: {

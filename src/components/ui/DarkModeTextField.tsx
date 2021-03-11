@@ -5,10 +5,16 @@ const useStyles = makeStyles({
   textField: {
     margin: 10,
     color: Colors.theme.platinum,
+    "& Mui-disabled": {
+      color: Colors.theme.platinum,
+    },
   },
   inputLabel: {
     color: Colors.theme.platinum,
     fontFamily: "Montserrat",
+    "& Mui-disabled": {
+      color: Colors.theme.platinum,
+    },
   },
 });
 export const DarkModeTextField = (props: TextFieldProps): ReactElement => {

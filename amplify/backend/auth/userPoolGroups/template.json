@@ -95,6 +95,60 @@
         },
      
     
+        "firstrespondersGroup": {
+          "Type" : "AWS::Cognito::UserPoolGroup",
+          "Properties" : {
+              "GroupName" : "firstresponders",
+              "Precedence" : 2,
+              
+              "RoleArn" : {
+                "Fn::GetAtt": [
+                    "firstrespondersGroupRole",
+                    "Arn"
+                ]
+              },
+              
+              "UserPoolId" : {
+                "Ref": "authfirstrespondermobilecbc374ceUserPoolId"
+              } 
+            }
+        },
+        
+        "firstrespondersGroupRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName":{
+                    "Fn::Join": [
+                        "",
+                        [
+                          {
+                            "Ref": "authfirstrespondermobilecbc374ceUserPoolId"
+                          },
+                          "-firstrespondersGroupRole"
+                        ]
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Federated": "cognito-identity.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRoleWithWebIdentity",
+                            "Condition": {
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authfirstrespondermobilecbc374ceIdentityPoolId"}},
+                              "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+     
+    
     
         "LambdaExecutionRole": {
             "Type": "AWS::IAM::Role",
@@ -299,6 +353,17 @@
             "Value": {
                 "Fn::GetAtt": [
                     "physiciansGroupRole",
+                    "Arn"
+                ]
+            }
+         
+        },
+        
+      
+        "firstrespondersGroupRole": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "firstrespondersGroupRole",
                     "Arn"
                 ]
             }

@@ -1,5 +1,5 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
-import { Fab, makeStyles } from "@material-ui/core";
+import { CircularProgress, Fab, makeStyles } from "@material-ui/core";
 import { Save } from "@material-ui/icons";
 import { API, graphqlOperation } from "aws-amplify";
 import {
@@ -26,6 +26,11 @@ import Colors from "../styling/Colors";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
 import Layout from "../ui/Layout";
 
+const headerStyle = {
+  color: Colors.theme.platinum,
+  fontFamily: "Signika Negative",
+};
+
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -43,6 +48,7 @@ const useStyles = makeStyles({
     margin: 10,
   },
   icon: {
+    color: Colors.theme.platinum,
     marginRight: 10,
   },
 });
@@ -50,6 +56,8 @@ const useStyles = makeStyles({
 const FirstResponderProfile = (): ReactElement => {
   const phone = usePhoneNumber();
   const classes = useStyles();
+
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState<FirstResponderProfileType>({
     id: phone,
     verified: false,
@@ -88,23 +96,6 @@ const FirstResponderProfile = (): ReactElement => {
     }
   }, []);
   const { offline } = useContext(OfflineContext);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    e.preventDefault();
-    const tryString = e.target.value;
-    if (tryString.length == 0) {
-      setForm({ ...form, id: tryString });
-      return;
-    }
-    if (tryString.length > 10) {
-      return;
-    }
-    if (!tryString.charAt(tryString.length - 1).match(/[0-9]/)) return;
-
-    setForm({ ...form, id: tryString });
-  };
 
   const createProfile = async (options: CreateFirstResponderProfileInput) => {
     const response = (await API.graphql({
@@ -148,19 +139,20 @@ const FirstResponderProfile = (): ReactElement => {
       console.error("No PhoneNumber Provided for UpdateProfile");
       return;
     }
-    updateProfile(form);
+    setLoading(true);
+    await updateProfile(form);
+    //Artificially loading
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+
   };
 
   return (
     <Layout title="First Responder Profile" parent="/firstresponder" flexColumn>
       <div className={classes.root}>
-        <DarkModeTextField
-          label="Phone Number"
-          type="tel"
-          onChange={handleChange}
-          value={form.id}
-          disabled={offline}
-        />
+        <h3 style={headerStyle}>Your Phone Number: {form.id}</h3>
+
         <DarkModeTextField
           label="First Name"
           type="tel"
@@ -187,9 +179,13 @@ const FirstResponderProfile = (): ReactElement => {
         variant="extended"
         className={classes.button}
         onClick={() => handleUpdateProfile()}
-        disabled={offline}
+        disabled={offline || loading}
       >
-        <Save className={classes.icon} />
+        {loading ? (
+          <CircularProgress  className={classes.icon} />
+        ) : (
+          <Save className={classes.icon} />
+        )}
         Update Profile
       </Fab>
     </Layout>
