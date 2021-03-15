@@ -60,7 +60,6 @@ const FirstResponderProfile = (): ReactElement => {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState<FirstResponderProfileType>({
     id: phone,
-    verified: false,
     FirstName: "",
     LastName: "",
     Occupation: "",
@@ -84,7 +83,6 @@ const FirstResponderProfile = (): ReactElement => {
 
         setForm({
           id: phone,
-          verified: false,
           FirstName: "",
           LastName: "",
           Occupation: "",

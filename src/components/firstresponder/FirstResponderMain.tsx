@@ -1,4 +1,4 @@
-import { Fab, makeStyles } from "@material-ui/core";
+import { Backdrop, Fab, Fade, makeStyles, Modal, Paper } from "@material-ui/core";
 import SignOutIcon from "@material-ui/icons/ExitToApp";
 import ProfileIcon from "@material-ui/icons/Person";
 import PhoneIcon from "@material-ui/icons/Phone";
@@ -20,8 +20,10 @@ import Layout from "../ui/Layout";
 
 
 const useStyles = makeStyles({
-  button: {
+  coral: {
     backgroundColor: `${Colors.theme.coral} !important`,
+  },
+  button: {
     color: Colors.theme.platinum,
     fontFamily: "Montserrat",
     fontWeight: "bold",
@@ -37,6 +39,17 @@ const useStyles = makeStyles({
   signOutIcon: {
     marginLeft: 10,
   },
+  paper: {
+    width: "70%",
+    backgroundColor: Colors.theme.onyx,
+    color: Colors.theme.platinum,
+    pointerEvents: "all",
+    padding: 20
+  },
+  warning: {
+    backgroundColor: Colors.theme.error,
+    color: Colors.theme.platinum
+  }
 });
 
 const FirstResponderMain = (): ReactElement => {
@@ -44,6 +57,7 @@ const FirstResponderMain = (): ReactElement => {
   const classes = useStyles();
   const { offline } = useContext(OfflineContext);
 
+  const [modalOpen, setModalOpen] = useState(false);
   const phone = usePhoneNumber();
   const sessionId = useSessionId();
   const [profile, setProfile] = useState<FirstResponderProfileType>();
@@ -55,7 +69,6 @@ const FirstResponderMain = (): ReactElement => {
           const profile = await fetchFirstResponderProfile({ id: phone });
           setProfile({
             id: phone,
-            verified: profile?.verified || false,
             phoneNumber: profile?.phoneNumber,
             FirstName: profile?.FirstName || "First",
             LastName: profile?.LastName || "Responder",
@@ -64,7 +77,6 @@ const FirstResponderMain = (): ReactElement => {
         } catch (e) {
           setProfile({
             id: phone,
-            verified: false,
             phoneNumber: phone,
             FirstName: "First",
             LastName: "Responder",
@@ -77,7 +89,6 @@ const FirstResponderMain = (): ReactElement => {
     else
       setProfile({
         id: phone,
-        verified: false,
         phoneNumber: phone,
         FirstName: "First",
         LastName: "Responder",
@@ -98,6 +109,7 @@ const FirstResponderMain = (): ReactElement => {
     localStorage.removeItem("firstresponderphonenumber");
     Auth.signOut();
   }
+
   return (
     <Layout
       hideBackButton={
@@ -118,7 +130,7 @@ const FirstResponderMain = (): ReactElement => {
         >
           <Fab
             variant="extended"
-            className={classes.button}
+            className={`${classes.button} ${classes.coral}`}
             onClick={() => {
               history.push("/call", {
                 meetingId: phone,
@@ -135,7 +147,7 @@ const FirstResponderMain = (): ReactElement => {
           </Fab>
           <Fab
             variant="extended"
-            className={classes.button}
+            className={`${classes.button} ${classes.coral}`}
             onClick={() => {
               history.push("/call", {
                 meetingId: uuid(),
@@ -153,7 +165,7 @@ const FirstResponderMain = (): ReactElement => {
         </div>
         <Fab
           variant="extended"
-          className={classes.button}
+          className={`${classes.button} ${classes.coral}`}
           onClick={() => history.push("/firstresponder/profile")}
         >
           <ProfileIcon className={classes.icon} />
@@ -162,11 +174,47 @@ const FirstResponderMain = (): ReactElement => {
         <Fab
           variant="extended"
           className={`${classes.button} ${classes.signOutButton}`}
-          onClick={() => handleSignOut()}
+          onClick={() => setModalOpen(true)}
         >
           Sign Out
           <SignOutIcon className={classes.signOutIcon} />
         </Fab>
+        <Modal
+          aria-labelledby="transition-modal-title"
+          aria-describedby="transition-modal-description"
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={modalOpen}>
+            <div
+              style={{ height: "100%", pointerEvents: "none" }}
+              className={"ffc justify align"}
+            >
+              <Paper className={classes.paper}>
+                <p style={{ textAlign: "center" }}>
+                  Are you sure you would like to log out? You{" "}
+                  <strong> cannot </strong> log back in without internet
+                  connection.
+                </p>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  <Fab
+                    variant="extended"
+                    className={`${classes.button} ${classes.warning}`}
+                    onClick={() => handleSignOut()}
+                  >
+                    Confirm Sign Out
+                    <SignOutIcon className={classes.signOutIcon} />
+                  </Fab>
+                </div>
+              </Paper>
+            </div>
+          </Fade>
+        </Modal>
       </div>
     </Layout>
   );

@@ -146,7 +146,7 @@ const OnlineCallOverData = (): ReactElement => {
     }
 
     if (metrics.availableOutgoingBandwidth == null || packetLoss > 0) {
-      setConnectionState(ConnectionState.POOR);
+      setConnectionState(ConnectionState.UNKNOWN);
     } else if (metrics.availableOutgoingBandwidth < 100 || packetLoss > 0) {
       handleDisableVideo();
       setConnectionState(ConnectionState.POOR);
@@ -222,8 +222,14 @@ const OnlineCallOverData = (): ReactElement => {
   };
 
   const handleSwitch = () => {
-    console.log("calling +1 888 651 1946");
-    document.location.href = "tel:1-888-651-1946";
+    if (meetingManager.meetingId) {
+      console.log("calling +1 888 599 8558");
+      document.location.href = "tel:+18885998558";
+    }
+    else {
+      console.log("Creating New Meeting at +1 888 349 3697");
+      document.location.href = "tel:+18883493697";
+    }
   };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {

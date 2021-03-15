@@ -163,7 +163,6 @@ export type DeleteAttendeeInput = {
 
 export type CreateFirstResponderProfileInput = {
   id?: string | null,
-  verified: boolean,
   phoneNumber?: string | null,
   FirstName?: string | null,
   LastName?: string | null,
@@ -171,7 +170,6 @@ export type CreateFirstResponderProfileInput = {
 };
 
 export type ModelFirstResponderProfileConditionInput = {
-  verified?: ModelBooleanInput | null,
   phoneNumber?: ModelStringInput | null,
   FirstName?: ModelStringInput | null,
   LastName?: ModelStringInput | null,
@@ -181,17 +179,9 @@ export type ModelFirstResponderProfileConditionInput = {
   not?: ModelFirstResponderProfileConditionInput | null,
 };
 
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
 export type FirstResponderProfile = {
   __typename: "FirstResponderProfile",
   id?: string,
-  verified?: boolean,
   phoneNumber?: string | null,
   FirstName?: string | null,
   LastName?: string | null,
@@ -202,7 +192,6 @@ export type FirstResponderProfile = {
 
 export type UpdateFirstResponderProfileInput = {
   id: string,
-  verified?: boolean | null,
   phoneNumber?: string | null,
   FirstName?: string | null,
   LastName?: string | null,
@@ -289,7 +278,6 @@ export type ModelAttendeeConnection = {
 
 export type ModelFirstResponderProfileFilterInput = {
   id?: ModelIDInput | null,
-  verified?: ModelBooleanInput | null,
   phoneNumber?: ModelStringInput | null,
   FirstName?: ModelStringInput | null,
   LastName?: ModelStringInput | null,
@@ -320,39 +308,6 @@ export type ModelPhysicianProfileConnection = {
   __typename: "ModelPhysicianProfileConnection",
   items?:  Array<PhysicianProfile | null > | null,
   nextToken?: string | null,
-};
-
-export type CreateChimeMeetingMutationVariables = {
-  title?: string | null,
-};
-
-export type CreateChimeMeetingMutation = {
-  createChimeMeeting?:  {
-    __typename: "JoinInfo",
-    id: string,
-    Meeting:  {
-      __typename: "MeetingData",
-      MeetingId: string,
-      ExternalMeetingId?: string | null,
-      MediaPlacement:  {
-        __typename: "MediaPlacement",
-        AudioHostUrl: string,
-        AudioFallbackUrl: string,
-        ScreenDataUrl: string,
-        ScreenSharingUrl: string,
-        ScreenViewingUrl: string,
-        SignalingUrl: string,
-        TurnControlUrl: string,
-      },
-      MediaRegion: string,
-    },
-    Attendee?:  {
-      __typename: "AttendeeInfo",
-      ExternalUserId?: string | null,
-      AttendeeId?: string | null,
-      JoinToken?: string | null,
-    } | null,
-  } | null,
 };
 
 export type JoinChimeMeetingMutationVariables = {
@@ -391,6 +346,15 @@ export type JoinChimeMeetingMutation = {
       JoinToken?: string | null,
     } | null,
   } | null,
+};
+
+export type ConfirmPhoneNumberMutationVariables = {
+  secretCode?: string | null,
+  phoneNumber?: string | null,
+};
+
+export type ConfirmPhoneNumberMutation = {
+  confirmPhoneNumber?: string | null,
 };
 
 export type CreateMeetingMutationVariables = {
@@ -492,7 +456,6 @@ export type CreateFirstResponderProfileMutation = {
   createFirstResponderProfile?:  {
     __typename: "FirstResponderProfile",
     id: string,
-    verified: boolean,
     phoneNumber?: string | null,
     FirstName?: string | null,
     LastName?: string | null,
@@ -511,7 +474,6 @@ export type UpdateFirstResponderProfileMutation = {
   updateFirstResponderProfile?:  {
     __typename: "FirstResponderProfile",
     id: string,
-    verified: boolean,
     phoneNumber?: string | null,
     FirstName?: string | null,
     LastName?: string | null,
@@ -530,7 +492,6 @@ export type DeleteFirstResponderProfileMutation = {
   deleteFirstResponderProfile?:  {
     __typename: "FirstResponderProfile",
     id: string,
-    verified: boolean,
     phoneNumber?: string | null,
     FirstName?: string | null,
     LastName?: string | null,
@@ -595,22 +556,6 @@ export type DeletePhysicianProfileMutation = {
     updatedAt: string,
     owner?: string | null,
   } | null,
-};
-
-export type EchoQueryVariables = {
-  msg?: string | null,
-};
-
-export type EchoQuery = {
-  echo?: string | null,
-};
-
-export type Echo2QueryVariables = {
-  msg?: string | null,
-};
-
-export type Echo2Query = {
-  echo2?: string | null,
 };
 
 export type GetMeetingQueryVariables = {
@@ -689,7 +634,6 @@ export type GetFirstResponderProfileQuery = {
   getFirstResponderProfile?:  {
     __typename: "FirstResponderProfile",
     id: string,
-    verified: boolean,
     phoneNumber?: string | null,
     FirstName?: string | null,
     LastName?: string | null,
@@ -711,7 +655,6 @@ export type ListFirstResponderProfilesQuery = {
     items?:  Array< {
       __typename: "FirstResponderProfile",
       id: string,
-      verified: boolean,
       phoneNumber?: string | null,
       FirstName?: string | null,
       LastName?: string | null,
@@ -829,7 +772,6 @@ export type OnCreateFirstResponderProfileSubscription = {
   onCreateFirstResponderProfile?:  {
     __typename: "FirstResponderProfile",
     id: string,
-    verified: boolean,
     phoneNumber?: string | null,
     FirstName?: string | null,
     LastName?: string | null,
@@ -843,7 +785,6 @@ export type OnUpdateFirstResponderProfileSubscription = {
   onUpdateFirstResponderProfile?:  {
     __typename: "FirstResponderProfile",
     id: string,
-    verified: boolean,
     phoneNumber?: string | null,
     FirstName?: string | null,
     LastName?: string | null,
@@ -857,7 +798,6 @@ export type OnDeleteFirstResponderProfileSubscription = {
   onDeleteFirstResponderProfile?:  {
     __typename: "FirstResponderProfile",
     id: string,
-    verified: boolean,
     phoneNumber?: string | null,
     FirstName?: string | null,
     LastName?: string | null,

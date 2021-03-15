@@ -2,32 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createChimeMeeting = /* GraphQL */ `
-  mutation CreateChimeMeeting($title: String) {
-    createChimeMeeting(title: $title) {
-      id
-      Meeting {
-        MeetingId
-        ExternalMeetingId
-        MediaPlacement {
-          AudioHostUrl
-          AudioFallbackUrl
-          ScreenDataUrl
-          ScreenSharingUrl
-          ScreenViewingUrl
-          SignalingUrl
-          TurnControlUrl
-        }
-        MediaRegion
-      }
-      Attendee {
-        ExternalUserId
-        AttendeeId
-        JoinToken
-      }
-    }
-  }
-`;
 export const joinChimeMeeting = /* GraphQL */ `
   mutation JoinChimeMeeting(
     $title: String
@@ -66,6 +40,11 @@ export const joinChimeMeeting = /* GraphQL */ `
         JoinToken
       }
     }
+  }
+`;
+export const confirmPhoneNumber = /* GraphQL */ `
+  mutation ConfirmPhoneNumber($secretCode: String, $phoneNumber: String) {
+    confirmPhoneNumber(secretCode: $secretCode, phoneNumber: $phoneNumber)
   }
 `;
 export const createMeeting = /* GraphQL */ `
@@ -153,7 +132,6 @@ export const createFirstResponderProfile = /* GraphQL */ `
   ) {
     createFirstResponderProfile(input: $input, condition: $condition) {
       id
-      verified
       phoneNumber
       FirstName
       LastName
@@ -170,7 +148,6 @@ export const updateFirstResponderProfile = /* GraphQL */ `
   ) {
     updateFirstResponderProfile(input: $input, condition: $condition) {
       id
-      verified
       phoneNumber
       FirstName
       LastName
@@ -187,7 +164,6 @@ export const deleteFirstResponderProfile = /* GraphQL */ `
   ) {
     deleteFirstResponderProfile(input: $input, condition: $condition) {
       id
-      verified
       phoneNumber
       FirstName
       LastName

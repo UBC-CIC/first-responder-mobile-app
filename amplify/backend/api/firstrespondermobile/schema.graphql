@@ -26,7 +26,6 @@ type PhysicianProfile
 
 type FirstResponderProfile @model @aws_api_key {
   id: ID!
-  verified: Boolean!
   phoneNumber: String
   FirstName: String
   LastName: String
@@ -65,14 +64,8 @@ type MediaPlacement {
 }
 
 # Resolvers
-type Query {
-  echo(msg: String): String @function(name: "echofunction-${env}")
-  echo2(msg: String): String @function(name: "echofunction-${env}")
-}
 
 type Mutation {
-  createChimeMeeting(title: String): JoinInfo
-    @function(name: "firstrespondercreatemeeting-${env}")
   joinChimeMeeting(
     title: String
     name: String
@@ -81,4 +74,8 @@ type Mutation {
     externalAttendeeId: String
     phoneNumber: String
   ): JoinInfo @function(name: "firstresponderjoinmeeting-${env}")
+  confirmPhoneNumber(
+    secretCode: String
+    phoneNumber: String
+  ): String @function(name: "confirmphonenumber-${env}")
 }

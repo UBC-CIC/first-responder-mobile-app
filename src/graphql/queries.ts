@@ -2,16 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const echo = /* GraphQL */ `
-  query Echo($msg: String) {
-    echo(msg: $msg)
-  }
-`;
-export const echo2 = /* GraphQL */ `
-  query Echo2($msg: String) {
-    echo2(msg: $msg)
-  }
-`;
 export const getMeeting = /* GraphQL */ `
   query GetMeeting($id: ID!) {
     getMeeting(id: $id) {
@@ -70,7 +60,6 @@ export const getFirstResponderProfile = /* GraphQL */ `
   query GetFirstResponderProfile($id: ID!) {
     getFirstResponderProfile(id: $id) {
       id
-      verified
       phoneNumber
       FirstName
       LastName
@@ -93,7 +82,6 @@ export const listFirstResponderProfiles = /* GraphQL */ `
     ) {
       items {
         id
-        verified
         phoneNumber
         FirstName
         LastName

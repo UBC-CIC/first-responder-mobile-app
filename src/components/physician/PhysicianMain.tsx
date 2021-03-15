@@ -1,21 +1,17 @@
 import { Badge, Button, IconButton, makeStyles } from "@material-ui/core";
+import BellIcon from "@material-ui/icons/Notifications";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Meeting } from "../../API";
-import { MeetingType } from "../../types";
-import listAllMeetings from "../calls/listAllMeetings";
-import Layout from "../ui/Layout";
 import { v4 as uuid } from "uuid";
-import BellIcon from "@material-ui/icons/Notifications";
-import Colors from "../styling/Colors";
 import bg from "../../assets/physician-home-bg.svg";
-import { useGlobalStyles } from "../styling/GlobalMuiStyles";
-import pushNotificationManager from "web-push";
 import base64Convert from "../../push/keys";
 import keys from "../../push/keys.json";
+import { MeetingType } from "../../types";
+import listAllMeetings from "../calls/listAllMeetings";
 import useSessionId from "../hooks/useSessionId";
-import Amplify from "aws-amplify";
-import config from "../../aws-exports";
+import Colors from "../styling/Colors";
+import { useGlobalStyles } from "../styling/GlobalMuiStyles";
+import Layout from "../ui/Layout";
 const useStyles = makeStyles({
   bellIcon: {
     width: "100px",

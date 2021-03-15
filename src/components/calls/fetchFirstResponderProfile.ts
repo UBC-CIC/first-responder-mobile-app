@@ -20,7 +20,6 @@ const fetchFirstResponderProfile = async (options: GetFirstResponderProfileQuery
         FirstName: profile.FirstName,
         LastName: profile.LastName,
         id: profile.LastName,
-        verified: profile.verified,
       } as FirstResponderProfileType;
     }
   }

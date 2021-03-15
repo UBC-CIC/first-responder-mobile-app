@@ -1,6 +1,6 @@
 {
     "identityPoolName": "firstrespondermobilecbc374ce_identitypool_cbc374ce",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "firstrcbc374ce",
     "userPoolName": "firstrespondermobilecbc374ce_userpool_cbc374ce",
     "autoVerifiedAttributes": [
@@ -45,17 +45,25 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "useDefault": "manual",
     "usernameAttributes": [
         "email"
     ],
     "triggers": "{}",
-    "userPoolGroupList": [],
+    "userPoolGroupList": [
+        "physicians",
+        "firstresponders"
+    ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
     "parentStack": {
         "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "dependsOn": []
+    "dependsOn": [],
+    "thirdPartyAuth": false,
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "hostedUI": false,
+    "authProviders": []
 }

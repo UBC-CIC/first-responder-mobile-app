@@ -66,7 +66,6 @@ export const onCreateFirstResponderProfile = /* GraphQL */ `
   subscription OnCreateFirstResponderProfile {
     onCreateFirstResponderProfile {
       id
-      verified
       phoneNumber
       FirstName
       LastName
@@ -80,7 +79,6 @@ export const onUpdateFirstResponderProfile = /* GraphQL */ `
   subscription OnUpdateFirstResponderProfile {
     onUpdateFirstResponderProfile {
       id
-      verified
       phoneNumber
       FirstName
       LastName
@@ -94,7 +92,6 @@ export const onDeleteFirstResponderProfile = /* GraphQL */ `
   subscription OnDeleteFirstResponderProfile {
     onDeleteFirstResponderProfile {
       id
-      verified
       phoneNumber
       FirstName
       LastName
