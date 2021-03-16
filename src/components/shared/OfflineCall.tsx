@@ -25,7 +25,7 @@ const OfflineCall = (): ReactElement => {
         <Button
           className={classes.button}
           component="a"
-          href="tel:604-318-9666"
+          href="tel:1-888-651-1946"
           type="phone"
         >
           Phone Call {"Didn't"} Start?

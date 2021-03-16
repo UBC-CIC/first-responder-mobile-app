@@ -23,7 +23,7 @@ import Call from "./shared/Call";
 import Colors from "./styling/Colors";
 import AuthTheme from "./ui/AuthTheme";
 import Header from "./ui/Header";
-import PhoneSignIn from "./ui/SignIn";
+import PhoneSignIn from "./ui/PhoneSignIn";
 
 const Router = (): ReactElement => {
   return (

@@ -127,10 +127,7 @@ const OnlineCallOverData = (): ReactElement => {
           .audioPacketsReceivedFractionLoss;
         setPacketLoss(loss);
       };
-      const first = Date.now();
       await meetingManager.start();
-      const second = Date.now();
-      console.log(second - first);
     };
 
     f();
@@ -258,7 +255,7 @@ const OnlineCallOverData = (): ReactElement => {
               </div>
             }
           />
-          <Button onClick={() => handleToggleCamera()}>Toggle</Button>
+          <Button variant="contained" disabled={connectionState === ConnectionState.POOR} onClick={() => handleToggleCamera()}>Toggle Video</Button>
           <MicSelection />
           <SpeakerSelection />
           <RosterDisplay roster={roster} attendees={attendees} />

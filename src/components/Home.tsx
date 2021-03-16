@@ -62,7 +62,7 @@ const Home = (): ReactElement => {
             <Button
               className={`${globalClasses.wideButton} ${classes.button}`}
               onClick={() => {
-                Amplify.configure(config);
+                Amplify.Auth.configure(config);
                 history.push("/physician");
               }}
             >
