@@ -3,11 +3,21 @@
 Mobile app for first responders to get in direct contact with medical professionals in emergency situations.
 
 ## Table of Contents
-
+- [Development Instructions](#development)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Support](#support)
 - [Contributing](#contributing)
+
+
+## Development
+
+- Import the certs in the certs/ directory to your machine. (You can also create your own Self Signed Certs if you do not want to trust these ones.)
+  - On Mac, open the RootCA.crt in finder, and double click to open with Keychain Access. Open localhost.crt and double click.
+  - This should have added 2 untrusted certs to the system keychain. For both: Right Click -> Get Info -> Trust -> When using this certificate: Always Trust
+
+- yarn
+- yarn start
 
 ## Installation
 
