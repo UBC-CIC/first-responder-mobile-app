@@ -19,14 +19,6 @@ const useStyles = makeStyles({
     flex: "1",
     alignItems: "center",
   },
-  button: {
-    backgroundColor: `${Colors.theme.coral} !important`,
-    color: Colors.theme.platinum,
-    fontFamily: "Montserrat",
-    fontWeight: "bold",
-    fontSize: 15,
-    margin: 10,
-  },
   icon: {
     marginRight: 10,
   },
@@ -65,7 +57,7 @@ const PhysicianProfile = (): ReactElement => {
         <div className={classes.mainContainer}>
           <Fab
             variant="extended"
-            className={classes.button}
+            className={`${globalClasses.button} ${globalClasses.coral}`}
             onClick={() => history.push("/physician/contactinfo")}
           >
             <ProfileIcon className={classes.icon} />
@@ -73,7 +65,7 @@ const PhysicianProfile = (): ReactElement => {
           </Fab>
           <Fab
             variant="extended"
-            className={classes.button}
+            className={`${globalClasses.button} ${globalClasses.coral}`}
             onClick={() => history.push("/physician/availability")}
           >
             <CalendarIcon className={classes.icon} />
@@ -83,7 +75,7 @@ const PhysicianProfile = (): ReactElement => {
         <div className={classes.signOutContainer}>
           <Fab
             variant="extended"
-            className={`${classes.button} ${classes.signOutButton}`}
+            className={`${globalClasses.button} ${classes.signOutButton}`}
             onClick={() => handleSignOut()}
           >
             Sign Out

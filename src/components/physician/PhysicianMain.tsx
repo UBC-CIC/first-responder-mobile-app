@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     height: "100px",
     color: Colors.theme.platinum,
   },
-  bellButton: {
+  coral: {
     backgroundColor: Colors.theme.coral,
   },
   root: {
@@ -90,7 +90,7 @@ const PhysicianMain = (): ReactElement => {
     >
       <div className={classes.root}>
         <IconButton
-          className={classes.bellButton}
+          className={classes.coral}
           onClick={() => history.push("/physician/alerts")}
         >
           <Badge

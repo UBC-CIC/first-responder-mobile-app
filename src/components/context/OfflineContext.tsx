@@ -1,3 +1,4 @@
+/* Controls Offline/Online State throughout app.  */
 import React, { createContext, ReactElement, ReactNode, useState } from "react";
 const OfflineContext = createContext({
   offline: false,

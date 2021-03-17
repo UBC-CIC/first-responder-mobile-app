@@ -10,30 +10,21 @@ import { v4 as uuid } from "uuid";
 import bg from "../../assets/first-responder-home-bg.svg";
 import "../../styles/firstresponder/Home.css";
 import { FirstResponderProfileType, MeetingStateType } from "../../types";
-import fetchFirstResponderProfile from "../calls/fetchFirstResponderProfile";
+import { fetchFirstResponderProfile } from "../calls";
 import OfflineContext from "../context/OfflineContext";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
+import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
 
 
 
 const useStyles = makeStyles({
-  coral: {
-    backgroundColor: `${Colors.theme.coral} !important`,
-  },
-  button: {
-    color: Colors.theme.platinum,
-    fontFamily: "Montserrat",
-    fontWeight: "bold",
-    fontSize: 15,
-    margin: 10,
-  },
   icon: {
     marginRight: 10,
   },
-  signOutButton: {
+  skobeloff: {
     backgroundColor: `${Colors.theme.skobeloff} !important`,
   },
   signOutIcon: {
@@ -44,17 +35,18 @@ const useStyles = makeStyles({
     backgroundColor: Colors.theme.onyx,
     color: Colors.theme.platinum,
     pointerEvents: "all",
-    padding: 20
+    padding: 20,
   },
   warning: {
     backgroundColor: Colors.theme.error,
-    color: Colors.theme.platinum
-  }
+    color: Colors.theme.platinum,
+  },
 });
 
 const FirstResponderMain = (): ReactElement => {
   const history = useHistory();
   const classes = useStyles();
+  const globalClasses = useGlobalStyles();
   const { offline } = useContext(OfflineContext);
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -130,7 +122,7 @@ const FirstResponderMain = (): ReactElement => {
         >
           <Fab
             variant="extended"
-            className={`${classes.button} ${classes.coral}`}
+            className={`${globalClasses.button} ${globalClasses.coral}`}
             onClick={() => {
               history.push("/call", {
                 meetingId: phone,
@@ -147,7 +139,7 @@ const FirstResponderMain = (): ReactElement => {
           </Fab>
           <Fab
             variant="extended"
-            className={`${classes.button} ${classes.coral}`}
+            className={`${globalClasses.button} ${globalClasses.coral}`}
             onClick={() => {
               history.push("/call", {
                 meetingId: uuid(),
@@ -165,7 +157,7 @@ const FirstResponderMain = (): ReactElement => {
         </div>
         <Fab
           variant="extended"
-          className={`${classes.button} ${classes.coral}`}
+          className={`${globalClasses.button} ${globalClasses.coral}`}
           onClick={() => history.push("/firstresponder/profile")}
         >
           <ProfileIcon className={classes.icon} />
@@ -173,7 +165,7 @@ const FirstResponderMain = (): ReactElement => {
         </Fab>
         <Fab
           variant="extended"
-          className={`${classes.button} ${classes.signOutButton}`}
+          className={`${globalClasses.button} ${classes.skobeloff}`}
           onClick={() => setModalOpen(true)}
         >
           Sign Out
@@ -204,7 +196,7 @@ const FirstResponderMain = (): ReactElement => {
                 <div style={{ display: "flex", flexDirection: "column" }}>
                   <Fab
                     variant="extended"
-                    className={`${classes.button} ${classes.warning}`}
+                    className={`${globalClasses.button} ${classes.warning}`}
                     onClick={() => handleSignOut()}
                   >
                     Confirm Sign Out

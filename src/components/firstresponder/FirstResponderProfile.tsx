@@ -23,6 +23,7 @@ import fetchFirstResponderProfile from "../calls/fetchFirstResponderProfile";
 import OfflineContext from "../context/OfflineContext";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import Colors from "../styling/Colors";
+import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
 import Layout from "../ui/Layout";
 
@@ -39,14 +40,6 @@ const useStyles = makeStyles({
     flex: "1",
     alignItems: "center",
   },
-  button: {
-    backgroundColor: `${Colors.theme.coral} !important`,
-    color: Colors.theme.platinum,
-    fontFamily: "Montserrat",
-    fontWeight: "bold",
-    fontSize: 15,
-    margin: 10,
-  },
   icon: {
     color: Colors.theme.platinum,
     marginRight: 10,
@@ -56,7 +49,7 @@ const useStyles = makeStyles({
 const FirstResponderProfile = (): ReactElement => {
   const phone = usePhoneNumber();
   const classes = useStyles();
-
+  const globalClasses = useGlobalStyles();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState<FirstResponderProfileType>({
     id: phone,
@@ -175,7 +168,7 @@ const FirstResponderProfile = (): ReactElement => {
       </div>
       <Fab
         variant="extended"
-        className={classes.button}
+        className={`${globalClasses.button} ${globalClasses.coral}`}
         onClick={() => handleUpdateProfile()}
         disabled={offline || loading}
       >

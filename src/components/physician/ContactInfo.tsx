@@ -16,6 +16,7 @@ import "../../styles/physician/ContactInfo.css";
 import { CognitoUser, PhysicianProfileType } from "../../types";
 import fetchPhysicianProfile from "../calls/fetchPhysicianProfile";
 import Colors from "../styling/Colors";
+import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
 import Layout from "../ui/Layout";
 
@@ -26,14 +27,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     flex: "1",
     backgroundColor: Colors.theme.space,
-  },
-  button: {
-    backgroundColor: `${Colors.theme.coral} !important`,
-    color: Colors.theme.platinum,
-    fontFamily: "Montserrat",
-    fontWeight: "bold",
-    fontSize: 15,
-    margin: 10,
   },
   icon: {
     margin: 10,
@@ -50,6 +43,7 @@ const ContactInfo = (): ReactElement => {
   });
 
   const classes = useStyles();
+  const globalClasses = useGlobalStyles();
 
   /** Fetch Profile Info */
   useEffect(() => {
@@ -164,7 +158,7 @@ const ContactInfo = (): ReactElement => {
           </div>
         </div>
         <div className="ffc" style={{ flex: "0.3" }}>
-          <Fab type="submit" variant="extended" className={classes.button}>
+          <Fab type="submit" variant="extended" className={`${globalClasses.button} ${globalClasses.coral}`}>
             <SaveIcon className={classes.icon} />
             Save Profile
           </Fab>

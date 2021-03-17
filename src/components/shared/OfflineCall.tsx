@@ -1,20 +1,11 @@
 import { Button, makeStyles } from "@material-ui/core";
 import { ReactElement, useEffect } from "react";
 import Colors from "../styling/Colors";
+import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
 
-const useStyles = makeStyles({
-  button: {
-    backgroundColor: `${Colors.theme.coral} !important`,
-    color: Colors.theme.platinum,
-    fontFamily: "Montserrat",
-    fontWeight: "bold",
-    fontSize: 15,
-    margin: 10,
-  },
-});
 const OfflineCall = (): ReactElement => {
-  const classes = useStyles();
+  const globalClasses = useGlobalStyles();
   useEffect(() => {
     console.log("calling +1 888 651 1946");
     document.location.href = "tel:1-888-651-1946";
@@ -23,7 +14,7 @@ const OfflineCall = (): ReactElement => {
     <Layout title="Offline Call" flexColumn parent="/firstresponder">
       <div className="ffc justify align">
         <Button
-          className={classes.button}
+          className={globalClasses.button}
           component="a"
           href="tel:1-888-651-1946"
           type="phone"

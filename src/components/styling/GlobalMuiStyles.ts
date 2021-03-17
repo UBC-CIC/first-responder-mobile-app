@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core";
+import Colors from "./Colors";
 
 const useStyles = makeStyles({
   wideButtonContainer: {
@@ -18,6 +19,16 @@ const useStyles = makeStyles({
     fontSize: 18,
     fontWeight: "bold",
     color: "#fff",
+  },
+  button: {
+    color: Colors.theme.platinum,
+    fontFamily: "Montserrat",
+    fontWeight: "bold",
+    fontSize: 15,
+    margin: 10,
+  },
+  coral: {
+    backgroundColor: `${Colors.theme.coral} !important`,
   },
 });
 
