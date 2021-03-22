@@ -22,7 +22,7 @@ type PhysicianProfile
   LastName: String!
   Organization: String
   Occupation: String
-}
+} 
 
 type FirstResponderProfile @model @aws_api_key {
   id: ID!
@@ -30,6 +30,22 @@ type FirstResponderProfile @model @aws_api_key {
   FirstName: String
   LastName: String
   Occupation: String
+}
+
+type UserProfile {
+  email: String!
+  user_status: String
+  first_name: String
+  last_name: String
+  phone_number: String
+  user_role: String
+  organization: String
+  profile_picture: String
+  notes: String
+  is_paged: Boolean
+  availability: String
+  created_date_time: String
+  updated_date_time: String
 }
 
 # Private Types

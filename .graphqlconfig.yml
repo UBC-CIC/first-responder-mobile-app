@@ -1,17 +1,6 @@
 projects:
-  starspwa:
-    schemaPath: src/graphql/schema.json
-    includes:
-      - src/graphql/**/*.ts
-    excludes:
-      - ./amplify/**
-    extensions:
-      amplify:
-        codeGenTarget: typescript
-        generatedFileName: src/API.ts
-        docsFilePath: src/graphql
   firstrespondermobile:
-    schemaPath: src/graphql/schema.json
+    schemaPath: amplify/backend/api/firstrespondermobile/build/schema.graphql
     includes:
       - src/graphql/**/*.ts
     excludes:
@@ -21,6 +10,9 @@ projects:
         codeGenTarget: typescript
         generatedFileName: src/API.ts
         docsFilePath: src/graphql
+        region: ca-central-1
+        apiId: null
+        maxDepth: 2
 extensions:
   amplify:
     version: 3

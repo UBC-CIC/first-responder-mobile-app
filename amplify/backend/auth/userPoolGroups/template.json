@@ -36,24 +36,11 @@
     },
     "Resources": {
     
-        "firstrespondersGroup": {
+        "usersGroup": {
           "Type" : "AWS::Cognito::UserPoolGroup",
           "Properties" : {
-              "GroupName" : "firstresponders",
+              "GroupName" : "users",
               "Precedence" : 1,
-              
-              "UserPoolId" : {
-                "Ref": "authfirstrespondermobilecbc374ceUserPoolId"
-              } 
-            }
-        },
-        
-    
-        "physiciansGroup": {
-          "Type" : "AWS::Cognito::UserPoolGroup",
-          "Properties" : {
-              "GroupName" : "physicians",
-              "Precedence" : 2,
               
               "UserPoolId" : {
                 "Ref": "authfirstrespondermobilecbc374ceUserPoolId"

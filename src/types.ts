@@ -60,3 +60,21 @@ export enum ConnectionState {
   GOOD,
   UNKNOWN
 }
+
+export type UserProfileType = {
+  email: string,
+  user_status?: string | null,
+  first_name?: string | null,
+  last_name?: string | null,
+  phone_number?: string | null,
+  user_role?: string | null,
+  organization?: string | null,
+  profile_picture?: string | null,
+  notes?: string | null,
+  is_paged?: boolean | null,
+  availability?: string | null,
+  created_date_time?: string | null,
+  updated_date_time?: string | null,
+  createdAt?: string,
+  updatedAt?: string,
+};

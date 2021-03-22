@@ -26,6 +26,7 @@ import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
 import Layout from "../ui/Layout";
+import {UserProfileType} from "../../types";
 
 const headerStyle = {
   color: Colors.theme.platinum,

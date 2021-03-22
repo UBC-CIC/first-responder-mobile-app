@@ -327,16 +327,6 @@ export type JoinChimeMeetingMutation = {
       __typename: "MeetingData",
       MeetingId: string,
       ExternalMeetingId?: string | null,
-      MediaPlacement:  {
-        __typename: "MediaPlacement",
-        AudioHostUrl: string,
-        AudioFallbackUrl: string,
-        ScreenDataUrl: string,
-        ScreenSharingUrl: string,
-        ScreenViewingUrl: string,
-        SignalingUrl: string,
-        TurnControlUrl: string,
-      },
       MediaRegion: string,
     },
     Attendee?:  {

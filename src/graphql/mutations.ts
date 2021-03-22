@@ -23,15 +23,6 @@ export const joinChimeMeeting = /* GraphQL */ `
       Meeting {
         MeetingId
         ExternalMeetingId
-        MediaPlacement {
-          AudioHostUrl
-          AudioFallbackUrl
-          ScreenDataUrl
-          ScreenSharingUrl
-          ScreenViewingUrl
-          SignalingUrl
-          TurnControlUrl
-        }
         MediaRegion
       }
       Attendee {
