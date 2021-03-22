@@ -1,10 +1,10 @@
 [
     {
-        "groupName": "physicians",
+        "groupName": "firstresponders",
         "precedence": 1
     },
     {
-        "groupName": "firstresponders",
+        "groupName": "physicians",
         "precedence": 2
     }
 ]

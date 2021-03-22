@@ -12,13 +12,24 @@
       "AmplifyAppId": "dn4tcmp6sezds"
     },
     "categories": {
-      "auth": {
-        "firstrespondermobilecbc374ce": {}
-      },
       "function": {
         "firstresponderjoinmeeting": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
           "s3Key": "amplify-builds/firstresponderjoinmeeting-6b73454f63657a537930-build.zip"
+        }
+      },
+      "auth": {
+        "starspwaphysicians": {},
+        "firstrespondermobilecbc374ce": {},
+        "userPoolGroups": {}
+      },
+      "storage": {
+        "userprofile": {
+          "tableName": "user-profile",
+          "region": "ca-central-1",
+          "arn": "arn:aws:dynamodb:ca-central-1:676717162865:table/user-profile",
+          "partitionKeyName": "email",
+          "partitionKeyType": "S"
         }
       }
     }

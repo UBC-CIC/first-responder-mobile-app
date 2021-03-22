@@ -1,12 +1,10 @@
 {
-    "identityPoolName": "firstrespondermobilecbc374ce_identitypool_cbc374ce",
-    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "firstrcbc374ce",
     "userPoolName": "firstrespondermobilecbc374ce_userpool_cbc374ce",
     "autoVerifiedAttributes": [
-        "email"
+        "phone_number"
     ],
-    "mfaConfiguration": "OFF",
+    "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
         "SMS Text Message"
     ],
@@ -23,16 +21,19 @@
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
+        "phone_number",
         "email"
     ],
     "userpoolClientReadAttributes": [
-        "email"
+        "email",
+        "phone_number",
+        "phone_number_verified"
     ],
     "userpoolClientLambdaRole": "firstrcbc374ce_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": false,
+    "userpoolClientSetAttributes": true,
     "sharedId": "cbc374ce",
     "resourceName": "firstrespondermobilecbc374ce",
-    "authSelections": "identityPoolAndUserPool",
+    "authSelections": "userPoolOnly",
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -51,8 +52,8 @@
     ],
     "triggers": "{}",
     "userPoolGroupList": [
-        "physicians",
-        "firstresponders"
+        "firstresponders",
+        "physicians"
     ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
@@ -61,7 +62,6 @@
     },
     "permissions": [],
     "dependsOn": [],
-    "thirdPartyAuth": false,
     "userPoolGroups": false,
     "adminQueries": false,
     "hostedUI": false,

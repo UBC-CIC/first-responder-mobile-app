@@ -7,6 +7,8 @@ import {
 
   SignIn,
 
+  SignUp,
+
   VerifyContact, withAuthenticator
 } from "aws-amplify-react";
 import React, { ReactElement } from "react";
@@ -93,6 +95,7 @@ const PhysicianRoutes = withAuthenticator(
     authenticatorComponents: [
       <Header title="Sign In" key={-1} parent="/" ></Header>,
       <SignIn key={0} />,
+      <SignUp key={1}/>,
       <VerifyContact key={2} />,
       <ForgotPassword key={5} />,
     ],
