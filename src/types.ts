@@ -60,22 +60,6 @@ export enum ConnectionState {
   UNKNOWN
 }
 
-export type UserProfileType = {
-    email: string; // Email Address (e.g. "abc@amazon.com")
-    first_name?: string; // First Name (e.g. "John")
-    last_name?: string; // Last Name (e.g. "Doe")
-    phone_number?: string; // Phone Number (e.g. "+16041111111")
-    user_role?: string; // User Role (e.g. "Physician")
-    organization?: string; // User Organization (e.g. "St. Mercy's Hospital")
-    profile_picture?: string; // S3 link to the user profile picture (e.g. "s3://test-bucket/abc.jpg")
-    notes?: string; // Any notes (e.g. "Specialist in Radiology.")
-    user_status?: UserStatus; // Indicates the current user availability - automatically updated every 30 minutes based on availability schedule.
-    is_paged?: boolean, // true if the user has been paged
-    availability?: UserAvailability; // Stores their availability schedule and overrides. 
-    created_date_time?: string; // When this user was created (ISO8601 format)
-    updated_date_time?: string; // When this user was updated (ISO8601 format)
-};
-
 export type UserAvalabilityOverride = {
     "start_time": string; // ISO8601 formatted time (e.g. "2020-01-04T00:23:00Z")
     "end_time": string; // ISO8601 formatted time (e.g. "2020-01-04T00:23:00Z")

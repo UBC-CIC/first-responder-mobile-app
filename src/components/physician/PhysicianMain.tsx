@@ -4,8 +4,6 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import bg from "../../assets/physician-home-bg.svg";
-import base64Convert from "../../push/keys";
-import keys from "../../push/keys.json";
 import { MeetingType } from "../../types";
 import listAllMeetings from "../calls/listAllMeetings";
 import useSessionId from "../hooks/useSessionId";
@@ -44,22 +42,6 @@ const PhysicianMain = (): ReactElement => {
   const globalClasses = useGlobalStyles();
   const [meetings, setMeetings] = useState<MeetingType[] | undefined | null>();
   const sessionId = useSessionId();
-  const handleNotif = async () => {
-    console.log("notif");
-    const sw = await navigator.serviceWorker.ready;
-
-    const push = await sw.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: base64Convert(testKey),
-    });
-    console.log("Public Key: ", keys.publicKey);
-
-    const sub = await sw.pushManager.getSubscription();
-
-    console.log("sub", sub);
-
-    console.log(JSON.stringify(push));
-  };
 
   useEffect(() => {
     if(!localStorage.getItem("physiciansessionid")){
@@ -107,11 +89,6 @@ const PhysicianMain = (): ReactElement => {
             onClick={() => history.push("/physician/profile")}
           >
             Edit Profile
-          </Button>
-        </div>
-        <div className={globalClasses.wideButtonContainer}>
-          <Button className={globalClasses.wideButton} onClick={handleNotif}>
-            Allow Notifications
           </Button>
         </div>
       </div>

@@ -1,10 +1,6 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import { API, graphqlOperation } from "aws-amplify";
-// import {
-//   GetPhysicianProfileQuery,
-//   GetPhysicianProfileQueryVariables,
-// } from "../../API";
-import {  SpecialistProfileType, UserProfileType } from "../../types";
+import {  SpecialistProfileType } from "../../types";
 import {
   GetSpecialistProfileQuery,
   GetSpecialistProfileQueryVariables,

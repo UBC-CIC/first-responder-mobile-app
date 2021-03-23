@@ -1,6 +1,7 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import { API, graphqlOperation } from "aws-amplify";
-import { getFirstResponderProfile, GetFirstResponderProfileQuery, GetFirstResponderProfileQueryVariables } from "../../FirstResponderProfileAPI";
+import { GetFirstResponderProfileQuery, GetFirstResponderProfileQueryVariables } from "../../API";
+import { getFirstResponderProfile } from "../../graphql/queries";
 import { FirstResponderProfileType } from "../../types";
 
 const fetchFirstResponderProfile = async (options: GetFirstResponderProfileQueryVariables):Promise<FirstResponderProfileType | undefined> => {
