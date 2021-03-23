@@ -34,8 +34,6 @@ const useStyles = makeStyles({
   },
 });
 
-const testKey =
-  "BJthRQ5myDgc7OSXzPCMftGw-n16F7zQBEN7EUD6XxcfTTvrLGWSIG7y_JxiWtVlCFua0S8MTB5rPziBqNx1qIo";
 const PhysicianMain = (): ReactElement => {
   const history = useHistory();
   const classes = useStyles();
