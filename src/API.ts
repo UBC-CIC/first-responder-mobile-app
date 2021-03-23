@@ -2,11 +2,74 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type JoinInfo = {
-  __typename: "JoinInfo",
-  id?: string,
-  Meeting?: MeetingData,
+export type CreateFirstResponderProfileInput = {
+  first_name?: string | null,
+  last_name?: string | null,
+  occupation?: string | null,
+  phone_number: string,
+};
+
+export type FirstResponderProfile = {
+  __typename: "FirstResponderProfile",
+  first_name?: string | null,
+  last_name?: string | null,
+  occupation?: string | null,
+  phone_number?: string,
+};
+
+export type CreateSpecialistProfileInput = {
+  availability?: string | null,
+  created_date_time?: string | null,
+  email?: string | null,
+  first_name?: string | null,
+  is_paged?: boolean | null,
+  last_name?: string | null,
+  notes?: string | null,
+  organization?: string | null,
+  phone_number: string,
+  profile_picture?: string | null,
+  updated_date_time?: string | null,
+  user_role?: string | null,
+  user_status?: string | null,
+};
+
+export type SpecialistProfile = {
+  __typename: "SpecialistProfile",
+  availability?: string | null,
+  created_date_time?: string | null,
+  email?: string | null,
+  first_name?: string | null,
+  is_paged?: boolean | null,
+  last_name?: string | null,
+  notes?: string | null,
+  organization?: string | null,
+  phone_number?: string,
+  profile_picture?: string | null,
+  updated_date_time?: string | null,
+  user_role?: string | null,
+  user_status?: string | null,
+};
+
+export type DeleteFirstResponderProfileInput = {
+  phone_number: string,
+};
+
+export type DeleteSpecialistProfileInput = {
+  phone_number: string,
+};
+
+export type MeetingInfo = {
+  __typename: "MeetingInfo",
   Attendee?: AttendeeInfo,
+  Meeting?: MeetingData,
+  id?: string,
+};
+
+export type AttendeeInfo = {
+  __typename: "AttendeeInfo",
+  AttendeeId?: string | null,
+  ExternalUserId?: string | null,
+  JoinToken?: string | null,
 };
 
 export type MeetingData = {
@@ -19,532 +82,542 @@ export type MeetingData = {
 
 export type MediaPlacement = {
   __typename: "MediaPlacement",
-  AudioHostUrl?: string,
-  AudioFallbackUrl?: string,
-  ScreenDataUrl?: string,
-  ScreenSharingUrl?: string,
-  ScreenViewingUrl?: string,
-  SignalingUrl?: string,
-  TurnControlUrl?: string,
+  AudioFallbackUrl?: string | null,
+  AudioHostUrl?: string | null,
+  ScreenDataUrl?: string | null,
+  ScreenSharingUrl?: string | null,
+  ScreenViewingUrl?: string | null,
+  SignalingUrl?: string | null,
+  TurnControlUrl?: string | null,
 };
 
-export type AttendeeInfo = {
-  __typename: "AttendeeInfo",
-  ExternalUserId?: string | null,
-  AttendeeId?: string | null,
-  JoinToken?: string | null,
+export type UpdateFirstResponderProfileInput = {
+  first_name?: string | null,
+  last_name?: string | null,
+  occupation?: string | null,
+  phone_number: string,
+};
+
+export type UpdateSpecialistProfileInput = {
+  availability?: string | null,
+  created_date_time?: string | null,
+  email?: string | null,
+  first_name?: string | null,
+  is_paged?: boolean | null,
+  last_name?: string | null,
+  notes?: string | null,
+  organization?: string | null,
+  phone_number: string,
+  profile_picture?: string | null,
+  updated_date_time?: string | null,
+  user_role?: string | null,
+  user_status?: string | null,
 };
 
 export type CreateMeetingInput = {
-  id?: string | null,
-  createdAt?: string | null,
-  updatedAt?: string | null,
-};
-
-export type ModelMeetingConditionInput = {
-  createdAt?: ModelStringInput | null,
-  updatedAt?: ModelStringInput | null,
-  and?: Array< ModelMeetingConditionInput | null > | null,
-  or?: Array< ModelMeetingConditionInput | null > | null,
-  not?: ModelMeetingConditionInput | null,
-};
-
-export type ModelStringInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
-};
-
-export enum ModelAttributeTypes {
-  binary = "binary",
-  binarySet = "binarySet",
-  bool = "bool",
-  list = "list",
-  map = "map",
-  number = "number",
-  numberSet = "numberSet",
-  string = "string",
-  stringSet = "stringSet",
-  _null = "_null",
-}
-
-
-export type ModelSizeInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
+  id: string,
 };
 
 export type Meeting = {
   __typename: "Meeting",
   id?: string,
-  createdAt?: string | null,
-  updatedAt?: string | null,
+  ExternalMeetingId?: string | null,
+  MediaPlacement?: MediaPlacement,
+  MediaRegion?: string,
+  MeetingId?: string,
 };
 
 export type UpdateMeetingInput = {
   id: string,
-  createdAt?: string | null,
-  updatedAt?: string | null,
 };
 
 export type DeleteMeetingInput = {
-  id?: string | null,
-};
-
-export type CreateAttendeeInput = {
-  id?: string | null,
-  name: string,
-  externalUserId?: string | null,
-  meetingID: string,
-  role: string,
-};
-
-export type ModelAttendeeConditionInput = {
-  name?: ModelStringInput | null,
-  externalUserId?: ModelStringInput | null,
-  meetingID?: ModelIDInput | null,
-  role?: ModelStringInput | null,
-  and?: Array< ModelAttendeeConditionInput | null > | null,
-  or?: Array< ModelAttendeeConditionInput | null > | null,
-  not?: ModelAttendeeConditionInput | null,
-};
-
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
-};
-
-export type Attendee = {
-  __typename: "Attendee",
-  id?: string,
-  name?: string,
-  externalUserId?: string | null,
-  meetingID?: string,
-  role?: string,
-};
-
-export type UpdateAttendeeInput = {
   id: string,
-  name?: string | null,
+};
+
+export type CreateAttendeeDataInput = {
+  id: string,
   externalUserId?: string | null,
   meetingID?: string | null,
+  name?: string | null,
   role?: string | null,
 };
 
-export type DeleteAttendeeInput = {
-  id?: string | null,
-};
-
-export type CreateFirstResponderProfileInput = {
-  id?: string | null,
-  phoneNumber?: string | null,
-  FirstName?: string | null,
-  LastName?: string | null,
-  Occupation?: string | null,
-};
-
-export type ModelFirstResponderProfileConditionInput = {
-  phoneNumber?: ModelStringInput | null,
-  FirstName?: ModelStringInput | null,
-  LastName?: ModelStringInput | null,
-  Occupation?: ModelStringInput | null,
-  and?: Array< ModelFirstResponderProfileConditionInput | null > | null,
-  or?: Array< ModelFirstResponderProfileConditionInput | null > | null,
-  not?: ModelFirstResponderProfileConditionInput | null,
-};
-
-export type FirstResponderProfile = {
-  __typename: "FirstResponderProfile",
+export type AttendeeData = {
+  __typename: "AttendeeData",
   id?: string,
-  phoneNumber?: string | null,
-  FirstName?: string | null,
-  LastName?: string | null,
-  Occupation?: string | null,
-  createdAt?: string,
-  updatedAt?: string,
+  externalUserId?: string | null,
+  meetingID?: string | null,
+  name?: string | null,
+  role?: string | null,
 };
 
-export type UpdateFirstResponderProfileInput = {
+export type UpdateAttendeeDataInput = {
   id: string,
-  phoneNumber?: string | null,
-  FirstName?: string | null,
-  LastName?: string | null,
-  Occupation?: string | null,
+  externalUserId?: string | null,
+  meetingID?: string | null,
+  name?: string | null,
+  role?: string | null,
 };
 
-export type DeleteFirstResponderProfileInput = {
-  id?: string | null,
-};
-
-export type CreatePhysicianProfileInput = {
-  id?: string | null,
-  FirstName: string,
-  LastName: string,
-  Organization?: string | null,
-  Occupation?: string | null,
-};
-
-export type ModelPhysicianProfileConditionInput = {
-  FirstName?: ModelStringInput | null,
-  LastName?: ModelStringInput | null,
-  Organization?: ModelStringInput | null,
-  Occupation?: ModelStringInput | null,
-  and?: Array< ModelPhysicianProfileConditionInput | null > | null,
-  or?: Array< ModelPhysicianProfileConditionInput | null > | null,
-  not?: ModelPhysicianProfileConditionInput | null,
-};
-
-export type PhysicianProfile = {
-  __typename: "PhysicianProfile",
-  id?: string,
-  FirstName?: string,
-  LastName?: string,
-  Organization?: string | null,
-  Occupation?: string | null,
-  createdAt?: string,
-  updatedAt?: string,
-  owner?: string | null,
-};
-
-export type UpdatePhysicianProfileInput = {
+export type DeleteAttendeeDataInput = {
   id: string,
-  FirstName?: string | null,
-  LastName?: string | null,
-  Organization?: string | null,
-  Occupation?: string | null,
 };
 
-export type DeletePhysicianProfileInput = {
-  id?: string | null,
+export type TableFirstResponderProfileFilterInput = {
+  first_name?: TableStringFilterInput | null,
+  last_name?: TableStringFilterInput | null,
+  occupation?: TableStringFilterInput | null,
+  phone_number?: TableStringFilterInput | null,
 };
 
-export type ModelMeetingFilterInput = {
-  id?: ModelIDInput | null,
-  createdAt?: ModelStringInput | null,
-  updatedAt?: ModelStringInput | null,
-  and?: Array< ModelMeetingFilterInput | null > | null,
-  or?: Array< ModelMeetingFilterInput | null > | null,
-  not?: ModelMeetingFilterInput | null,
+export type TableStringFilterInput = {
+  beginsWith?: string | null,
+  between?: Array< string | null > | null,
+  contains?: string | null,
+  eq?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ne?: string | null,
+  notContains?: string | null,
 };
 
-export type ModelMeetingConnection = {
-  __typename: "ModelMeetingConnection",
-  items?:  Array<Meeting | null > | null,
-  nextToken?: string | null,
-};
-
-export type ModelAttendeeFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  externalUserId?: ModelStringInput | null,
-  meetingID?: ModelIDInput | null,
-  role?: ModelStringInput | null,
-  and?: Array< ModelAttendeeFilterInput | null > | null,
-  or?: Array< ModelAttendeeFilterInput | null > | null,
-  not?: ModelAttendeeFilterInput | null,
-};
-
-export type ModelAttendeeConnection = {
-  __typename: "ModelAttendeeConnection",
-  items?:  Array<Attendee | null > | null,
-  nextToken?: string | null,
-};
-
-export type ModelFirstResponderProfileFilterInput = {
-  id?: ModelIDInput | null,
-  phoneNumber?: ModelStringInput | null,
-  FirstName?: ModelStringInput | null,
-  LastName?: ModelStringInput | null,
-  Occupation?: ModelStringInput | null,
-  and?: Array< ModelFirstResponderProfileFilterInput | null > | null,
-  or?: Array< ModelFirstResponderProfileFilterInput | null > | null,
-  not?: ModelFirstResponderProfileFilterInput | null,
-};
-
-export type ModelFirstResponderProfileConnection = {
-  __typename: "ModelFirstResponderProfileConnection",
+export type FirstResponderProfileConnection = {
+  __typename: "FirstResponderProfileConnection",
   items?:  Array<FirstResponderProfile | null > | null,
   nextToken?: string | null,
 };
 
-export type ModelPhysicianProfileFilterInput = {
-  id?: ModelIDInput | null,
-  FirstName?: ModelStringInput | null,
-  LastName?: ModelStringInput | null,
-  Organization?: ModelStringInput | null,
-  Occupation?: ModelStringInput | null,
-  and?: Array< ModelPhysicianProfileFilterInput | null > | null,
-  or?: Array< ModelPhysicianProfileFilterInput | null > | null,
-  not?: ModelPhysicianProfileFilterInput | null,
+export type TableSpecialistProfileFilterInput = {
+  availability?: TableStringFilterInput | null,
+  created_date_time?: TableStringFilterInput | null,
+  email?: TableStringFilterInput | null,
+  first_name?: TableStringFilterInput | null,
+  is_paged?: TableBooleanFilterInput | null,
+  last_name?: TableStringFilterInput | null,
+  notes?: TableStringFilterInput | null,
+  organization?: TableStringFilterInput | null,
+  phone_number?: TableStringFilterInput | null,
+  profile_picture?: TableStringFilterInput | null,
+  updated_date_time?: TableStringFilterInput | null,
+  user_role?: TableStringFilterInput | null,
+  user_status?: TableStringFilterInput | null,
 };
 
-export type ModelPhysicianProfileConnection = {
-  __typename: "ModelPhysicianProfileConnection",
-  items?:  Array<PhysicianProfile | null > | null,
+export type TableBooleanFilterInput = {
+  eq?: boolean | null,
+  ne?: boolean | null,
+};
+
+export type SpecialistProfileConnection = {
+  __typename: "SpecialistProfileConnection",
+  items?:  Array<SpecialistProfile | null > | null,
   nextToken?: string | null,
 };
 
-export type JoinChimeMeetingMutationVariables = {
-  title?: string | null,
-  name?: string | null,
-  region?: string | null,
-  role?: string | null,
-  externalAttendeeId?: string | null,
-  phoneNumber?: string | null,
+export type TableMeetingFilterInput = {
+  id?: TableStringFilterInput | null,
 };
 
-export type JoinChimeMeetingMutation = {
-  joinChimeMeeting?:  {
-    __typename: "JoinInfo",
-    id: string,
-    Meeting:  {
-      __typename: "MeetingData",
-      MeetingId: string,
-      ExternalMeetingId?: string | null,
-      MediaRegion: string,
-    },
-    Attendee?:  {
-      __typename: "AttendeeInfo",
-      ExternalUserId?: string | null,
-      AttendeeId?: string | null,
-      JoinToken?: string | null,
-    } | null,
-  } | null,
+export type MeetingConnection = {
+  __typename: "MeetingConnection",
+  items?:  Array<Meeting | null > | null,
+  nextToken?: string | null,
+};
+
+export type TableAttendeeDataFilterInput = {
+  id?: TableStringFilterInput | null,
+  externalUserId?: TableStringFilterInput | null,
+  meetingID?: TableStringFilterInput | null,
+  name?: TableStringFilterInput | null,
+  role?: TableStringFilterInput | null,
+};
+
+export type AttendeeDataConnection = {
+  __typename: "AttendeeDataConnection",
+  items?:  Array<AttendeeData | null > | null,
+  nextToken?: string | null,
 };
 
 export type ConfirmPhoneNumberMutationVariables = {
-  secretCode?: string | null,
   phoneNumber?: string | null,
+  secretCode?: string | null,
 };
 
 export type ConfirmPhoneNumberMutation = {
   confirmPhoneNumber?: string | null,
 };
 
+export type CreateFirstResponderProfileMutationVariables = {
+  input?: CreateFirstResponderProfileInput,
+};
+
+export type CreateFirstResponderProfileMutation = {
+  createFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    first_name?: string | null,
+    last_name?: string | null,
+    occupation?: string | null,
+    phone_number: string,
+  } | null,
+};
+
+export type CreateSpecialistProfileMutationVariables = {
+  input?: CreateSpecialistProfileInput,
+};
+
+export type CreateSpecialistProfileMutation = {
+  createSpecialistProfile?:  {
+    __typename: "SpecialistProfile",
+    availability?: string | null,
+    created_date_time?: string | null,
+    email?: string | null,
+    first_name?: string | null,
+    is_paged?: boolean | null,
+    last_name?: string | null,
+    notes?: string | null,
+    organization?: string | null,
+    phone_number: string,
+    profile_picture?: string | null,
+    updated_date_time?: string | null,
+    user_role?: string | null,
+    user_status?: string | null,
+  } | null,
+};
+
+export type DeleteFirstResponderProfileMutationVariables = {
+  input?: DeleteFirstResponderProfileInput,
+};
+
+export type DeleteFirstResponderProfileMutation = {
+  deleteFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    first_name?: string | null,
+    last_name?: string | null,
+    occupation?: string | null,
+    phone_number: string,
+  } | null,
+};
+
+export type DeleteSpecialistProfileMutationVariables = {
+  input?: DeleteSpecialistProfileInput,
+};
+
+export type DeleteSpecialistProfileMutation = {
+  deleteSpecialistProfile?:  {
+    __typename: "SpecialistProfile",
+    availability?: string | null,
+    created_date_time?: string | null,
+    email?: string | null,
+    first_name?: string | null,
+    is_paged?: boolean | null,
+    last_name?: string | null,
+    notes?: string | null,
+    organization?: string | null,
+    phone_number: string,
+    profile_picture?: string | null,
+    updated_date_time?: string | null,
+    user_role?: string | null,
+    user_status?: string | null,
+  } | null,
+};
+
+export type JoinChimeMeetingMutationVariables = {
+  externalAttendeeId?: string | null,
+  name?: string | null,
+  phoneNumber?: string | null,
+  region?: string | null,
+  role?: string | null,
+  title?: string | null,
+};
+
+export type JoinChimeMeetingMutation = {
+  joinChimeMeeting?:  {
+    __typename: "MeetingInfo",
+    Attendee?:  {
+      __typename: "AttendeeInfo",
+      AttendeeId?: string | null,
+      ExternalUserId?: string | null,
+      JoinToken?: string | null,
+    } | null,
+    Meeting:  {
+      __typename: "MeetingData",
+      MeetingId: string,
+      ExternalMeetingId?: string | null,
+      MediaRegion: string,
+    },
+    id: string,
+  } | null,
+};
+
+export type UpdateFirstResponderProfileMutationVariables = {
+  input?: UpdateFirstResponderProfileInput,
+};
+
+export type UpdateFirstResponderProfileMutation = {
+  updateFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    first_name?: string | null,
+    last_name?: string | null,
+    occupation?: string | null,
+    phone_number: string,
+  } | null,
+};
+
+export type UpdateSpecialistProfileMutationVariables = {
+  input?: UpdateSpecialistProfileInput,
+};
+
+export type UpdateSpecialistProfileMutation = {
+  updateSpecialistProfile?:  {
+    __typename: "SpecialistProfile",
+    availability?: string | null,
+    created_date_time?: string | null,
+    email?: string | null,
+    first_name?: string | null,
+    is_paged?: boolean | null,
+    last_name?: string | null,
+    notes?: string | null,
+    organization?: string | null,
+    phone_number: string,
+    profile_picture?: string | null,
+    updated_date_time?: string | null,
+    user_role?: string | null,
+    user_status?: string | null,
+  } | null,
+};
+
 export type CreateMeetingMutationVariables = {
   input?: CreateMeetingInput,
-  condition?: ModelMeetingConditionInput | null,
 };
 
 export type CreateMeetingMutation = {
   createMeeting?:  {
     __typename: "Meeting",
     id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
+    ExternalMeetingId?: string | null,
+    MediaPlacement?:  {
+      __typename: "MediaPlacement",
+      AudioFallbackUrl?: string | null,
+      AudioHostUrl?: string | null,
+      ScreenDataUrl?: string | null,
+      ScreenSharingUrl?: string | null,
+      ScreenViewingUrl?: string | null,
+      SignalingUrl?: string | null,
+      TurnControlUrl?: string | null,
+    } | null,
+    MediaRegion: string,
+    MeetingId: string,
   } | null,
 };
 
 export type UpdateMeetingMutationVariables = {
   input?: UpdateMeetingInput,
-  condition?: ModelMeetingConditionInput | null,
 };
 
 export type UpdateMeetingMutation = {
   updateMeeting?:  {
     __typename: "Meeting",
     id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
+    ExternalMeetingId?: string | null,
+    MediaPlacement?:  {
+      __typename: "MediaPlacement",
+      AudioFallbackUrl?: string | null,
+      AudioHostUrl?: string | null,
+      ScreenDataUrl?: string | null,
+      ScreenSharingUrl?: string | null,
+      ScreenViewingUrl?: string | null,
+      SignalingUrl?: string | null,
+      TurnControlUrl?: string | null,
+    } | null,
+    MediaRegion: string,
+    MeetingId: string,
   } | null,
 };
 
 export type DeleteMeetingMutationVariables = {
   input?: DeleteMeetingInput,
-  condition?: ModelMeetingConditionInput | null,
 };
 
 export type DeleteMeetingMutation = {
   deleteMeeting?:  {
     __typename: "Meeting",
     id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
+    ExternalMeetingId?: string | null,
+    MediaPlacement?:  {
+      __typename: "MediaPlacement",
+      AudioFallbackUrl?: string | null,
+      AudioHostUrl?: string | null,
+      ScreenDataUrl?: string | null,
+      ScreenSharingUrl?: string | null,
+      ScreenViewingUrl?: string | null,
+      SignalingUrl?: string | null,
+      TurnControlUrl?: string | null,
+    } | null,
+    MediaRegion: string,
+    MeetingId: string,
   } | null,
 };
 
-export type CreateAttendeeMutationVariables = {
-  input?: CreateAttendeeInput,
-  condition?: ModelAttendeeConditionInput | null,
+export type CreateAttendeeDataMutationVariables = {
+  input?: CreateAttendeeDataInput,
 };
 
-export type CreateAttendeeMutation = {
-  createAttendee?:  {
-    __typename: "Attendee",
+export type CreateAttendeeDataMutation = {
+  createAttendeeData?:  {
+    __typename: "AttendeeData",
     id: string,
-    name: string,
     externalUserId?: string | null,
-    meetingID: string,
-    role: string,
+    meetingID?: string | null,
+    name?: string | null,
+    role?: string | null,
   } | null,
 };
 
-export type UpdateAttendeeMutationVariables = {
-  input?: UpdateAttendeeInput,
-  condition?: ModelAttendeeConditionInput | null,
+export type UpdateAttendeeDataMutationVariables = {
+  input?: UpdateAttendeeDataInput,
 };
 
-export type UpdateAttendeeMutation = {
-  updateAttendee?:  {
-    __typename: "Attendee",
+export type UpdateAttendeeDataMutation = {
+  updateAttendeeData?:  {
+    __typename: "AttendeeData",
     id: string,
-    name: string,
     externalUserId?: string | null,
-    meetingID: string,
-    role: string,
+    meetingID?: string | null,
+    name?: string | null,
+    role?: string | null,
   } | null,
 };
 
-export type DeleteAttendeeMutationVariables = {
-  input?: DeleteAttendeeInput,
-  condition?: ModelAttendeeConditionInput | null,
+export type DeleteAttendeeDataMutationVariables = {
+  input?: DeleteAttendeeDataInput,
 };
 
-export type DeleteAttendeeMutation = {
-  deleteAttendee?:  {
-    __typename: "Attendee",
+export type DeleteAttendeeDataMutation = {
+  deleteAttendeeData?:  {
+    __typename: "AttendeeData",
     id: string,
-    name: string,
     externalUserId?: string | null,
-    meetingID: string,
-    role: string,
+    meetingID?: string | null,
+    name?: string | null,
+    role?: string | null,
   } | null,
 };
 
-export type CreateFirstResponderProfileMutationVariables = {
-  input?: CreateFirstResponderProfileInput,
-  condition?: ModelFirstResponderProfileConditionInput | null,
+export type GetFirstResponderProfileQueryVariables = {
+  phone_number?: string,
 };
 
-export type CreateFirstResponderProfileMutation = {
-  createFirstResponderProfile?:  {
+export type GetFirstResponderProfileQuery = {
+  getFirstResponderProfile?:  {
     __typename: "FirstResponderProfile",
-    id: string,
-    phoneNumber?: string | null,
-    FirstName?: string | null,
-    LastName?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
+    first_name?: string | null,
+    last_name?: string | null,
+    occupation?: string | null,
+    phone_number: string,
   } | null,
 };
 
-export type UpdateFirstResponderProfileMutationVariables = {
-  input?: UpdateFirstResponderProfileInput,
-  condition?: ModelFirstResponderProfileConditionInput | null,
+export type GetSpecialistProfileQueryVariables = {
+  phone_number?: string,
 };
 
-export type UpdateFirstResponderProfileMutation = {
-  updateFirstResponderProfile?:  {
-    __typename: "FirstResponderProfile",
-    id: string,
-    phoneNumber?: string | null,
-    FirstName?: string | null,
-    LastName?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
+export type GetSpecialistProfileQuery = {
+  getSpecialistProfile?:  {
+    __typename: "SpecialistProfile",
+    availability?: string | null,
+    created_date_time?: string | null,
+    email?: string | null,
+    first_name?: string | null,
+    is_paged?: boolean | null,
+    last_name?: string | null,
+    notes?: string | null,
+    organization?: string | null,
+    phone_number: string,
+    profile_picture?: string | null,
+    updated_date_time?: string | null,
+    user_role?: string | null,
+    user_status?: string | null,
   } | null,
 };
 
-export type DeleteFirstResponderProfileMutationVariables = {
-  input?: DeleteFirstResponderProfileInput,
-  condition?: ModelFirstResponderProfileConditionInput | null,
+export type ListFirstResponderProfilesQueryVariables = {
+  filter?: TableFirstResponderProfileFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
 };
 
-export type DeleteFirstResponderProfileMutation = {
-  deleteFirstResponderProfile?:  {
-    __typename: "FirstResponderProfile",
-    id: string,
-    phoneNumber?: string | null,
-    FirstName?: string | null,
-    LastName?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
+export type ListFirstResponderProfilesQuery = {
+  listFirstResponderProfiles?:  {
+    __typename: "FirstResponderProfileConnection",
+    items?:  Array< {
+      __typename: "FirstResponderProfile",
+      first_name?: string | null,
+      last_name?: string | null,
+      occupation?: string | null,
+      phone_number: string,
+    } | null > | null,
+    nextToken?: string | null,
   } | null,
 };
 
-export type CreatePhysicianProfileMutationVariables = {
-  input?: CreatePhysicianProfileInput,
-  condition?: ModelPhysicianProfileConditionInput | null,
+export type ListSpecialistProfilesQueryVariables = {
+  filter?: TableSpecialistProfileFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
 };
 
-export type CreatePhysicianProfileMutation = {
-  createPhysicianProfile?:  {
-    __typename: "PhysicianProfile",
-    id: string,
-    FirstName: string,
-    LastName: string,
-    Organization?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
+export type ListSpecialistProfilesQuery = {
+  listSpecialistProfiles?:  {
+    __typename: "SpecialistProfileConnection",
+    items?:  Array< {
+      __typename: "SpecialistProfile",
+      availability?: string | null,
+      created_date_time?: string | null,
+      email?: string | null,
+      first_name?: string | null,
+      is_paged?: boolean | null,
+      last_name?: string | null,
+      notes?: string | null,
+      organization?: string | null,
+      phone_number: string,
+      profile_picture?: string | null,
+      updated_date_time?: string | null,
+      user_role?: string | null,
+      user_status?: string | null,
+    } | null > | null,
+    nextToken?: string | null,
   } | null,
 };
 
-export type UpdatePhysicianProfileMutationVariables = {
-  input?: UpdatePhysicianProfileInput,
-  condition?: ModelPhysicianProfileConditionInput | null,
+export type QuerySpecialistProfilesByUserStatusGsiQueryVariables = {
+  after?: string | null,
+  first?: number | null,
+  user_status?: string,
 };
 
-export type UpdatePhysicianProfileMutation = {
-  updatePhysicianProfile?:  {
-    __typename: "PhysicianProfile",
-    id: string,
-    FirstName: string,
-    LastName: string,
-    Organization?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type DeletePhysicianProfileMutationVariables = {
-  input?: DeletePhysicianProfileInput,
-  condition?: ModelPhysicianProfileConditionInput | null,
-};
-
-export type DeletePhysicianProfileMutation = {
-  deletePhysicianProfile?:  {
-    __typename: "PhysicianProfile",
-    id: string,
-    FirstName: string,
-    LastName: string,
-    Organization?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
+export type QuerySpecialistProfilesByUserStatusGsiQuery = {
+  querySpecialistProfilesByUserStatusGsi?:  {
+    __typename: "SpecialistProfileConnection",
+    items?:  Array< {
+      __typename: "SpecialistProfile",
+      availability?: string | null,
+      created_date_time?: string | null,
+      email?: string | null,
+      first_name?: string | null,
+      is_paged?: boolean | null,
+      last_name?: string | null,
+      notes?: string | null,
+      organization?: string | null,
+      phone_number: string,
+      profile_picture?: string | null,
+      updated_date_time?: string | null,
+      user_role?: string | null,
+      user_status?: string | null,
+    } | null > | null,
+    nextToken?: string | null,
   } | null,
 };
 
@@ -556,297 +629,335 @@ export type GetMeetingQuery = {
   getMeeting?:  {
     __typename: "Meeting",
     id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
+    ExternalMeetingId?: string | null,
+    MediaPlacement?:  {
+      __typename: "MediaPlacement",
+      AudioFallbackUrl?: string | null,
+      AudioHostUrl?: string | null,
+      ScreenDataUrl?: string | null,
+      ScreenSharingUrl?: string | null,
+      ScreenViewingUrl?: string | null,
+      SignalingUrl?: string | null,
+      TurnControlUrl?: string | null,
+    } | null,
+    MediaRegion: string,
+    MeetingId: string,
   } | null,
 };
 
 export type ListMeetingsQueryVariables = {
-  filter?: ModelMeetingFilterInput | null,
+  filter?: TableMeetingFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
 export type ListMeetingsQuery = {
   listMeetings?:  {
-    __typename: "ModelMeetingConnection",
+    __typename: "MeetingConnection",
     items?:  Array< {
       __typename: "Meeting",
       id: string,
-      createdAt?: string | null,
-      updatedAt?: string | null,
+      ExternalMeetingId?: string | null,
+      MediaRegion: string,
+      MeetingId: string,
     } | null > | null,
     nextToken?: string | null,
   } | null,
 };
 
-export type GetAttendeeQueryVariables = {
+export type GetAttendeeDataQueryVariables = {
   id?: string,
 };
 
-export type GetAttendeeQuery = {
-  getAttendee?:  {
-    __typename: "Attendee",
+export type GetAttendeeDataQuery = {
+  getAttendeeData?:  {
+    __typename: "AttendeeData",
     id: string,
-    name: string,
     externalUserId?: string | null,
-    meetingID: string,
-    role: string,
+    meetingID?: string | null,
+    name?: string | null,
+    role?: string | null,
   } | null,
 };
 
-export type ListAttendeesQueryVariables = {
-  filter?: ModelAttendeeFilterInput | null,
+export type ListAttendeeDataQueryVariables = {
+  filter?: TableAttendeeDataFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListAttendeesQuery = {
-  listAttendees?:  {
-    __typename: "ModelAttendeeConnection",
+export type ListAttendeeDataQuery = {
+  listAttendeeData?:  {
+    __typename: "AttendeeDataConnection",
     items?:  Array< {
-      __typename: "Attendee",
+      __typename: "AttendeeData",
       id: string,
-      name: string,
       externalUserId?: string | null,
-      meetingID: string,
-      role: string,
+      meetingID?: string | null,
+      name?: string | null,
+      role?: string | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
 };
 
-export type GetFirstResponderProfileQueryVariables = {
-  id?: string,
+export type OnCreateFirstResponderProfileSubscriptionVariables = {
+  first_name?: string | null,
+  last_name?: string | null,
+  occupation?: string | null,
+  phone_number?: string | null,
 };
 
-export type GetFirstResponderProfileQuery = {
-  getFirstResponderProfile?:  {
+export type OnCreateFirstResponderProfileSubscription = {
+  onCreateFirstResponderProfile?:  {
     __typename: "FirstResponderProfile",
-    id: string,
-    phoneNumber?: string | null,
-    FirstName?: string | null,
-    LastName?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
+    first_name?: string | null,
+    last_name?: string | null,
+    occupation?: string | null,
+    phone_number: string,
   } | null,
 };
 
-export type ListFirstResponderProfilesQueryVariables = {
-  filter?: ModelFirstResponderProfileFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+export type OnCreateSpecialistProfileSubscriptionVariables = {
+  email?: string | null,
+  first_name?: string | null,
+  last_name?: string | null,
+  phone_number?: string | null,
+  user_status?: string | null,
 };
 
-export type ListFirstResponderProfilesQuery = {
-  listFirstResponderProfiles?:  {
-    __typename: "ModelFirstResponderProfileConnection",
-    items?:  Array< {
-      __typename: "FirstResponderProfile",
-      id: string,
-      phoneNumber?: string | null,
-      FirstName?: string | null,
-      LastName?: string | null,
-      Occupation?: string | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null > | null,
-    nextToken?: string | null,
+export type OnCreateSpecialistProfileSubscription = {
+  onCreateSpecialistProfile?:  {
+    __typename: "SpecialistProfile",
+    availability?: string | null,
+    created_date_time?: string | null,
+    email?: string | null,
+    first_name?: string | null,
+    is_paged?: boolean | null,
+    last_name?: string | null,
+    notes?: string | null,
+    organization?: string | null,
+    phone_number: string,
+    profile_picture?: string | null,
+    updated_date_time?: string | null,
+    user_role?: string | null,
+    user_status?: string | null,
   } | null,
 };
 
-export type GetPhysicianProfileQueryVariables = {
-  id?: string,
+export type OnDeleteFirstResponderProfileSubscriptionVariables = {
+  first_name?: string | null,
+  last_name?: string | null,
+  occupation?: string | null,
+  phone_number?: string | null,
 };
 
-export type GetPhysicianProfileQuery = {
-  getPhysicianProfile?:  {
-    __typename: "PhysicianProfile",
-    id: string,
-    FirstName: string,
-    LastName: string,
-    Organization?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
+export type OnDeleteFirstResponderProfileSubscription = {
+  onDeleteFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    first_name?: string | null,
+    last_name?: string | null,
+    occupation?: string | null,
+    phone_number: string,
   } | null,
 };
 
-export type ListPhysicianProfilesQueryVariables = {
-  filter?: ModelPhysicianProfileFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
+export type OnDeleteSpecialistProfileSubscriptionVariables = {
+  email?: string | null,
+  first_name?: string | null,
+  last_name?: string | null,
+  phone_number?: string | null,
+  user_status?: string | null,
 };
 
-export type ListPhysicianProfilesQuery = {
-  listPhysicianProfiles?:  {
-    __typename: "ModelPhysicianProfileConnection",
-    items?:  Array< {
-      __typename: "PhysicianProfile",
-      id: string,
-      FirstName: string,
-      LastName: string,
-      Organization?: string | null,
-      Occupation?: string | null,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null > | null,
-    nextToken?: string | null,
+export type OnDeleteSpecialistProfileSubscription = {
+  onDeleteSpecialistProfile?:  {
+    __typename: "SpecialistProfile",
+    availability?: string | null,
+    created_date_time?: string | null,
+    email?: string | null,
+    first_name?: string | null,
+    is_paged?: boolean | null,
+    last_name?: string | null,
+    notes?: string | null,
+    organization?: string | null,
+    phone_number: string,
+    profile_picture?: string | null,
+    updated_date_time?: string | null,
+    user_role?: string | null,
+    user_status?: string | null,
   } | null,
+};
+
+export type OnUpdateFirstResponderProfileSubscriptionVariables = {
+  first_name?: string | null,
+  last_name?: string | null,
+  occupation?: string | null,
+  phone_number?: string | null,
+};
+
+export type OnUpdateFirstResponderProfileSubscription = {
+  onUpdateFirstResponderProfile?:  {
+    __typename: "FirstResponderProfile",
+    first_name?: string | null,
+    last_name?: string | null,
+    occupation?: string | null,
+    phone_number: string,
+  } | null,
+};
+
+export type OnUpdateSpecialistProfileSubscriptionVariables = {
+  email?: string | null,
+  first_name?: string | null,
+  last_name?: string | null,
+  phone_number?: string | null,
+  user_status?: string | null,
+};
+
+export type OnUpdateSpecialistProfileSubscription = {
+  onUpdateSpecialistProfile?:  {
+    __typename: "SpecialistProfile",
+    availability?: string | null,
+    created_date_time?: string | null,
+    email?: string | null,
+    first_name?: string | null,
+    is_paged?: boolean | null,
+    last_name?: string | null,
+    notes?: string | null,
+    organization?: string | null,
+    phone_number: string,
+    profile_picture?: string | null,
+    updated_date_time?: string | null,
+    user_role?: string | null,
+    user_status?: string | null,
+  } | null,
+};
+
+export type OnCreateMeetingSubscriptionVariables = {
+  id?: string | null,
 };
 
 export type OnCreateMeetingSubscription = {
   onCreateMeeting?:  {
     __typename: "Meeting",
     id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
+    ExternalMeetingId?: string | null,
+    MediaPlacement?:  {
+      __typename: "MediaPlacement",
+      AudioFallbackUrl?: string | null,
+      AudioHostUrl?: string | null,
+      ScreenDataUrl?: string | null,
+      ScreenSharingUrl?: string | null,
+      ScreenViewingUrl?: string | null,
+      SignalingUrl?: string | null,
+      TurnControlUrl?: string | null,
+    } | null,
+    MediaRegion: string,
+    MeetingId: string,
   } | null,
+};
+
+export type OnUpdateMeetingSubscriptionVariables = {
+  id?: string | null,
 };
 
 export type OnUpdateMeetingSubscription = {
   onUpdateMeeting?:  {
     __typename: "Meeting",
     id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
+    ExternalMeetingId?: string | null,
+    MediaPlacement?:  {
+      __typename: "MediaPlacement",
+      AudioFallbackUrl?: string | null,
+      AudioHostUrl?: string | null,
+      ScreenDataUrl?: string | null,
+      ScreenSharingUrl?: string | null,
+      ScreenViewingUrl?: string | null,
+      SignalingUrl?: string | null,
+      TurnControlUrl?: string | null,
+    } | null,
+    MediaRegion: string,
+    MeetingId: string,
   } | null,
+};
+
+export type OnDeleteMeetingSubscriptionVariables = {
+  id?: string | null,
 };
 
 export type OnDeleteMeetingSubscription = {
   onDeleteMeeting?:  {
     __typename: "Meeting",
     id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
+    ExternalMeetingId?: string | null,
+    MediaPlacement?:  {
+      __typename: "MediaPlacement",
+      AudioFallbackUrl?: string | null,
+      AudioHostUrl?: string | null,
+      ScreenDataUrl?: string | null,
+      ScreenSharingUrl?: string | null,
+      ScreenViewingUrl?: string | null,
+      SignalingUrl?: string | null,
+      TurnControlUrl?: string | null,
+    } | null,
+    MediaRegion: string,
+    MeetingId: string,
   } | null,
 };
 
-export type OnCreateAttendeeSubscription = {
-  onCreateAttendee?:  {
-    __typename: "Attendee",
+export type OnCreateAttendeeDataSubscriptionVariables = {
+  id?: string | null,
+  externalUserId?: string | null,
+  meetingID?: string | null,
+  name?: string | null,
+  role?: string | null,
+};
+
+export type OnCreateAttendeeDataSubscription = {
+  onCreateAttendeeData?:  {
+    __typename: "AttendeeData",
     id: string,
-    name: string,
     externalUserId?: string | null,
-    meetingID: string,
-    role: string,
+    meetingID?: string | null,
+    name?: string | null,
+    role?: string | null,
   } | null,
 };
 
-export type OnUpdateAttendeeSubscription = {
-  onUpdateAttendee?:  {
-    __typename: "Attendee",
+export type OnUpdateAttendeeDataSubscriptionVariables = {
+  id?: string | null,
+  externalUserId?: string | null,
+  meetingID?: string | null,
+  name?: string | null,
+  role?: string | null,
+};
+
+export type OnUpdateAttendeeDataSubscription = {
+  onUpdateAttendeeData?:  {
+    __typename: "AttendeeData",
     id: string,
-    name: string,
     externalUserId?: string | null,
-    meetingID: string,
-    role: string,
+    meetingID?: string | null,
+    name?: string | null,
+    role?: string | null,
   } | null,
 };
 
-export type OnDeleteAttendeeSubscription = {
-  onDeleteAttendee?:  {
-    __typename: "Attendee",
+export type OnDeleteAttendeeDataSubscriptionVariables = {
+  id?: string | null,
+  externalUserId?: string | null,
+  meetingID?: string | null,
+  name?: string | null,
+  role?: string | null,
+};
+
+export type OnDeleteAttendeeDataSubscription = {
+  onDeleteAttendeeData?:  {
+    __typename: "AttendeeData",
     id: string,
-    name: string,
     externalUserId?: string | null,
-    meetingID: string,
-    role: string,
-  } | null,
-};
-
-export type OnCreateFirstResponderProfileSubscription = {
-  onCreateFirstResponderProfile?:  {
-    __typename: "FirstResponderProfile",
-    id: string,
-    phoneNumber?: string | null,
-    FirstName?: string | null,
-    LastName?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateFirstResponderProfileSubscription = {
-  onUpdateFirstResponderProfile?:  {
-    __typename: "FirstResponderProfile",
-    id: string,
-    phoneNumber?: string | null,
-    FirstName?: string | null,
-    LastName?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteFirstResponderProfileSubscription = {
-  onDeleteFirstResponderProfile?:  {
-    __typename: "FirstResponderProfile",
-    id: string,
-    phoneNumber?: string | null,
-    FirstName?: string | null,
-    LastName?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreatePhysicianProfileSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnCreatePhysicianProfileSubscription = {
-  onCreatePhysicianProfile?:  {
-    __typename: "PhysicianProfile",
-    id: string,
-    FirstName: string,
-    LastName: string,
-    Organization?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type OnUpdatePhysicianProfileSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnUpdatePhysicianProfileSubscription = {
-  onUpdatePhysicianProfile?:  {
-    __typename: "PhysicianProfile",
-    id: string,
-    FirstName: string,
-    LastName: string,
-    Organization?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
-export type OnDeletePhysicianProfileSubscriptionVariables = {
-  owner?: string,
-};
-
-export type OnDeletePhysicianProfileSubscription = {
-  onDeletePhysicianProfile?:  {
-    __typename: "PhysicianProfile",
-    id: string,
-    FirstName: string,
-    LastName: string,
-    Organization?: string | null,
-    Occupation?: string | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
+    meetingID?: string | null,
+    name?: string | null,
+    role?: string | null,
   } | null,
 };

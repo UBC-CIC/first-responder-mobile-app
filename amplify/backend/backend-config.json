@@ -31,18 +31,11 @@
           "defaultAuthentication": {
             "authenticationType": "API_KEY",
             "apiKeyConfig": {
-              "apiKeyExpirationDays": 7,
-              "description": "Canada FR App Api Key"
+              "apiKeyExpirationDays": 365,
+              "description": ""
             }
           },
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authfirstrespondermobilecbc374ce"
-              }
-            }
-          ]
+          "additionalAuthenticationProviders": []
         }
       }
     }

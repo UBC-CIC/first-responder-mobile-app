@@ -56,44 +56,42 @@ const FirstResponderMain = (): ReactElement => {
   /** Fetch Profile Info */
   useEffect(() => {
     const f = async () => {
+      console.log(phone);
+      
       if (phone) {
         try {
-          const profile = await fetchFirstResponderProfile({ id: phone });
+          const profile = await fetchFirstResponderProfile({ phone_number: phone });
           setProfile({
-            id: phone,
-            phoneNumber: profile?.phoneNumber,
-            FirstName: profile?.FirstName || "First",
-            LastName: profile?.LastName || "Responder",
-            Occupation: profile?.Occupation || "First Responder",
+            ...profile,
+            phone_number: phone,
           });
         } catch (e) {
           setProfile({
-            id: phone,
-            phoneNumber: phone,
-            FirstName: "First",
-            LastName: "Responder",
-            Occupation: "First Responder",
+            phone_number: phone,
+            first_name: "First",
+            last_name: "Responder",
+            occupation: "First Responder",
           });
         }
       }
     };
     if (!offline) f();
     else
+    if (phone)
       setProfile({
-        id: phone,
-        phoneNumber: phone,
-        FirstName: "First",
-        LastName: "Responder",
-        Occupation: "First Responder",
+        phone_number: phone,
+        first_name: "First",
+        last_name: "Responder",
+        occupation: "First Responder",
       });
   }, []);
 
   const getName = () => {
-    if (profile?.FirstName && profile.LastName) {
-      return `${profile.FirstName} ${profile.LastName}`;
+    if (profile?.first_name && profile.last_name) {
+      return `${profile.first_name} ${profile.last_name}`;
     }
-    if (profile?.FirstName) return profile.FirstName;
-    if (profile?.LastName) return profile.LastName;
+    if (profile?.first_name) return profile.first_name;
+    if (profile?.last_name) return profile.last_name;
     return "First Responder";
   };
 
@@ -127,7 +125,7 @@ const FirstResponderMain = (): ReactElement => {
               history.push("/call", {
                 meetingId: phone,
                 name: getName(),
-                role: profile?.Occupation || "First Responder",
+                role: profile?.occupation || "First Responder",
                 attendeeId: sessionId,
                 parent: "/firstresponder",
               } as MeetingStateType);

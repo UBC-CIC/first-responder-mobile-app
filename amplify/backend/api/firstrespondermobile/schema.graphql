@@ -1,65 +1,112 @@
-# Models
-type Meeting @model @aws_api_key {
-  id: ID!
-  createdAt: AWSDateTime
-  updatedAt: AWSDateTime
-}
-
-type Attendee @aws_api_key @model(timestamps: null) {
-  id: ID!
-  name: String!
-  externalUserId: String
-  meetingID: ID!
-  role: String!
-}
-
-type PhysicianProfile
-  @model
-  @aws_cognito_user_pools
-  @auth(rules: [{ allow: owner }]) {
-  id: ID!
-  FirstName: String!
-  LastName: String!
-  Organization: String
-  Occupation: String
-} 
-
-type FirstResponderProfile @model @aws_api_key {
-  id: ID!
-  phoneNumber: String
-  FirstName: String
-  LastName: String
-  Occupation: String
-}
-
-type UserProfile {
-  email: String!
-  user_status: String
-  first_name: String
-  last_name: String
-  phone_number: String
-  user_role: String
-  organization: String
-  profile_picture: String
-  notes: String
-  is_paged: Boolean
-  availability: String
-  created_date_time: String
-  updated_date_time: String
-}
-
-# Private Types
-
-type JoinInfo {
+type AttendeeData {
   id: String!
-  Meeting: MeetingData!
-  Attendee: AttendeeInfo
+  externalUserId: String
+  meetingID: String
+  name: String
+  role: String
+}
+
+type AttendeeDataConnection {
+  items: [AttendeeData]
+  nextToken: String
 }
 
 type AttendeeInfo {
-  ExternalUserId: String
   AttendeeId: String
+  ExternalUserId: String
   JoinToken: String
+}
+
+input CreateAttendeeDataInput {
+  id: String!
+  externalUserId: String
+  meetingID: String
+  name: String
+  role: String
+}
+
+input CreateFirstResponderProfileInput {
+  first_name: String
+  last_name: String
+  occupation: String
+  phone_number: String!
+}
+
+input CreateMeetingInput {
+  id: String!
+}
+
+input CreateSpecialistProfileInput {
+  availability: String
+  created_date_time: String
+  email: String
+  first_name: String
+  is_paged: Boolean
+  last_name: String
+  notes: String
+  organization: String
+  phone_number: String!
+  profile_picture: String
+  updated_date_time: String
+  user_role: String
+  user_status: String
+}
+
+input DeleteAttendeeDataInput {
+  id: String!
+}
+
+input DeleteFirstResponderProfileInput {
+  phone_number: String!
+}
+
+input DeleteMeetingInput {
+  id: String!
+}
+
+input DeleteSpecialistProfileInput {
+  phone_number: String!
+}
+
+type FirstResponderProfile {
+  first_name: String
+  last_name: String
+  occupation: String
+  phone_number: String!
+}
+
+type FirstResponderProfileConnection {
+  items: [FirstResponderProfile]
+  nextToken: String
+}
+
+type MeetingInfo {
+  Attendee: AttendeeInfo
+  Meeting: MeetingData!
+  id: String!
+}
+
+type MediaPlacement {
+  AudioFallbackUrl: String
+  AudioHostUrl: String
+  ScreenDataUrl: String
+  ScreenSharingUrl: String
+  ScreenViewingUrl: String
+  SignalingUrl: String
+  TurnControlUrl: String
+}
+
+type Meeting {
+  id: String!
+  ExternalMeetingId: String
+  MediaPlacement: MediaPlacement
+  MediaRegion: String!
+  MeetingId: String!
+}
+
+type MeetingConnection {
+  items: [Meeting]
+  nextToken: String
 }
 
 type MeetingData {
@@ -69,29 +116,379 @@ type MeetingData {
   MediaRegion: String!
 }
 
-type MediaPlacement {
-  AudioHostUrl: String!
-  AudioFallbackUrl: String!
-  ScreenDataUrl: String!
-  ScreenSharingUrl: String!
-  ScreenViewingUrl: String!
-  SignalingUrl: String!
-  TurnControlUrl: String!
+enum ModelAttributeTypes {
+  _null
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
 }
 
-# Resolvers
+input ModelBooleanInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  eq: Boolean
+  ne: Boolean
+}
+
+input ModelFloatInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  between: [Float]
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+}
+
+input ModelIDInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  between: [Int]
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+}
+
+input ModelSizeInput {
+  between: [Int]
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+input ModelStringInput {
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+  size: ModelSizeInput
+}
 
 type Mutation {
+  confirmPhoneNumber(phoneNumber: String, secretCode: String): String
+  createFirstResponderProfile(
+    input: CreateFirstResponderProfileInput!
+  ): FirstResponderProfile
+  createSpecialistProfile(
+    input: CreateSpecialistProfileInput!
+  ): SpecialistProfile
+  deleteFirstResponderProfile(
+    input: DeleteFirstResponderProfileInput!
+  ): FirstResponderProfile
+  deleteSpecialistProfile(
+    input: DeleteSpecialistProfileInput!
+  ): SpecialistProfile
   joinChimeMeeting(
-    title: String
+    externalAttendeeId: String
     name: String
+    phoneNumber: String
     region: String
     role: String
-    externalAttendeeId: String
-    phoneNumber: String
-  ): JoinInfo @function(name: "firstresponderjoinmeeting-${env}")
-  confirmPhoneNumber(
-    secretCode: String
-    phoneNumber: String
-  ): String @function(name: "confirmphonenumber-${env}")
+    title: String
+  ): MeetingInfo @function(name: "firstresponderjoinmeeting-${env}")
+  updateFirstResponderProfile(
+    input: UpdateFirstResponderProfileInput!
+  ): FirstResponderProfile
+  updateSpecialistProfile(
+    input: UpdateSpecialistProfileInput!
+  ): SpecialistProfile
+  createMeeting(input: CreateMeetingInput!): Meeting
+  updateMeeting(input: UpdateMeetingInput!): Meeting
+  deleteMeeting(input: DeleteMeetingInput!): Meeting
+  createAttendeeData(input: CreateAttendeeDataInput!): AttendeeData
+  updateAttendeeData(input: UpdateAttendeeDataInput!): AttendeeData
+  deleteAttendeeData(input: DeleteAttendeeDataInput!): AttendeeData
+}
+
+type Query {
+  getFirstResponderProfile(phone_number: String!): FirstResponderProfile
+  getSpecialistProfile(phone_number: String!): SpecialistProfile
+  listFirstResponderProfiles(
+    filter: TableFirstResponderProfileFilterInput
+    limit: Int
+    nextToken: String
+  ): FirstResponderProfileConnection
+  listSpecialistProfiles(
+    filter: TableSpecialistProfileFilterInput
+    limit: Int
+    nextToken: String
+  ): SpecialistProfileConnection
+  querySpecialistProfilesByUserStatusGsi(
+    after: String
+    first: Int
+    user_status: String!
+  ): SpecialistProfileConnection
+  getMeeting(id: String!): Meeting
+  listMeetings(
+    filter: TableMeetingFilterInput
+    limit: Int
+    nextToken: String
+  ): MeetingConnection
+  getAttendeeData(id: String!): AttendeeData
+  listAttendeeData(
+    filter: TableAttendeeDataFilterInput
+    limit: Int
+    nextToken: String
+  ): AttendeeDataConnection
+}
+
+type SpecialistProfile {
+  availability: String
+  created_date_time: String
+  email: String
+  first_name: String
+  is_paged: Boolean
+  last_name: String
+  notes: String
+  organization: String
+  phone_number: String!
+  profile_picture: String
+  updated_date_time: String
+  user_role: String
+  user_status: String
+}
+
+type SpecialistProfileConnection {
+  items: [SpecialistProfile]
+  nextToken: String
+}
+
+type Subscription {
+  onCreateFirstResponderProfile(
+    first_name: String
+    last_name: String
+    occupation: String
+    phone_number: String
+  ): FirstResponderProfile
+    @aws_subscribe(mutations: ["createFirstResponderProfile"])
+  onCreateSpecialistProfile(
+    email: String
+    first_name: String
+    last_name: String
+    phone_number: String
+    user_status: String
+  ): SpecialistProfile @aws_subscribe(mutations: ["createSpecialistProfile"])
+  onDeleteFirstResponderProfile(
+    first_name: String
+    last_name: String
+    occupation: String
+    phone_number: String
+  ): FirstResponderProfile
+    @aws_subscribe(mutations: ["deleteFirstResponderProfile"])
+  onDeleteSpecialistProfile(
+    email: String
+    first_name: String
+    last_name: String
+    phone_number: String
+    user_status: String
+  ): SpecialistProfile @aws_subscribe(mutations: ["deleteSpecialistProfile"])
+  onUpdateFirstResponderProfile(
+    first_name: String
+    last_name: String
+    occupation: String
+    phone_number: String
+  ): FirstResponderProfile
+    @aws_subscribe(mutations: ["updateFirstResponderProfile"])
+  onUpdateSpecialistProfile(
+    email: String
+    first_name: String
+    last_name: String
+    phone_number: String
+    user_status: String
+  ): SpecialistProfile @aws_subscribe(mutations: ["updateSpecialistProfile"])
+  onCreateMeeting(id: String): Meeting
+    @aws_subscribe(mutations: ["createMeeting"])
+  onUpdateMeeting(id: String): Meeting
+    @aws_subscribe(mutations: ["updateMeeting"])
+  onDeleteMeeting(id: String): Meeting
+    @aws_subscribe(mutations: ["deleteMeeting"])
+  onCreateAttendeeData(
+    id: String
+    externalUserId: String
+    meetingID: String
+    name: String
+    role: String
+  ): AttendeeData @aws_subscribe(mutations: ["createAttendeeData"])
+  onUpdateAttendeeData(
+    id: String
+    externalUserId: String
+    meetingID: String
+    name: String
+    role: String
+  ): AttendeeData @aws_subscribe(mutations: ["updateAttendeeData"])
+  onDeleteAttendeeData(
+    id: String
+    externalUserId: String
+    meetingID: String
+    name: String
+    role: String
+  ): AttendeeData @aws_subscribe(mutations: ["deleteAttendeeData"])
+}
+
+input TableAttendeeDataFilterInput {
+  id: TableStringFilterInput
+  externalUserId: TableStringFilterInput
+  meetingID: TableStringFilterInput
+  name: TableStringFilterInput
+  role: TableStringFilterInput
+}
+
+input TableBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input TableFirstResponderProfileFilterInput {
+  first_name: TableStringFilterInput
+  last_name: TableStringFilterInput
+  occupation: TableStringFilterInput
+  phone_number: TableStringFilterInput
+}
+
+input TableFloatFilterInput {
+  between: [Float]
+  contains: Float
+  eq: Float
+  ge: Float
+  gt: Float
+  le: Float
+  lt: Float
+  ne: Float
+  notContains: Float
+}
+
+input TableIDFilterInput {
+  beginsWith: ID
+  between: [ID]
+  contains: ID
+  eq: ID
+  ge: ID
+  gt: ID
+  le: ID
+  lt: ID
+  ne: ID
+  notContains: ID
+}
+
+input TableIntFilterInput {
+  between: [Int]
+  contains: Int
+  eq: Int
+  ge: Int
+  gt: Int
+  le: Int
+  lt: Int
+  ne: Int
+  notContains: Int
+}
+
+input TableMeetingFilterInput {
+  id: TableStringFilterInput
+}
+
+input TableSpecialistProfileFilterInput {
+  availability: TableStringFilterInput
+  created_date_time: TableStringFilterInput
+  email: TableStringFilterInput
+  first_name: TableStringFilterInput
+  is_paged: TableBooleanFilterInput
+  last_name: TableStringFilterInput
+  notes: TableStringFilterInput
+  organization: TableStringFilterInput
+  phone_number: TableStringFilterInput
+  profile_picture: TableStringFilterInput
+  updated_date_time: TableStringFilterInput
+  user_role: TableStringFilterInput
+  user_status: TableStringFilterInput
+}
+
+input TableStringFilterInput {
+  beginsWith: String
+  between: [String]
+  contains: String
+  eq: String
+  ge: String
+  gt: String
+  le: String
+  lt: String
+  ne: String
+  notContains: String
+}
+
+input UpdateAttendeeDataInput {
+  id: String!
+  externalUserId: String
+  meetingID: String
+  name: String
+  role: String
+}
+
+input UpdateFirstResponderProfileInput {
+  first_name: String
+  last_name: String
+  occupation: String
+  phone_number: String!
+}
+
+input UpdateMeetingInput {
+  id: String!
+}
+
+input UpdateSpecialistProfileInput {
+  availability: String
+  created_date_time: String
+  email: String
+  first_name: String
+  is_paged: Boolean
+  last_name: String
+  notes: String
+  organization: String
+  phone_number: String!
+  profile_picture: String
+  updated_date_time: String
+  user_role: String
+  user_status: String
 }

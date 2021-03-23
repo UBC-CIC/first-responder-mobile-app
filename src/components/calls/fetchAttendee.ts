@@ -1,14 +1,14 @@
 import { API, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api";
-import { GetAttendeeQuery, GetAttendeeQueryVariables } from "../../API";
-import { getAttendee } from "../../graphql/queries";
+import { GetAttendeeDataQuery, GetAttendeeDataQueryVariables } from "../../API";
+import { getAttendeeData } from "../../graphql/queries";
 
 const fetchAttendee = async (
-  options: GetAttendeeQueryVariables
-): Promise<GraphQLResult<GetAttendeeQuery>> => {
+  options: GetAttendeeDataQueryVariables
+): Promise<GraphQLResult<GetAttendeeDataQuery>> => {
   return API.graphql(
-    graphqlOperation(getAttendee, options)
-  ) as GraphQLResult<GetAttendeeQuery>;
+    graphqlOperation(getAttendeeData, options)
+  ) as GraphQLResult<GetAttendeeDataQuery>;
 };
 
 export default fetchAttendee;

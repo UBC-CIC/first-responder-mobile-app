@@ -1,7 +1,7 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import { CircularProgress, Fab, makeStyles } from "@material-ui/core";
 import { Save } from "@material-ui/icons";
-import { API, graphqlOperation } from "aws-amplify";
+import { API, Auth, graphqlOperation } from "aws-amplify";
 import {
   default as React,
   ReactElement,
@@ -9,6 +9,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { Redirect } from "react-router";
 import {
   CreateFirstResponderProfileInput,
   CreateFirstResponderProfileMutation,
@@ -26,7 +27,6 @@ import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
 import Layout from "../ui/Layout";
-import {UserProfileType} from "../../types";
 
 const headerStyle = {
   color: Colors.theme.platinum,
@@ -49,37 +49,45 @@ const useStyles = makeStyles({
 
 const FirstResponderProfile = (): ReactElement => {
   const phone = usePhoneNumber();
+  if (!phone) return <Redirect to="/"/>;
   const classes = useStyles();
   const globalClasses = useGlobalStyles();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState<FirstResponderProfileType>({
-    id: phone,
-    FirstName: "",
-    LastName: "",
-    Occupation: "",
+    phone_number: phone,
+    first_name: "",
+    last_name: "",
+    occupation: "",
   });
 
   useEffect(() => {
     const f = async () => {
-      const id: string = phone || "";
+      let phone_number: string;
+      try {
+        const user = await Auth.currentAuthenticatedUser();
+        phone_number = user.attributes.phone_number;
+      }
+      catch (e){
+        phone_number = phone || "";
+      }
       try {
         const profile = await fetchFirstResponderProfile({
-          id,
+          phone_number,
         });
         if (profile) {
-          setForm({ ...profile, id });
+          setForm({ ...profile, phone_number });
         } else {
-          setForm({ ...form, id });
+          setForm({ ...form, phone_number });
         }
       } catch (e) {
         console.log("e");
         console.log(phone);
 
         setForm({
-          id: phone,
-          FirstName: "",
-          LastName: "",
-          Occupation: "",
+          phone_number,
+          first_name: "",
+          last_name: "",
+          occupation: "",
         });
       }
     };
@@ -119,15 +127,16 @@ const FirstResponderProfile = (): ReactElement => {
   };
 
   const handleCreateProfile = async () => {
-    if (!form.id) {
+    if (!form.phone_number) {
       console.error("No PhoneNumber Provided for UpdateProfile");
       return;
     }
-    createProfile(form);
+    if (form.phone_number)
+      createProfile(form);
   };
 
   const handleUpdateProfile = async () => {
-    if (!form.id) {
+    if (!form.phone_number) {
       console.error("No PhoneNumber Provided for UpdateProfile");
       return;
     }
@@ -140,32 +149,27 @@ const FirstResponderProfile = (): ReactElement => {
 
   };
 
+  const renderTextField = (field: keyof FirstResponderProfileType, label?: string) => {
+    return (
+      <DarkModeTextField
+        label={label}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+          setForm({ ...form, [field]: e.currentTarget.value });
+        }}
+        value={form[field]}
+        required
+      />
+    );
+  };
+
   return (
     <Layout title="First Responder Profile" parent="/firstresponder" flexColumn>
       <div className={classes.root}>
-        <h3 style={headerStyle}>Your Phone Number: {form.id}</h3>
+        <h3 style={headerStyle}>Your Phone Number: {form.phone_number}</h3>
 
-        <DarkModeTextField
-          label="First Name"
-          type="tel"
-          onChange={(e) => setForm({ ...form, FirstName: e.target.value })}
-          value={form.FirstName}
-          disabled={offline}
-        />
-        <DarkModeTextField
-          label="Last Name"
-          type="tel"
-          onChange={(e) => setForm({ ...form, LastName: e.target.value })}
-          value={form.LastName}
-          disabled={offline}
-        />
-        <DarkModeTextField
-          label="Occupation"
-          type="tel"
-          onChange={(e) => setForm({ ...form, Occupation: e.target.value })}
-          value={form.Occupation}
-          disabled={offline}
-        />
+        {renderTextField("first_name", "First Name")}
+        {renderTextField("last_name", "Last Name")}
+        {renderTextField("occupation", "Occupation")}
       </div>
       <Fab
         variant="extended"
@@ -174,7 +178,7 @@ const FirstResponderProfile = (): ReactElement => {
         disabled={offline || loading}
       >
         {loading ? (
-          <CircularProgress  className={classes.icon} />
+          <CircularProgress className={classes.icon} />
         ) : (
           <Save className={classes.icon} />
         )}

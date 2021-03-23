@@ -80,7 +80,7 @@ const OnlineCallOverData = (): ReactElement => {
         if (res.errors) {
           console.error(res.errors);
         }
-        return Promise.resolve({ name: res.data?.getAttendee?.name });
+        return Promise.resolve({ name: res.data?.getAttendeeData?.name });
       } catch (e) {
         console.error("Failed to get attendee's name: ", e);
 
@@ -103,8 +103,8 @@ const OnlineCallOverData = (): ReactElement => {
         },
       });
 
-      if (newAtt.data?.listAttendees?.items) {
-        const items = newAtt.data.listAttendees?.items?.map(
+      if (newAtt.data?.listAttendeeData?.items) {
+        const items = newAtt.data.listAttendeeData?.items?.map(
           (item) =>
             ({
               chimeAttendeeId: item?.id,
@@ -170,6 +170,8 @@ const OnlineCallOverData = (): ReactElement => {
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
     try {
+      console.log({title, name, role, externalAttendeeId, phoneNumber});
+      
       const joinRes = await joinMeeting({
         title,
         name,
@@ -177,6 +179,9 @@ const OnlineCallOverData = (): ReactElement => {
         externalAttendeeId,
         phoneNumber,
       });
+
+      console.log("success", joinRes);
+      
 
       const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
       const attendeeInfo = {

@@ -4,19 +4,15 @@ import SaveIcon from "@material-ui/icons/Save";
 import { CSSProperties } from "@material-ui/styles";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import React, { ReactElement, useEffect, useState } from "react";
-import {
-  CreatePhysicianProfileInput,
-  CreatePhysicianProfileMutation,
-  UpdatePhysicianProfileMutation,
-} from "../../API";
 import "../../styles/physician/ContactInfo.css";
-import { CognitoUser, PhysicianProfileType, UserProfileType } from "../../types";
-import { createUserProfile, CreateUserProfileInput, CreateUserProfileMutation, updateUserProfile, UpdateUserProfileMutation } from "../../UserProfileAPI";
+import { CognitoUser, SpecialistProfileType } from "../../types";
+import { CreateSpecialistProfileMutation, UpdateSpecialistProfileMutation } from "../../API";
 import fetchPhysicianProfile from "../calls/fetchPhysicianProfile";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
 import Layout from "../ui/Layout";
+import { createSpecialistProfile, updateSpecialistProfile } from "../../graphql/mutations";
 
 const useStyles = makeStyles({
   contactInfoForm: {
@@ -37,7 +33,9 @@ const headerStyle:CSSProperties = {
 };
 
 const ContactInfo = (): ReactElement => {
-  const [form, setForm] = useState<UserProfileType>({
+  const [phone, setPhone] = useState("");
+  const [form, setForm] = useState<SpecialistProfileType>({
+    phone_number: phone,
     email: "",
     first_name: "",
     last_name: "",
@@ -54,13 +52,14 @@ const ContactInfo = (): ReactElement => {
       try {
         const u: CognitoUser = await Auth.currentAuthenticatedUser();
         const { email, phone_number } = u.attributes;
+        setPhone(phone_number);
         console.log(u.attributes);
         
 
 
-        console.log(email);
+        console.log(phone_number);
         
-        const profile = await fetchPhysicianProfile({ email });
+        const profile = await fetchPhysicianProfile({ phone_number });
         console.log(profile);
         
         if (profile) {
@@ -75,11 +74,11 @@ const ContactInfo = (): ReactElement => {
     f();
   }, []);
 
-  const createProfile = async (options: UserProfileType) => {
+  const createProfile = async (options: SpecialistProfileType) => {
     const response = (await API.graphql({
-      ...graphqlOperation(createUserProfile, { input: options }),
+      ...graphqlOperation(createSpecialistProfile, { input: options }),
       authMode: GRAPHQL_AUTH_MODE.API_KEY,
-    })) as GraphQLResult<CreateUserProfileMutation>;
+    })) as GraphQLResult<CreateSpecialistProfileMutation>;
     console.log(response);
     
     if (response.errors) {
@@ -87,12 +86,12 @@ const ContactInfo = (): ReactElement => {
     }
   };
 
-  const updateProfile = async (options: UserProfileType) => {
+  const updateProfile = async (options: SpecialistProfileType) => {
     try {
       const response = (await API.graphql({
-        ...graphqlOperation(updateUserProfile, { input: options }),
+        ...graphqlOperation(updateSpecialistProfile, { input: options }),
         authMode: GRAPHQL_AUTH_MODE.API_KEY,
-      })) as GraphQLResult<UpdateUserProfileMutation>;
+      })) as GraphQLResult<UpdateSpecialistProfileMutation>;
       console.log(response);
     } catch (response) {
       console.log(response);
@@ -107,23 +106,23 @@ const ContactInfo = (): ReactElement => {
   };
 
   const handleUpdateProfile = async () => {
-    if (!form.email) {
-      console.error("No email Provided for UpdateProfile");
+    if (!form.phone_number) {
+      console.error("No phone Provided for UpdateProfile");
       return;
     }
     updateProfile(form);
   };
 
   const handleCreateProfile = async () => {
-    if (!form.email) {
-      console.error("No ID Provided for UpdateProfile");
+    if (!form.phone_number) {
+      console.error("No phone Provided for UpdateProfile");
       return;
     }
     createProfile(form);
   };
 
 
-  const renderTextField = (field: keyof UserProfileType, label?: string) => {
+  const renderTextField = (field: keyof SpecialistProfileType, label?: string) => {
     return <DarkModeTextField
       label={label}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

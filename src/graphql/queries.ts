@@ -2,76 +2,38 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getMeeting = /* GraphQL */ `
-  query GetMeeting($id: ID!) {
-    getMeeting(id: $id) {
-      id
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listMeetings = /* GraphQL */ `
-  query ListMeetings(
-    $filter: ModelMeetingFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listMeetings(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        createdAt
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const getAttendee = /* GraphQL */ `
-  query GetAttendee($id: ID!) {
-    getAttendee(id: $id) {
-      id
-      name
-      externalUserId
-      meetingID
-      role
-    }
-  }
-`;
-export const listAttendees = /* GraphQL */ `
-  query ListAttendees(
-    $filter: ModelAttendeeFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listAttendees(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        externalUserId
-        meetingID
-        role
-      }
-      nextToken
-    }
-  }
-`;
 export const getFirstResponderProfile = /* GraphQL */ `
-  query GetFirstResponderProfile($id: ID!) {
-    getFirstResponderProfile(id: $id) {
-      id
-      phoneNumber
-      FirstName
-      LastName
-      Occupation
-      createdAt
-      updatedAt
+  query GetFirstResponderProfile($phone_number: String!) {
+    getFirstResponderProfile(phone_number: $phone_number) {
+      first_name
+      last_name
+      occupation
+      phone_number
+    }
+  }
+`;
+export const getSpecialistProfile = /* GraphQL */ `
+  query GetSpecialistProfile($phone_number: String!) {
+    getSpecialistProfile(phone_number: $phone_number) {
+      availability
+      created_date_time
+      email
+      first_name
+      is_paged
+      last_name
+      notes
+      organization
+      phone_number
+      profile_picture
+      updated_date_time
+      user_role
+      user_status
     }
   }
 `;
 export const listFirstResponderProfiles = /* GraphQL */ `
   query ListFirstResponderProfiles(
-    $filter: ModelFirstResponderProfileFilterInput
+    $filter: TableFirstResponderProfileFilterInput
     $limit: Int
     $nextToken: String
   ) {
@@ -81,52 +43,135 @@ export const listFirstResponderProfiles = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        id
-        phoneNumber
-        FirstName
-        LastName
-        Occupation
-        createdAt
-        updatedAt
+        first_name
+        last_name
+        occupation
+        phone_number
       }
       nextToken
     }
   }
 `;
-export const getPhysicianProfile = /* GraphQL */ `
-  query GetPhysicianProfile($id: ID!) {
-    getPhysicianProfile(id: $id) {
-      id
-      FirstName
-      LastName
-      Organization
-      Occupation
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const listPhysicianProfiles = /* GraphQL */ `
-  query ListPhysicianProfiles(
-    $filter: ModelPhysicianProfileFilterInput
+export const listSpecialistProfiles = /* GraphQL */ `
+  query ListSpecialistProfiles(
+    $filter: TableSpecialistProfileFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listPhysicianProfiles(
+    listSpecialistProfiles(
       filter: $filter
       limit: $limit
       nextToken: $nextToken
     ) {
       items {
+        availability
+        created_date_time
+        email
+        first_name
+        is_paged
+        last_name
+        notes
+        organization
+        phone_number
+        profile_picture
+        updated_date_time
+        user_role
+        user_status
+      }
+      nextToken
+    }
+  }
+`;
+export const querySpecialistProfilesByUserStatusGsi = /* GraphQL */ `
+  query QuerySpecialistProfilesByUserStatusGsi(
+    $after: String
+    $first: Int
+    $user_status: String!
+  ) {
+    querySpecialistProfilesByUserStatusGsi(
+      after: $after
+      first: $first
+      user_status: $user_status
+    ) {
+      items {
+        availability
+        created_date_time
+        email
+        first_name
+        is_paged
+        last_name
+        notes
+        organization
+        phone_number
+        profile_picture
+        updated_date_time
+        user_role
+        user_status
+      }
+      nextToken
+    }
+  }
+`;
+export const getMeeting = /* GraphQL */ `
+  query GetMeeting($id: String!) {
+    getMeeting(id: $id) {
+      id
+      ExternalMeetingId
+      MediaPlacement {
+        AudioFallbackUrl
+        AudioHostUrl
+        ScreenDataUrl
+        ScreenSharingUrl
+        ScreenViewingUrl
+        SignalingUrl
+        TurnControlUrl
+      }
+      MediaRegion
+      MeetingId
+    }
+  }
+`;
+export const listMeetings = /* GraphQL */ `
+  query ListMeetings(
+    $filter: TableMeetingFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMeetings(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
         id
-        FirstName
-        LastName
-        Organization
-        Occupation
-        createdAt
-        updatedAt
-        owner
+        ExternalMeetingId
+        MediaRegion
+        MeetingId
+      }
+      nextToken
+    }
+  }
+`;
+export const getAttendeeData = /* GraphQL */ `
+  query GetAttendeeData($id: String!) {
+    getAttendeeData(id: $id) {
+      id
+      externalUserId
+      meetingID
+      name
+      role
+    }
+  }
+`;
+export const listAttendeeData = /* GraphQL */ `
+  query ListAttendeeData(
+    $filter: TableAttendeeDataFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAttendeeData(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        externalUserId
+        meetingID
+        name
+        role
       }
       nextToken
     }

@@ -6,7 +6,7 @@ import {
   CognitoUser,
   MeetingStateType,
   MeetingType,
-  PhysicianProfileType,
+  SpecialistProfileType,
 } from "../../types";
 import getProfile from "../calls/fetchPhysicianProfile";
 import listAllMeetings from "../calls/listAllMeetings";
@@ -27,14 +27,14 @@ const Alerts = (): ReactElement => {
   const globalClasses = useGlobalStyles();
   const classes = useStyles();
   const sessionId = useSessionId();
-  const [profile, setProfile] = useState<PhysicianProfileType>();
+  const [profile, setProfile] = useState<SpecialistProfileType>();
 
   useEffect(() => {
     const f = async () => {
       const u: CognitoUser = await Auth.currentAuthenticatedUser();
-      const id = u.attributes.sub;
-      // const fetchedProfile = await getProfile({ id });
-      // setProfile(fetchedProfile);
+      const {phone_number} = u.attributes;
+      const fetchedProfile = await getProfile({ phone_number });
+      setProfile(fetchedProfile);
     };
     const g = async () => {
       const res = await listAllMeetings();
@@ -56,9 +56,9 @@ const Alerts = (): ReactElement => {
       history.push("/call", {
         meetingId: id,
         name: profile
-          ? `${profile.FirstName} ${profile.LastName}`
+          ? `${profile.first_name} ${profile.last_name}`
           : "Professional",
-        role: profile?.Occupation || "Professional",
+        role: profile?.user_role || "Professional",
         attendeeId: sessionId,
         parent: "/physician/alerts",
       } as MeetingStateType);
