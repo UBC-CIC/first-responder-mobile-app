@@ -21,12 +21,7 @@
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
-        "family_name",
-        "given_name",
-        "name",
         "phone_number",
-        "picture",
-        "updated_at",
         "email"
     ],
     "userpoolClientReadAttributes": [
@@ -35,7 +30,7 @@
         "phone_number_verified"
     ],
     "userpoolClientLambdaRole": "firstrcbc374ce_userpoolclient_lambda_role",
-    "userpoolClientSetAttributes": true,
+    "userpoolClientSetAttributes": false,
     "sharedId": "cbc374ce",
     "resourceName": "firstrespondermobilecbc374ce",
     "authSelections": "userPoolOnly",
@@ -57,7 +52,8 @@
     ],
     "triggers": "{}",
     "userPoolGroupList": [
-        "users"
+        "firstresponders",
+        "physicians"
     ],
     "serviceName": "Cognito",
     "usernameCaseSensitive": false,
