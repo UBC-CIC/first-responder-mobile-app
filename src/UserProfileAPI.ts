@@ -4,7 +4,6 @@
 import { ModelAttributeTypes, ModelStringInput } from "./API";
 
 export type CreateUserProfileInput = {
-  id?: string | null,
   email: string,
   user_status?: string | null,
   first_name?: string | null,
@@ -48,7 +47,6 @@ export type ModelBooleanInput = {
 
 export type UserProfile = {
   __typename: "UserProfile",
-  id?: string,
   email?: string,
   user_status?: string | null,
   first_name?: string | null,
@@ -83,7 +81,7 @@ export type UpdateUserProfileInput = {
 };
 
 export type DeleteUserProfileInput = {
-  id?: string | null,
+  email?: string | null,
 };
 
 export type ModelUserProfileFilterInput = {
@@ -119,7 +117,6 @@ export type CreateUserProfileMutationVariables = {
 export type CreateUserProfileMutation = {
   createUserProfile?:  {
     __typename: "UserProfile",
-    id: string,
     email: string,
     user_status?: string | null,
     first_name?: string | null,
@@ -146,7 +143,6 @@ export type UpdateUserProfileMutationVariables = {
 export type UpdateUserProfileMutation = {
   updateUserProfile?:  {
     __typename: "UserProfile",
-    id: string,
     email: string,
     user_status?: string | null,
     first_name?: string | null,
@@ -173,7 +169,6 @@ export type DeleteUserProfileMutationVariables = {
 export type DeleteUserProfileMutation = {
   deleteUserProfile?:  {
     __typename: "UserProfile",
-    id: string,
     email: string,
     user_status?: string | null,
     first_name?: string | null,
@@ -193,13 +188,12 @@ export type DeleteUserProfileMutation = {
 };
 
 export type GetUserProfileQueryVariables = {
-  id?: string,
+  email?: string,
 };
 
 export type GetUserProfileQuery = {
   getUserProfile?:  {
     __typename: "UserProfile",
-    id: string,
     email: string,
     user_status?: string | null,
     first_name?: string | null,
@@ -229,7 +223,6 @@ export type ListUserProfilesQuery = {
     __typename: "ModelUserProfileConnection",
     items?:  Array< {
       __typename: "UserProfile",
-      id: string,
       email: string,
       user_status?: string | null,
       first_name?: string | null,
@@ -253,7 +246,6 @@ export type ListUserProfilesQuery = {
 export type OnCreateUserProfileSubscription = {
   onCreateUserProfile?:  {
     __typename: "UserProfile",
-    id: string,
     email: string,
     user_status?: string | null,
     first_name?: string | null,
@@ -275,7 +267,6 @@ export type OnCreateUserProfileSubscription = {
 export type OnUpdateUserProfileSubscription = {
   onUpdateUserProfile?:  {
     __typename: "UserProfile",
-    id: string,
     email: string,
     user_status?: string | null,
     first_name?: string | null,
@@ -297,7 +288,6 @@ export type OnUpdateUserProfileSubscription = {
 export type OnDeleteUserProfileSubscription = {
   onDeleteUserProfile?:  {
     __typename: "UserProfile",
-    id: string,
     email: string,
     user_status?: string | null,
     first_name?: string | null,
@@ -315,3 +305,96 @@ export type OnDeleteUserProfileSubscription = {
     updatedAt: string,
   } | null,
 };
+
+
+// Queries
+
+export const getUserProfile = /* GraphQL */ `
+  query GetUserProfile($email: String!) {
+    getUserProfile(email: $email) {
+    availability
+    created_date_time
+    email
+    first_name
+    is_paged
+    last_name
+    notes
+    organization
+    phone_number
+    profile_picture
+    updated_date_time
+    user_role
+    user_status
+  }
+  }
+`;
+
+//Mutations
+
+export const createUserProfile = /* GraphQL */ `
+  mutation CreateUserProfile(
+    $input: CreateUserProfileInput!
+  ) {
+    createUserProfile(input: $input) {
+        email
+        availability
+        created_date_time
+        email
+        first_name
+        is_paged
+        last_name
+        notes
+        organization
+        phone_number
+        profile_picture
+        updated_date_time
+        user_role
+        user_status
+    }
+  }
+`;
+export const updateUserProfile = /* GraphQL */ `
+  mutation UpdateUserProfile(
+    $input: UpdateUserProfileInput!
+  ) {
+    updateUserProfile(input: $input) {
+        email
+        availability
+        created_date_time
+        email
+        first_name
+        is_paged
+        last_name
+        notes
+        organization
+        phone_number
+        profile_picture
+        updated_date_time
+        user_role
+        user_status
+    }
+  }
+`;
+export const deleteUserProfile = /* GraphQL */ `
+  mutation DeleteUserProfile(
+    $input: DeleteUserProfileInput!
+    $condition: ModelUserProfileConditionInput
+  ) {
+    deleteUserProfile(input: $input, condition: $condition) {
+      email
+        availability
+        created_date_time
+        email
+        first_name
+        is_paged
+        last_name
+        notes
+        organization
+        phone_number
+        profile_picture
+        updated_date_time
+        user_role
+        user_status
+    }
+  }
+`;

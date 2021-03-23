@@ -33,8 +33,8 @@ const Alerts = (): ReactElement => {
     const f = async () => {
       const u: CognitoUser = await Auth.currentAuthenticatedUser();
       const id = u.attributes.sub;
-      const fetchedProfile = await getProfile({ id });
-      setProfile(fetchedProfile);
+      // const fetchedProfile = await getProfile({ id });
+      // setProfile(fetchedProfile);
     };
     const g = async () => {
       const res = await listAllMeetings();

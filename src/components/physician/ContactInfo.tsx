@@ -1,6 +1,7 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import { Fab, makeStyles, Paper } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
+import { CSSProperties } from "@material-ui/styles";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import React, { ReactElement, useEffect, useState } from "react";
 import {
@@ -8,12 +9,9 @@ import {
   CreatePhysicianProfileMutation,
   UpdatePhysicianProfileMutation,
 } from "../../API";
-import {
-  createPhysicianProfile,
-  updatePhysicianProfile,
-} from "../../graphql/mutations";
 import "../../styles/physician/ContactInfo.css";
-import { CognitoUser, PhysicianProfileType } from "../../types";
+import { CognitoUser, PhysicianProfileType, UserProfileType } from "../../types";
+import { createUserProfile, CreateUserProfileInput, CreateUserProfileMutation, updateUserProfile, UpdateUserProfileMutation } from "../../UserProfileAPI";
 import fetchPhysicianProfile from "../calls/fetchPhysicianProfile";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
@@ -32,14 +30,19 @@ const useStyles = makeStyles({
     margin: 10,
   },
 });
+const headerStyle:CSSProperties = {
+  color: Colors.theme.platinum,
+  fontFamily: "Signika Negative",
+  textAlign: "center"
+};
 
 const ContactInfo = (): ReactElement => {
-  const [form, setForm] = useState<PhysicianProfileType>({
-    id: "",
-    FirstName: "",
-    LastName: "",
-    Organization: "",
-    Occupation: "",
+  const [form, setForm] = useState<UserProfileType>({
+    email: "",
+    first_name: "",
+    last_name: "",
+    organization: "",
+    user_role: "",
   });
 
   const classes = useStyles();
@@ -50,13 +53,20 @@ const ContactInfo = (): ReactElement => {
     const f = async () => {
       try {
         const u: CognitoUser = await Auth.currentAuthenticatedUser();
-        const id = u.attributes.sub;
+        const { email, phone_number } = u.attributes;
+        console.log(u.attributes);
+        
 
-        const profile = await fetchPhysicianProfile({ id });
+
+        console.log(email);
+        
+        const profile = await fetchPhysicianProfile({ email });
+        console.log(profile);
+        
         if (profile) {
-          setForm({ ...profile, id });
+          setForm({ ...profile, email, phone_number });
         } else {
-          setForm({ ...form, id });
+          setForm({ ...form, email, phone_number });
         }
       } catch (e) {
         console.log(e);
@@ -65,50 +75,64 @@ const ContactInfo = (): ReactElement => {
     f();
   }, []);
 
-  const createProfile = async (options: CreatePhysicianProfileInput) => {
+  const createProfile = async (options: UserProfileType) => {
     const response = (await API.graphql({
-      ...graphqlOperation(createPhysicianProfile, { input: options }),
-      authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-    })) as GraphQLResult<CreatePhysicianProfileMutation>;
+      ...graphqlOperation(createUserProfile, { input: options }),
+      authMode: GRAPHQL_AUTH_MODE.API_KEY,
+    })) as GraphQLResult<CreateUserProfileMutation>;
+    console.log(response);
+    
     if (response.errors) {
       console.log(response.errors);
     }
   };
 
-  const updateProfile = async (options: CreatePhysicianProfileInput) => {
+  const updateProfile = async (options: UserProfileType) => {
     try {
       const response = (await API.graphql({
-        ...graphqlOperation(updatePhysicianProfile, { input: options }),
-        authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-      })) as GraphQLResult<UpdatePhysicianProfileMutation>;
+        ...graphqlOperation(updateUserProfile, { input: options }),
+        authMode: GRAPHQL_AUTH_MODE.API_KEY,
+      })) as GraphQLResult<UpdateUserProfileMutation>;
       console.log(response);
     } catch (response) {
-      console.warn("UpdateProfile failed, creating profile instead");
-
+      console.log(response);
       if (
         response.errors[0].errorType ===
         "DynamoDB:ConditionalCheckFailedException"
       ) {
+        console.warn("UpdateProfile failed, creating profile instead");
         handleCreateProfile();
       }
     }
   };
 
   const handleUpdateProfile = async () => {
-    if (!form.id) {
-      console.error("No ID Provided for UpdateProfile");
+    if (!form.email) {
+      console.error("No email Provided for UpdateProfile");
       return;
     }
     updateProfile(form);
   };
 
   const handleCreateProfile = async () => {
-    if (!form.id) {
+    if (!form.email) {
       console.error("No ID Provided for UpdateProfile");
       return;
     }
     createProfile(form);
   };
+
+
+  const renderTextField = (field: keyof UserProfileType, label?: string) => {
+    return <DarkModeTextField
+      label={label}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({ ...form, [field]: e.currentTarget.value });
+      }}
+      value={form[field]}
+      required
+    />
+  }
 
   /** TODO style this more, add more fields */
   return (
@@ -121,44 +145,22 @@ const ContactInfo = (): ReactElement => {
           handleUpdateProfile();
         }}
       >
-        <div className="ffc">
+        <div className="ffc align">
+          <h3 style={headerStyle}>Phone Number: {form.phone_number}</h3>
+          <h3 style={headerStyle}>Email: {form.email}</h3>
           <div className="form-name">
-            <DarkModeTextField
-              label="First Name"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setForm({ ...form, FirstName: e.currentTarget.value });
-              }}
-              value={form.FirstName}
-              required
-            />
-            <DarkModeTextField
-              value={form.LastName}
-              label="Last Name"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setForm({ ...form, LastName: e.currentTarget.value });
-              }}
-              required
-            />
+            {renderTextField("first_name", "First Name")}
+            {renderTextField("last_name", "Last Name")}
           </div>
-          <div className="form-name">
-            <DarkModeTextField
-              value={form.Organization}
-              label="Organization"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setForm({ ...form, Organization: e.currentTarget.value });
-              }}
-            />
-            <DarkModeTextField
-              value={form.Occupation}
-              label="Occupation"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setForm({ ...form, Occupation: e.currentTarget.value });
-              }}
-            />
-          </div>
+          {renderTextField("organization", "Organization")}
+          {renderTextField("user_role", "Occupation")}
         </div>
         <div className="ffc" style={{ flex: "0.3" }}>
-          <Fab type="submit" variant="extended" className={`${globalClasses.button} ${globalClasses.coral}`}>
+          <Fab
+            type="submit"
+            variant="extended"
+            className={`${globalClasses.button} ${globalClasses.coral}`}
+          >
             <SaveIcon className={classes.icon} />
             Save Profile
           </Fab>

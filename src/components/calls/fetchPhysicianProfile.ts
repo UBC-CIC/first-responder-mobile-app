@@ -1,27 +1,29 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import { API, graphqlOperation } from "aws-amplify";
-import { GetPhysicianProfileQuery, GetPhysicianProfileQueryVariables } from "../../API";
-import { getPhysicianProfile } from "../../graphql/queries";
-import { PhysicianProfileType } from "../../types";
+import {
+  GetPhysicianProfileQuery,
+  GetPhysicianProfileQueryVariables,
+} from "../../API";
+import { PhysicianProfileType, UserProfileType } from "../../types";
+import {
+  getUserProfile,
+  GetUserProfileQuery,
+  GetUserProfileQueryVariables,
+} from "../../UserProfileAPI";
 
-const fetchPhysicianProfile = async (options: GetPhysicianProfileQueryVariables):Promise<PhysicianProfileType | undefined> => {
+const fetchPhysicianProfile = async (
+  options: GetUserProfileQueryVariables
+): Promise<UserProfileType | undefined> => {
   const response = (await API.graphql({
-    ...graphqlOperation(getPhysicianProfile, options),
-    authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS,
-  })) as GraphQLResult<GetPhysicianProfileQuery>;
+    ...graphqlOperation(getUserProfile, options),
+    authMode: GRAPHQL_AUTH_MODE.API_KEY,
+  })) as GraphQLResult<GetUserProfileQuery>;
   if (response.errors) {
     console.log(response.errors);
   } else {
-    if (response.data?.getPhysicianProfile) {
-      const profile =
-          response.data?.getPhysicianProfile;
-      return {
-        Occupation: profile.Occupation,
-        Organization: profile.Organization,
-        FirstName: profile.FirstName,
-        LastName: profile.LastName,
-        id: profile.LastName
-      } as PhysicianProfileType;
+    if (response.data?.getUserProfile) {
+      const profile = response.data?.getUserProfile as UserProfileType;
+      return profile;
     }
   }
 };

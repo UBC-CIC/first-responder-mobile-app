@@ -3,12 +3,10 @@ import {
   MeetingProvider
 } from "amazon-chime-sdk-component-library-react";
 import {
+  ConfirmSignUp,
   ForgotPassword,
-
   SignIn,
-
   SignUp,
-
   VerifyContact, withAuthenticator
 } from "aws-amplify-react";
 import React, { ReactElement } from "react";
@@ -93,13 +91,14 @@ const PhysicianRoutes = withAuthenticator(
   {
     includeGreetings: false,
     authenticatorComponents: [
-      <Header title="Sign In" key={-1} parent="/" ></Header>,
+      <Header title="Sign In" key={-1} parent="/"></Header>,
       <SignIn key={0} />,
-      <SignUp key={1}/>,
+      <SignUp key={1} />,
+      <ConfirmSignUp key={3} />,
       <VerifyContact key={2} />,
       <ForgotPassword key={5} />,
     ],
-    theme: AuthTheme
+    theme: AuthTheme,
   } as any
 );
 
