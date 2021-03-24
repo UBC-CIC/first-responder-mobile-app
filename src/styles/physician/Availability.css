@@ -6,17 +6,33 @@
 
 .box {
   width: 85%;
-  border: 1px solid white;
+  /* border: 1px solid white; */
   justify-self: center;
   align-self: center;
   height: 80%;
-  background-color: blue;
+  /* background-color: blue; */
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.smallbox-1 {
+  flex:1;
+  border: 1px solid white;
+  /* background-color: white; */
+}
+
+.smallbox-2 {
+  flex:1;
+  border: 1px solid white;
+  /* background-color: red; */
 }
 
 .grid {
   display: grid; 
   width: 100%;
-  height: calc(100vh - 56px);
+  height: calc(100vh - 64px);
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(24, 1fr);
+  margin-bottom: 10px;
 }
