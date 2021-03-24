@@ -1,5 +1,22 @@
 .availability-container {
-  width: 90%;
-  height: 100%;
-  margin-top: 10;
+  flex: 1;
+  flex-direction: column;
+  display: flex;
+}
+
+.box {
+  width: 85%;
+  border: 1px solid white;
+  justify-self: center;
+  align-self: center;
+  height: 80%;
+  background-color: blue;
+}
+
+.grid {
+  display: grid; 
+  width: 100%;
+  height: calc(100vh - 56px);
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(24, 1fr);
 }
