@@ -71,6 +71,7 @@ const PhysicianProfile = (): ReactElement => {
             <CalendarIcon className={classes.icon} />
             Hours of Availability
           </Fab>
+          
         </div>
         <div className={classes.signOutContainer}>
           <Fab

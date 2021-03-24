@@ -3,16 +3,6 @@ import Layout from "../ui/Layout";
 import Schedule from "./Schedule"
 import "../../styles/physician/Availability.css";
 
-const DAYS_OF_WEEK: DayIndex[] = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
-
 type DayMap = {
   Monday: number[];
   Tuesday: number[];
