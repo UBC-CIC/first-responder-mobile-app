@@ -59,7 +59,6 @@ const Schedule = ({onChange = () => undefined}: ScheduleProps): ReactElement => 
     index: number,
     event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => {
-    event.preventDefault();
     setStartIndex(index);
     setCurrIndex(index);
     console.log(index);
@@ -110,7 +109,6 @@ const Schedule = ({onChange = () => undefined}: ScheduleProps): ReactElement => 
   };
 
   const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
-    event.preventDefault();
     if (typeof startIndex === "undefined") {
       return;
     }
@@ -135,7 +133,6 @@ const Schedule = ({onChange = () => undefined}: ScheduleProps): ReactElement => 
     event: React.TouchEvent<HTMLDivElement>
   ) => {
     
-    event.preventDefault();
     resetHighlights();
     if (typeof startIndex === "undefined") {
       console.error("Error Selecting Availability, please try again");
