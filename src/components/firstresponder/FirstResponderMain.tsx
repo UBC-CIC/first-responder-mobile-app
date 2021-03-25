@@ -12,6 +12,7 @@ import "../../styles/firstresponder/Home.css";
 import { FirstResponderProfileType, MeetingStateType } from "../../types";
 import { fetchFirstResponderProfile } from "../calls";
 import OfflineContext from "../context/OfflineContext";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
@@ -48,16 +49,15 @@ const FirstResponderMain = (): ReactElement => {
   const classes = useStyles();
   const globalClasses = useGlobalStyles();
   const { offline } = useContext(OfflineContext);
+  const [user, userType] = useAuthenticatedUser();
 
   const [modalOpen, setModalOpen] = useState(false);
   const phone = usePhoneNumber();
   const sessionId = useSessionId();
   const [profile, setProfile] = useState<FirstResponderProfileType>();
   /** Fetch Profile Info */
-  useEffect(() => {
+  useEffect(() => {    
     const f = async () => {
-      console.log(phone);
-      
       if (phone) {
         try {
           const profile = await fetchFirstResponderProfile({ phone_number: phone });
@@ -103,7 +103,7 @@ const FirstResponderMain = (): ReactElement => {
   return (
     <Layout
       hideBackButton={
-        localStorage.getItem("firstresponderphonenumber") ? true : false
+        userType === "firstresponder" ? true : false
       }
       title="First Responder Home"
       parent="/"

@@ -1,10 +1,10 @@
 import { API, graphqlOperation } from "aws-amplify";
-import { joinChimeMeeting } from "../../graphql/mutations";
 import { GraphQLResult } from "@aws-amplify/api";
 import {
   JoinChimeMeetingMutation,
   JoinChimeMeetingMutationVariables,
 } from "../../API";
+import { joinChimeMeeting } from "./graphql/joinChimeMeetingMutation";
 
 const joinMeeting = async (
   options: JoinChimeMeetingMutationVariables

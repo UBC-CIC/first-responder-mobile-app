@@ -5,7 +5,7 @@ import {
   GetSpecialistProfileQuery,
   GetSpecialistProfileQueryVariables,
 } from "../../API";
-import { getSpecialistProfile } from "../../graphql/queries";
+import { getSpecialistProfile } from "./graphql/specialistProfile";
 
 const fetchPhysicianProfile = async (
   options: GetSpecialistProfileQueryVariables

@@ -86,26 +86,17 @@ export const joinChimeMeeting = /* GraphQL */ `
       role: $role
       title: $title
     ) {
-      Meeting {
-      MediaPlacement {
-        AudioFallbackUrl
-        AudioHostUrl
-        ScreenDataUrl
-        ScreenSharingUrl
-        ScreenViewingUrl
-        SignalingUrl
-        TurnControlUrl
+      Attendee {
+        AttendeeId
+        ExternalUserId
+        JoinToken
       }
-      ExternalMeetingId
-      MediaRegion
-      MeetingId
-    }
-    id
-    Attendee {
-      AttendeeId
-      ExternalUserId
-      JoinToken
-    }
+      Meeting {
+        MeetingId
+        ExternalMeetingId
+        MediaRegion
+      }
+      id
     }
   }
 `;

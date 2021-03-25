@@ -7,6 +7,7 @@ export default {
     onyx: "#39393A",
     space: "#3F3D56",
     warning: "#FFCC00",
-    error: "#ff0033"
+    error: "#ff0033",
+    success: "#4BCA81",
   },
 };

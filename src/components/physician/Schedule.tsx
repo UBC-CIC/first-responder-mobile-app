@@ -1,16 +1,22 @@
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
 import _ from "lodash";
-const DAYS_OF_WEEK = [
+import { CircularProgress } from "@material-ui/core";
+export const DAYS_OF_WEEK = [
+  "Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
-  "Sunday",
 ];
 
 const HOURS_OF_DAY = [
+  "12AM",
+  "1AM",
+  "2AM",
+  "3AM",
+  "4AM",
   "5AM",
   "6AM",
   "7AM",
@@ -18,7 +24,7 @@ const HOURS_OF_DAY = [
   "9AM",
   "10AM",
   "11AM",
-  "12AM",
+  "12PM",
   "1PM",
   "2PM",
   "3PM",
@@ -30,11 +36,6 @@ const HOURS_OF_DAY = [
   "9PM",
   "10PM",
   "11PM",
-  "12AM",
-  "1AM",
-  "2AM",
-  "3AM",
-  "4AM",
 ];
 
 const SHORT_DAYS_OF_WEEK = DAYS_OF_WEEK.map((day) =>
@@ -47,21 +48,27 @@ for (let i = 0; i < FALSE_BOOLEAN_ARRAY.length; i++) {
 }
 type ScheduleProps = {
   onChange?: (schedule:boolean[][]) => void;
+  initialSchedule?: boolean[][];
 };
 
 
-const Schedule = ({onChange = () => undefined}: ScheduleProps): ReactElement => {
+const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}: ScheduleProps): ReactElement => {
   const [highlighted, setHighlighted] = useState(_.cloneDeep(FALSE_BOOLEAN_ARRAY));
-  const [selected, setSelected] = useState(_.cloneDeep(FALSE_BOOLEAN_ARRAY));
+  const [selected, setSelected] = useState(initialSchedule || _.cloneDeep(FALSE_BOOLEAN_ARRAY));
   const [startIndex, setStartIndex] = useState<number | undefined>();
   const [currIndex, setCurrIndex] = useState<number | undefined>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setSelected(initialSchedule || _.cloneDeep(FALSE_BOOLEAN_ARRAY));
+  }, [initialSchedule]);
+
   const handleTouchStart = (
     index: number,
     event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
   ) => {
     setStartIndex(index);
     setCurrIndex(index);
-    console.log(index);
     
   };
 
@@ -197,7 +204,7 @@ const Schedule = ({onChange = () => undefined}: ScheduleProps): ReactElement => 
         selected[i][j] = toSet;
       }
     }
-  };
+  }
 
   /**
    * toggles all items in selected corner to the value of the initally clicked box.

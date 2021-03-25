@@ -17,6 +17,11 @@ type AttendeeInfo {
   JoinToken: String
 }
 
+type Availability {
+  overrides: [Override]
+  schedules: [Schedule]
+}
+
 input CreateAttendeeDataInput {
   id: String!
   externalUserId: String
@@ -37,7 +42,7 @@ input CreateMeetingInput {
 }
 
 input CreateSpecialistProfileInput {
-  availability: String
+  availability: AWSJSON
   created_date_time: String
   email: String
   first_name: String
@@ -80,12 +85,6 @@ type FirstResponderProfileConnection {
   nextToken: String
 }
 
-type MeetingInfo {
-  Attendee: AttendeeInfo
-  Meeting: MeetingData!
-  id: String!
-}
-
 type MediaPlacement {
   AudioFallbackUrl: String
   AudioHostUrl: String
@@ -114,6 +113,12 @@ type MeetingData {
   ExternalMeetingId: String
   MediaPlacement: MediaPlacement!
   MediaRegion: String!
+}
+
+type MeetingInfo {
+  Attendee: AttendeeInfo
+  Meeting: MeetingData!
+  id: String!
 }
 
 enum ModelAttributeTypes {
@@ -243,6 +248,12 @@ type Mutation {
   deleteAttendeeData(input: DeleteAttendeeDataInput!): AttendeeData
 }
 
+type Override {
+  end_time: String
+  override_type: String
+  start_time: String
+}
+
 type Query {
   getFirstResponderProfile(phone_number: String!): FirstResponderProfile
   getSpecialistProfile(phone_number: String!): SpecialistProfile
@@ -275,8 +286,16 @@ type Query {
   ): AttendeeDataConnection
 }
 
+type Schedule {
+  availability_type: String
+  day_of_week: Int
+  end_seconds_since_midnight: Int
+  start_seconds_since_midnight: Int
+  timezone: String
+}
+
 type SpecialistProfile {
-  availability: String
+  availability: Availability
   created_date_time: String
   email: String
   first_name: String
@@ -430,7 +449,7 @@ input TableMeetingFilterInput {
 }
 
 input TableSpecialistProfileFilterInput {
-  availability: TableStringFilterInput
+  availability: AWSJSON
   created_date_time: TableStringFilterInput
   email: TableStringFilterInput
   first_name: TableStringFilterInput
@@ -478,7 +497,7 @@ input UpdateMeetingInput {
 }
 
 input UpdateSpecialistProfileInput {
-  availability: String
+  availability: AWSJSON
   created_date_time: String
   email: String
   first_name: String

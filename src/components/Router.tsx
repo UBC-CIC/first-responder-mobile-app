@@ -1,4 +1,6 @@
 import "@aws-amplify/ui/dist/style.css";
+import { makeStyles, Snackbar } from "@material-ui/core";
+import { Check } from "@material-ui/icons";
 import {
   MeetingProvider
 } from "amazon-chime-sdk-component-library-react";
@@ -9,7 +11,7 @@ import {
   SignUp,
   VerifyContact, withAuthenticator
 } from "aws-amplify-react";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import FirstResponderMain from "./firstresponder/FirstResponderMain";
 import FirstResponderProfile from "./firstresponder/FirstResponderProfile";
@@ -21,6 +23,7 @@ import PhysicianMain from "./physician/PhysicianMain";
 import PhysicianProfile from "./physician/PhysicianProfile";
 import Call from "./shared/Call";
 import Colors from "./styling/Colors";
+import SnackBarActions from "./ui/Alert";
 import AuthTheme from "./ui/AuthTheme";
 import Header from "./ui/Header";
 import PhoneSignIn from "./ui/PhoneSignIn";
@@ -39,13 +42,8 @@ const Router = (): ReactElement => {
           <PhysicianRoutes />
         </Route>
 
-        {/* First Responder */}
-        {/* <Route exact path="/firstresponder">
-          <FirstResponderMain />
-        </Route>
-        <Route exact path="/firstresponder/profile">
-          <FirstResponderProfile />
-        </Route> */}
+        {/* First Responder w/ Authenticator */}
+
         <Route path="/firstresponder">
           <FirstResponderRoutes />
         </Route>
@@ -66,8 +64,24 @@ const Router = (): ReactElement => {
   );
 };
 
+const useStyles = makeStyles({
+  success: {
+    backgroundColor: Colors.theme.success,
+    color: Colors.theme.platinum,
+  },
+  failure: {
+    backgroundColor: Colors.theme.error,
+    color: Colors.theme.platinum,
+  },
+});
 const PhysicianRoutes = withAuthenticator(
   () => {
+
+    const classes = useStyles();
+    const [success, setSuccess] = useState(false);
+    const [failure, setFailure] = useState(false);
+
+    
     return (
       <>
         <Route exact path="/physician">
@@ -78,9 +92,25 @@ const PhysicianRoutes = withAuthenticator(
         </Route>
         <Route exact path="/physician/profile">
           <PhysicianProfile />
+          <Snackbar
+            open={success}
+            onClose={() => setSuccess(false)}
+            ContentProps={{ className: classes.success }}
+            action={<SnackBarActions icon={<Check fontSize="small" />} />}
+            message="Successfully saved availability!"
+            autoHideDuration={1000}
+          ></Snackbar>
+          <Snackbar
+            open={failure}
+            onClose={() => setFailure(false)}
+            ContentProps={{ className: classes.failure }}
+            action={<SnackBarActions icon={<Check fontSize="small" />} />}
+            message="Failed to save your availability, please try again"
+            autoHideDuration={3000}
+          ></Snackbar>
         </Route>
         <Route exact path="/physician/availability">
-          <Availability />
+          <Availability onUnmount={(success) => success ? setSuccess(true) : setFailure(true)} />
         </Route>
         <Route exact path="/physician/contactinfo">
           <ContactInfo />

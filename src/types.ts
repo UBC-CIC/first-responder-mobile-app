@@ -84,3 +84,20 @@ export enum UserStatus {
     NOT_AVAILABLE = "NOT_AVAILABLE", // User is not available per their schedule
     OFFLINE = "OFFLINE", // User has manually went offline
 }
+
+export type FullAvailabilityType = {
+  overrides: any;
+  schedules: FormattedTimeBlock[];
+}
+
+export type FormattedTimeBlock = {
+  availability_type: AVAILABILITY_TYPE;
+  day_of_week: number;
+  end_seconds_since_midnight:number;
+  start_seconds_since_midnight:number;
+  timezone: string;
+};
+
+export type AVAILABILITY_TYPE = 
+  "NOT_AVAILABLE" | 
+  "AVAILABLE"

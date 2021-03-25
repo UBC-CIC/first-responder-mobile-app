@@ -12,7 +12,7 @@ import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
 import Layout from "../ui/Layout";
-import { createSpecialistProfile, updateSpecialistProfile } from "../../graphql/mutations";
+import { createSpecialistProfile, updateSpecialistProfile } from "../calls/graphql/specialistProfile";
 
 const useStyles = makeStyles({
   contactInfoForm: {
