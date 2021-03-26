@@ -43,7 +43,7 @@ const Header = ({
 
   const handleBackButtonPressed = () => {
     console.log(parent);
-    
+
     if (parent) {
       history.replace(parent);
     } else {
@@ -53,15 +53,19 @@ const Header = ({
   return (
     <AppBar position="sticky" className={classes.header}>
       <Toolbar className={classes.toolbar}>
-        {!hideBackButton ? <IconButton
-          edge="start"
-          color="inherit"
-          onClick={() => handleBackButtonPressed()}
-        >
-          <ArrowBack />
-        </IconButton> : <div
-          style={{width: 30}}
-        /> }
+        {!hideBackButton ? (
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={() => handleBackButtonPressed()}
+          >
+            <ArrowBack />
+          </IconButton>
+        ) : (
+          <div
+            style={{ width: 30 }}
+          />
+        ) }
         <Typography variant="h6" className={classes.title}>
           {title}
         </Typography>

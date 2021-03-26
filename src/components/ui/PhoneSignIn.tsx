@@ -3,14 +3,24 @@ import {
   Button,
   makeStyles,
   TextField,
-  withStyles
+  withStyles,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import "../../styles/firstresponder/SignIn.css";
+import PhoneInput from "react-phone-input-2";
 import Colors from "../styling/Colors";
 import Layout from "./Layout";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+
+// eslint-disable-next-line no-shadow
+enum AuthState {
+  NOT_STARTED,
+  STARTED,
+  SMS_SENT,
+  COMPLETE,
+  ERROR,
+}
+
 const useStyles = makeStyles({
   button: {
     backgroundColor: Colors.theme.coral,
@@ -27,14 +37,6 @@ const useStyles = makeStyles({
     marginTop: 20,
   },
 });
-
-enum AuthState {
-  NOT_STARTED,
-  STARTED,
-  SMS_SENT,
-  COMPLETE,
-  ERROR,
-}
 
 const headerStyle = {
   color: Colors.theme.platinum,
@@ -72,9 +74,9 @@ const SignIn = () => {
   const [authState, setAuthState] = useState<AuthState>(AuthState.NOT_STARTED);
   const [numFails, setNumFails] = useState(0);
   const handleStartAuth = async () => {
-    const formattedNumber = "+" + phoneNumber;
+    const formattedNumber = `+${phoneNumber}`;
     console.log(formattedNumber);
-    
+
     try {
       setAuthState(AuthState.STARTED);
       await Auth.signUp({
@@ -91,7 +93,7 @@ const SignIn = () => {
     try {
       const cognitoUser = await Auth.signIn(formattedNumber);
       setAuthState(AuthState.SMS_SENT);
-      setUser(cognitoUser)
+      setUser(cognitoUser);
     } catch (e) {
       // Handle sign in errors
       setAuthState(AuthState.ERROR);
@@ -104,7 +106,7 @@ const SignIn = () => {
       const cognitoUser = await Auth.sendCustomChallengeAnswer(user, password);
       console.log(cognitoUser);
       if (cognitoUser.username) {
-        localStorage.setItem("firstresponderphonenumber", cognitoUser.username)
+        localStorage.setItem("firstresponderphonenumber", cognitoUser.username);
       }
     } catch {
       // Handle 3 error thrown for 3 incorrect attempts.
@@ -121,7 +123,7 @@ const SignIn = () => {
         country="ca"
         preferredCountries={["ca", "us"]}
         masks={{ ca: "(...) ...-....", us: "(...) ...-...." }}
-        priority={{ca: 0, us: 1}}
+        priority={{ ca: 0, us: 1 }}
         value={phoneNumber}
         onChange={(phone) => {
           setPhoneNumber(phone);

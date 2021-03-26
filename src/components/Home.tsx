@@ -1,12 +1,13 @@
 import { Button, makeStyles } from "@material-ui/core";
-import { ReactElement, useEffect } from "react";
+import Amplify from "aws-amplify";
+import { ReactElement } from "react";
 import { useHistory } from "react-router-dom";
-import "../styles/Home.css";
-import Layout from "./ui/Layout";
-import { useGlobalStyles } from "./styling/GlobalMuiStyles";
 import config from "../aws-exports";
 import passwordless from "../passwordless-aws-exports";
-import Amplify from "aws-amplify";
+import "../styles/Home.css";
+import { useGlobalStyles } from "./styling/GlobalMuiStyles";
+import Layout from "./ui/Layout";
+
 const useStyles = makeStyles({
   button: {
     margin: "20px",
@@ -31,9 +32,7 @@ const Home = (): ReactElement => {
 
   if (localStorage.getItem("firstresponderphonenumber")) {
     history.replace("/firstresponder");
-  }
-
-  else if (localStorage.getItem("physiciansessionid")) {
+  } else if (localStorage.getItem("physiciansessionid")) {
     history.replace("/physician");
   }
 

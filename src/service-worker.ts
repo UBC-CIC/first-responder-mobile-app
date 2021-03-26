@@ -1,5 +1,5 @@
 /// <reference lib="webworker" />
-/* eslint-disable no-restricted-globals */
+/* eslint-disable*/
 
 // This service worker can be customized!
 // See https://developers.google.com/web/tools/workbox/modules
@@ -50,15 +50,14 @@ registerRoute(
     // Return true to signal that we want to use the handler.
     return true;
   },
-  createHandlerBoundToURL(process.env.PUBLIC_URL + "/index.html")
+  createHandlerBoundToURL(`${process.env.PUBLIC_URL}/index.html`),
 );
 
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
-  ({ url }) =>
-    url.origin === self.location.origin && url.pathname.endsWith(".png"),
+  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith(".png"),
   // Customize this strategy as needed, e.g., by changing to CacheFirst.
   new StaleWhileRevalidate({
     cacheName: "images",
@@ -67,7 +66,7 @@ registerRoute(
       // least-recently used images are removed.
       new ExpirationPlugin({ maxEntries: 50 }),
     ],
-  })
+  }),
 );
 
 // This allows the web app to trigger skipWaiting via
@@ -80,16 +79,15 @@ self.addEventListener("message", (event) => {
 
 // Any other custom service worker logic can go here.
 
-self.addEventListener("push", e => {
+self.addEventListener("push", (e) => {
   console.log("push");
   if (!e.data) return;
-
 
   const data = e.data.json();
   console.log("Push Recieved...");
 
   self.registration.showNotification(data.title, {
     body: "Notified by Trev",
-    icon: "http://image.ibb.co/frYOFd/tmlogo.png"
-  })
+    icon: "http://image.ibb.co/frYOFd/tmlogo.png",
+  });
 });

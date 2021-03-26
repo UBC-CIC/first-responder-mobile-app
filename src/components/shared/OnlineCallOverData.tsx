@@ -12,6 +12,8 @@ import {
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import "../../styles/VideoCall.css";
+import CloseIcon from "@material-ui/icons/Close";
+import PhoneIcon from "@material-ui/icons/Phone";
 import {
   AttendeeInfoType,
   AttendeeType,
@@ -24,8 +26,6 @@ import Colors from "../styling/Colors";
 import Layout from "../ui/Layout";
 import SnackBarActions from "../ui/Alert";
 import RosterDisplay from "./RosterDisplay";
-import CloseIcon from "@material-ui/icons/Close";
-import PhoneIcon from "@material-ui/icons/Phone";
 
 const MAX_LOSS = 5;
 
@@ -46,16 +46,16 @@ const OnlineCallOverData = (): ReactElement => {
   const audioVideo = useAudioVideo();
   const meetingManager = useMeetingManager();
   const { roster } = useRosterState();
-  const phone = usePhoneNumber();
   const history = useHistory<MeetingStateType>();
   const state = history.location?.state;
+  const phone = usePhoneNumber() || state.meetingId;
   const metrics = useBandwidthMetrics();
   const [localVideoShown, setLocalVideoShown] = useState(false);
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
   const [warningShown, setWarningShown] = React.useState(false);
   const [suggestionShown, setSuggestionShown] = React.useState(false);
   const [connectionState, setConnectionState] = useState<ConnectionState>(
-    ConnectionState.UNKNOWN
+    ConnectionState.UNKNOWN,
   );
   const [packetLoss, setPacketLoss] = useState(0);
   const [lossCount, setLossCount] = useState(0);
@@ -69,7 +69,7 @@ const OnlineCallOverData = (): ReactElement => {
         state.name,
         state.role,
         state.attendeeId,
-        phone as string
+        phone as string,
       );
     };
     f();
@@ -105,11 +105,10 @@ const OnlineCallOverData = (): ReactElement => {
 
       if (newAtt.data?.listAttendeeData?.items) {
         const items = newAtt.data.listAttendeeData?.items?.map(
-          (item) =>
-            ({
-              chimeAttendeeId: item?.id,
-              ...item,
-            } as AttendeeType)
+          (item) => ({
+            chimeAttendeeId: item?.id,
+            ...item,
+          } as AttendeeType),
         );
         setAttendees(items);
       }
@@ -166,12 +165,14 @@ const OnlineCallOverData = (): ReactElement => {
     name: string,
     role: string,
     externalAttendeeId: string,
-    phoneNumber: string
+    phoneNumber: string,
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
     try {
-      console.log({title, name, role, externalAttendeeId, phoneNumber});
-      
+      console.log({
+        title, name, role, externalAttendeeId, phoneNumber,
+      });
+
       const joinRes = await joinMeeting({
         title,
         name,
@@ -181,7 +182,6 @@ const OnlineCallOverData = (): ReactElement => {
       });
 
       console.log("success", joinRes);
-      
 
       const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
       const attendeeInfo = {
@@ -209,7 +209,7 @@ const OnlineCallOverData = (): ReactElement => {
   };
 
   const toggleVideo = (toSet?: boolean) => {
-    if (toSet === undefined || toSet != localVideoShown) toggleLocalVideo();
+    if (toSet === undefined || toSet !== localVideoShown) toggleLocalVideo();
     setLocalVideoShown(toSet !== undefined ? toSet : !localVideoShown);
   };
 
@@ -227,8 +227,7 @@ const OnlineCallOverData = (): ReactElement => {
     if (meetingManager.meetingId) {
       console.log("calling +1 888 599 8558");
       document.location.href = "tel:+18885998558";
-    }
-    else {
+    } else {
       console.log("Creating New Meeting at +1 888 349 3697");
       document.location.href = "tel:+18883493697";
     }
@@ -245,19 +244,23 @@ const OnlineCallOverData = (): ReactElement => {
   return (
     <Layout title="Online Call" parent={state.parent}>
       <div style={{ color: "white" }}>
-        Connection State: {ConnectionState[connectionState]}
+        Connection State:
+        {" "}
+        {ConnectionState[connectionState]}
       </div>
       {!suggestionShown ? (
         <div className="video-container">
           <VideoTileGrid
             layout="standard"
+            // TODO Convert into smarter component
             noRemoteVideoView={
-              // TODO Convert into smarter component
-              <div>
-                <div style={{ color: "white", minHeight: "300px" }}>
-                  Nobody is sharing video at the moment
+              (
+                <div>
+                  <div style={{ color: "white", minHeight: "300px" }}>
+                    Nobody is sharing video at the moment
+                  </div>
                 </div>
-              </div>
+              )
             }
           />
           <Button variant="contained" disabled={connectionState === ConnectionState.POOR} onClick={() => handleToggleCamera()}>Toggle Video</Button>
@@ -270,33 +273,33 @@ const OnlineCallOverData = (): ReactElement => {
           open={suggestionShown}
           onClose={handleClose}
           ContentProps={{ className: classes.suggestion }}
-          action={
+          action={(
             <SnackBarActions
               icon={<PhoneIcon fontSize="small" />}
               handleClose={() => {
                 handleSwitch();
               }}
             />
-          }
+          )}
           message="Click to switch to Voice over Telephone."
           onClick={() => {
             handleSwitch();
           }}
-        ></Snackbar>
+        />
       )}
       <Snackbar
         open={warningShown && !suggestionShown}
         autoHideDuration={6000}
         onClose={handleClose}
         ContentProps={{ className: classes.snackBar }}
-        action={
+        action={(
           <SnackBarActions
             icon={<CloseIcon fontSize="small" />}
             handleClose={handleClose}
           />
-        }
+        )}
         message="Current connection cannot support video."
-      ></Snackbar>
+      />
     </Layout>
   );
 };

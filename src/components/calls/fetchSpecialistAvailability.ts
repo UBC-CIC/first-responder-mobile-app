@@ -4,11 +4,9 @@ import { GetSpecialistProfileQueryVariables } from "../../API";
 import { getSpecialistProfile, GetSpecialistProfileQuery } from "./graphql/specialistAvailability";
 
 const fetchSpecialistAvailability = async (
-  options: GetSpecialistProfileQueryVariables
-): Promise<GraphQLResult<GetSpecialistProfileQuery>> => {
-  return API.graphql(
-    graphqlOperation(getSpecialistProfile, options)
-  ) as GraphQLResult<GetSpecialistProfileQuery>;
-};
+  options: GetSpecialistProfileQueryVariables,
+): Promise<GraphQLResult<GetSpecialistProfileQuery>> => API.graphql(
+  graphqlOperation(getSpecialistProfile, options),
+) as GraphQLResult<GetSpecialistProfileQuery>;
 
 export default fetchSpecialistAvailability;

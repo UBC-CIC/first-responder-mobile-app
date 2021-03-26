@@ -32,4 +32,4 @@ const useStyles = makeStyles({
   },
 });
 
-export {useStyles as useGlobalStyles}
+export { useStyles as useGlobalStyles };

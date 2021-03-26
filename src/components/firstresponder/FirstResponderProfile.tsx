@@ -2,13 +2,13 @@ import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import { CircularProgress, Fab, makeStyles } from "@material-ui/core";
 import { Save } from "@material-ui/icons";
 import { API, Auth, graphqlOperation } from "aws-amplify";
-import {
-  default as React,
+import React, {
   ReactElement,
   useContext,
   useEffect,
   useState,
 } from "react";
+
 import { Redirect } from "react-router";
 import {
   CreateFirstResponderProfileInput,
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
 
 const FirstResponderProfile = (): ReactElement => {
   const phone = usePhoneNumber();
-  if (!phone) return <Redirect to="/"/>;
+  if (!phone) return <Redirect to="/" />;
   const classes = useStyles();
   const globalClasses = useGlobalStyles();
   const [loading, setLoading] = useState(false);
@@ -66,8 +66,7 @@ const FirstResponderProfile = (): ReactElement => {
       try {
         const user = await Auth.currentAuthenticatedUser();
         phone_number = user.attributes.phone_number;
-      }
-      catch (e){
+      } catch (e) {
         phone_number = phone || "";
       }
       try {
@@ -118,8 +117,8 @@ const FirstResponderProfile = (): ReactElement => {
       console.error(response);
 
       if (
-        response.errors[0].errorType ===
-        "DynamoDB:ConditionalCheckFailedException"
+        response.errors[0].errorType
+        === "DynamoDB:ConditionalCheckFailedException"
       ) {
         handleCreateProfile();
       }
@@ -131,8 +130,7 @@ const FirstResponderProfile = (): ReactElement => {
       console.error("No PhoneNumber Provided for UpdateProfile");
       return;
     }
-    if (form.phone_number)
-      createProfile(form);
+    if (form.phone_number) { createProfile(form); }
   };
 
   const handleUpdateProfile = async () => {
@@ -142,30 +140,31 @@ const FirstResponderProfile = (): ReactElement => {
     }
     setLoading(true);
     await updateProfile(form);
-    //Artificially loading
+    // Artificially loading
     setTimeout(() => {
       setLoading(false);
     }, 500);
-
   };
 
-  const renderTextField = (field: keyof FirstResponderProfileType, label?: string) => {
-    return (
-      <DarkModeTextField
-        label={label}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setForm({ ...form, [field]: e.currentTarget.value });
-        }}
-        value={form[field]}
-        required
-      />
-    );
-  };
+  const renderTextField = (field: keyof FirstResponderProfileType, label?: string) => (
+    <DarkModeTextField
+      label={label}
+      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm({ ...form, [field]: e.currentTarget.value });
+      }}
+      value={form[field]}
+      required
+    />
+  );
 
   return (
     <Layout title="First Responder Profile" parent="/firstresponder" flexColumn>
       <div className={classes.root}>
-        <h3 style={headerStyle}>Your Phone Number: {form.phone_number}</h3>
+        <h3 style={headerStyle}>
+          Your Phone Number:
+          {" "}
+          {form.phone_number}
+        </h3>
 
         {renderTextField("first_name", "First Name")}
         {renderTextField("last_name", "Last Name")}

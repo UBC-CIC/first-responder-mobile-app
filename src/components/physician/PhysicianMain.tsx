@@ -1,4 +1,6 @@
-import { Badge, Button, IconButton, makeStyles } from "@material-ui/core";
+import {
+  Badge, Button, IconButton, makeStyles,
+} from "@material-ui/core";
 import BellIcon from "@material-ui/icons/Notifications";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
@@ -10,6 +12,7 @@ import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
+
 const useStyles = makeStyles({
   bellIcon: {
     width: "100px",
@@ -42,7 +45,7 @@ const PhysicianMain = (): ReactElement => {
   const sessionId = useSessionId();
 
   useEffect(() => {
-    if(!localStorage.getItem("physiciansessionid")){
+    if (!localStorage.getItem("physiciansessionid")) {
       localStorage.setItem("physiciansessionid", uuid());
     }
   }, []);
@@ -65,7 +68,7 @@ const PhysicianMain = (): ReactElement => {
     <Layout
       title="Physician Home"
       flexColumn
-      hideBackButton={localStorage.getItem("physiciansessionid") ? true : false}
+      hideBackButton={!!localStorage.getItem("physiciansessionid")}
       parent="/"
     >
       <div className={classes.root}>

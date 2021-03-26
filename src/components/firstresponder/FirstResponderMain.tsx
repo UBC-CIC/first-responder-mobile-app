@@ -1,10 +1,14 @@
-import { Backdrop, Fab, Fade, makeStyles, Modal, Paper } from "@material-ui/core";
+import {
+  Backdrop, Fab, Fade, makeStyles, Modal, Paper,
+} from "@material-ui/core";
 import SignOutIcon from "@material-ui/icons/ExitToApp";
 import ProfileIcon from "@material-ui/icons/Person";
 import PhoneIcon from "@material-ui/icons/Phone";
 import WifiIcon from "@material-ui/icons/Wifi";
-import Amplify, { Auth } from "aws-amplify";
-import React, { ReactElement, useContext, useEffect, useState } from "react";
+import { Auth } from "aws-amplify";
+import React, {
+  ReactElement, useContext, useEffect, useState,
+} from "react";
 import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import bg from "../../assets/first-responder-home-bg.svg";
@@ -18,8 +22,6 @@ import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
-
-
 
 const useStyles = makeStyles({
   icon: {
@@ -56,13 +58,13 @@ const FirstResponderMain = (): ReactElement => {
   const sessionId = useSessionId();
   const [profile, setProfile] = useState<FirstResponderProfileType>();
   /** Fetch Profile Info */
-  useEffect(() => {    
+  useEffect(() => {
     const f = async () => {
       if (phone) {
         try {
-          const profile = await fetchFirstResponderProfile({ phone_number: phone });
+          const fetchedProfile = await fetchFirstResponderProfile({ phone_number: phone });
           setProfile({
-            ...profile,
+            ...fetchedProfile,
             phone_number: phone,
           });
         } catch (e) {
@@ -77,13 +79,14 @@ const FirstResponderMain = (): ReactElement => {
     };
     if (!offline) f();
     else
-    if (phone)
+    if (phone) {
       setProfile({
         phone_number: phone,
         first_name: "First",
         last_name: "Responder",
         occupation: "First Responder",
       });
+    }
   }, []);
 
   const getName = () => {
@@ -98,12 +101,12 @@ const FirstResponderMain = (): ReactElement => {
   const handleSignOut = () => {
     localStorage.removeItem("firstresponderphonenumber");
     Auth.signOut();
-  }
+  };
 
   return (
     <Layout
       hideBackButton={
-        userType === "firstresponder" ? true : false
+        userType === "firstresponder"
       }
       title="First Responder Home"
       parent="/"
@@ -183,12 +186,15 @@ const FirstResponderMain = (): ReactElement => {
           <Fade in={modalOpen}>
             <div
               style={{ height: "100%", pointerEvents: "none" }}
-              className={"ffc justify align"}
+              className="ffc justify align"
             >
               <Paper className={classes.paper}>
                 <p style={{ textAlign: "center" }}>
-                  Are you sure you would like to log out? You{" "}
-                  <strong> cannot </strong> log back in without internet
+                  Are you sure you would like to log out? You
+                  {" "}
+                  <strong> cannot </strong>
+                  {" "}
+                  log back in without internet
                   connection.
                 </p>
                 <div style={{ display: "flex", flexDirection: "column" }}>

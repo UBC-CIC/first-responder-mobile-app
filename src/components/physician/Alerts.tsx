@@ -32,7 +32,7 @@ const Alerts = (): ReactElement => {
   useEffect(() => {
     const f = async () => {
       const u: CognitoUser = await Auth.currentAuthenticatedUser();
-      const {phone_number} = u.attributes;
+      const { phone_number } = u.attributes;
       const fetchedProfile = await getProfile({ phone_number });
       setProfile(fetchedProfile);
     };
@@ -52,7 +52,7 @@ const Alerts = (): ReactElement => {
   }, []);
 
   const handleJoin = (id: string) => {
-    if (id)
+    if (id) {
       history.push("/call", {
         meetingId: id,
         name: profile
@@ -62,30 +62,28 @@ const Alerts = (): ReactElement => {
         attendeeId: sessionId,
         parent: "/physician/alerts",
       } as MeetingStateType);
+    }
   };
 
   const renderMeetings = () => {
     if (meetings?.length) {
-      return meetings?.map((meeting, index) => {
-        return (
-          <div className={globalClasses.wideButtonContainer} key={meeting.id}>
-            <Button
-              className={`${globalClasses.wideButton} ${classes.button}`}
-              onClick={() => handleJoin(meeting.id)}
-            >
-              {/* TODO Call to backend for topic of accident */}
-              {index % 2 == 0 ? "Emergency A" : "Emergency B"}
-            </Button>
-          </div>
-        );
-      });
-    } else {
-      return (
-        <p style={{ color: Colors.theme.platinum }}>
-          You have no alerts at this time
-        </p>
-      );
+      return meetings?.map((meeting, index) => (
+        <div className={globalClasses.wideButtonContainer} key={meeting.id}>
+          <Button
+            className={`${globalClasses.wideButton} ${classes.button}`}
+            onClick={() => handleJoin(meeting.id)}
+          >
+            {/* TODO Call to backend for topic of accident */}
+            {index % 2 === 0 ? "Emergency A" : "Emergency B"}
+          </Button>
+        </div>
+      ));
     }
+    return (
+      <p style={{ color: Colors.theme.platinum }}>
+        You have no alerts at this time
+      </p>
+    );
   };
 
   return (

@@ -33,6 +33,15 @@ code {
   flex: 1;
   height: 100%;
 }
+
+.column {
+  flex-direction: column;
+}
+
+.flex {
+  display: flex;
+}
+
 .align {
   align-items: center;
 }

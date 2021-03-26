@@ -1,6 +1,6 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
 import { API, graphqlOperation } from "aws-amplify";
-import {  SpecialistProfileType } from "../../types";
+import { SpecialistProfileType } from "../../types";
 import {
   GetSpecialistProfileQuery,
   GetSpecialistProfileQueryVariables,
@@ -8,7 +8,7 @@ import {
 import { getSpecialistProfile } from "./graphql/specialistProfile";
 
 const fetchPhysicianProfile = async (
-  options: GetSpecialistProfileQueryVariables
+  options: GetSpecialistProfileQueryVariables,
 ): Promise<SpecialistProfileType | undefined> => {
   const response = (await API.graphql({
     ...graphqlOperation(getSpecialistProfile, options),
@@ -16,11 +16,9 @@ const fetchPhysicianProfile = async (
   })) as GraphQLResult<GetSpecialistProfileQuery>;
   if (response.errors) {
     console.log(response.errors);
-  } else {
-    if (response.data?.getSpecialistProfile) {
-      const profile = response.data?.getSpecialistProfile as SpecialistProfileType;
-      return profile;
-    }
+  } else if (response.data?.getSpecialistProfile) {
+    const profile = response.data?.getSpecialistProfile as SpecialistProfileType;
+    return profile;
   }
 };
 

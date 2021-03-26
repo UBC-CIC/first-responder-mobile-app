@@ -1,6 +1,7 @@
 import { makeStyles, TextField, TextFieldProps } from "@material-ui/core";
 import { ReactElement } from "react";
 import Colors from "../styling/Colors";
+
 const useStyles = makeStyles({
   textField: {
     margin: 10,

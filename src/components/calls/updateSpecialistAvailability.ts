@@ -4,11 +4,9 @@ import { updateSpecialistProfile as updateSpecialistAvailabilityGraphql, UpdateS
 import { UpdateSpecialistProfileMutationVariables } from "../../API";
 
 const updateSpecialistAvailability = async (
-  options: UpdateSpecialistProfileMutationVariables
-): Promise<GraphQLResult<UpdateSpecialistProfileMutation>> => {
-  return API.graphql(
-    graphqlOperation(updateSpecialistAvailabilityGraphql, options)
-  ) as GraphQLResult<UpdateSpecialistProfileMutation>;
-};
+  options: UpdateSpecialistProfileMutationVariables,
+): Promise<GraphQLResult<UpdateSpecialistProfileMutation>> => API.graphql(
+  graphqlOperation(updateSpecialistAvailabilityGraphql, options),
+) as GraphQLResult<UpdateSpecialistProfileMutation>;
 
 export default updateSpecialistAvailability;

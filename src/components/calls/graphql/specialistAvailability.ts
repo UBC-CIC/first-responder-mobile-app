@@ -61,7 +61,7 @@ export type UpdateSpecialistProfileInput = {
 };
 
 export type UpdateSpecialistProfileMutation = {
-  updateSpecialistProfile?:  {
+  updateSpecialistProfile?: {
     __typename: "SpecialistProfile",
     availability?: string | null,
     created_date_time?: string | null,
@@ -80,7 +80,7 @@ export type UpdateSpecialistProfileMutation = {
 };
 
 export type GetSpecialistProfileQuery = {
-  getSpecialistProfile?:  {
+  getSpecialistProfile?: {
     __typename: "SpecialistProfile",
     availability?: FullAvailabilityType | null,
     created_date_time?: string | null,

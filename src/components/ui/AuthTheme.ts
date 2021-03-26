@@ -18,4 +18,4 @@ export default {
     height: "100%",
     backgroundColor: Colors.theme.onyx,
   },
-}
+};

@@ -1,11 +1,16 @@
-import { ReactElement, useEffect, useState } from "react";
+import { Fab, makeStyles } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
+import React, { ReactElement, useEffect, useState } from "react";
 import "../../styles/physician/Availability.css";
-import { FormattedTimeBlock, FullAvailabilityType } from "../../types";
+import {
+  FormattedTimeBlock,
+  FullAvailabilityType,
+} from "../../types";
 import fetchSpecialistAvailability from "../calls/fetchSpecialistAvailability";
 import updateSpecialistAvailability from "../calls/updateSpecialistAvailability";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
-import Schedule from "./Schedule";
 
 type GroupedTimeBlocks = {
   0: FormattedTimeBlock[];
@@ -18,16 +23,31 @@ type GroupedTimeBlocks = {
 };
 
 type AvailabilityPropsType = {
-  onUnmount?: (success:boolean) => void;
-}
+  onUnmount?: (success: boolean) => void;
+};
 
-const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): ReactElement => {
+const useStyles = makeStyles({
+  icon: {
+    marginRight: 10,
+  },
+});
+const Overrides = ({
+  onUnmount = () => undefined,
+}: AvailabilityPropsType): ReactElement => {
   const [user] = useAuthenticatedUser();
-  const [formattedAvailability, setFormattedAvailability] = useState<FullAvailabilityType | undefined>();
-  const [formattedSchedule, setFormattedSchedule] = useState<FormattedTimeBlock[] | undefined>();
-  const [fetchedAvailability, setFetchedAvailability] = useState<FullAvailabilityType | undefined>();
+  const [formattedAvailability, setFormattedAvailability] = useState<
+    FullAvailabilityType | undefined
+  >();
+  const [formattedSchedule, setFormattedSchedule] = useState<
+    FormattedTimeBlock[] | undefined
+  >();
+  const [fetchedAvailability, setFetchedAvailability] = useState<
+    FullAvailabilityType | undefined
+  >();
   const [initialSchedule, setInitialSchedule] = useState<boolean[][]>();
   const [phoneNumber, setPhoneNumber] = useState("");
+  const globalClasses = useGlobalStyles();
+  const classes = useStyles();
   useEffect(() => () => {
     const f = async () => {
       if (formattedAvailability) {
@@ -53,7 +73,7 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
       if (!availability) return;
       setFetchedAvailability(availability);
     };
-    if (!fetchedAvailability) { f(); }
+    if (!fetchedAvailability) f();
   }, [user]);
 
   useEffect(() => {
@@ -63,11 +83,16 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
     }
   }, [fetchedAvailability]);
 
-  const groupBy = (arr: FormattedTimeBlock[], key:keyof FormattedTimeBlock) => arr.reduce((accumulator:any, x) => {
-    const retObj = accumulator;
-    (retObj[x[key]] = retObj[x[key]] || []).push(x);
-    return retObj;
-  }, {});
+  const groupBy = function (
+    arr: FormattedTimeBlock[],
+    key: keyof FormattedTimeBlock,
+  ) {
+    return arr.reduce((accumulator: any, x) => {
+      const retObj = accumulator;
+      (retObj[x[key]] = retObj[x[key]] || []).push(x);
+      return retObj;
+    }, {});
+  };
 
   const convertAvailabilityToBoolean = (formatted: FullAvailabilityType) => {
     const { schedules } = formatted;
@@ -75,18 +100,24 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
     const simpleBooleanArray: boolean[][] = [];
     Object.values(grouped).forEach((timeBlockArray) => {
       let weekdayBoolArr: boolean[] = [];
-      timeBlockArray.forEach((timeBlock) => {
-        weekdayBoolArr = weekdayBoolArr.concat(
-          convertTimeBlockToBooleanArray(timeBlock),
-        );
-      });
+      timeBlockArray.forEach(
+        (timeBlock) => {
+          (weekdayBoolArr = weekdayBoolArr.concat(
+            convertTimeBlockToBooleanArray(timeBlock),
+          ));
+        },
+      );
       simpleBooleanArray.push(weekdayBoolArr);
     });
     return simpleBooleanArray;
   };
 
-  const convertTimeBlockToBooleanArray = (timeBlock:FormattedTimeBlock):boolean[] => {
-    const numberOfEntries = (timeBlock.end_seconds_since_midnight - timeBlock.start_seconds_since_midnight) / 1800;
+  const convertTimeBlockToBooleanArray = (
+    timeBlock: FormattedTimeBlock,
+  ): boolean[] => {
+    const numberOfEntries = (timeBlock.end_seconds_since_midnight
+        - timeBlock.start_seconds_since_midnight)
+      / 1800;
     const toFill = timeBlock.availability_type === "AVAILABLE";
     return Array(numberOfEntries).fill(toFill);
   };
@@ -94,7 +125,7 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
   const formatDayOfWeek = (dayOfWeek: boolean[], index: number) => {
     let currBool = dayOfWeek[0];
     // Gets chunks of dayOfWeek that are of the same value
-    const splitIndices:number[] = [];
+    const splitIndices: number[] = [];
     splitIndices.push(0);
     dayOfWeek.forEach((bool, i) => {
       if (bool !== currBool) {
@@ -107,14 +138,17 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
     const chunkArray: FormattedTimeBlock[] = [];
     let currSecondsSinceMidnight = 0;
 
-    for (let i = 1; i < splitIndices.length; i++) {
+    for (let i = 1; i < splitIndices.length; i += 1) {
       const calculatedSecondsOfTimeBlock = 1800 * (splitIndices[i] - splitIndices[i - 1]);
       const formattedTime: FormattedTimeBlock = {
         start_seconds_since_midnight: currSecondsSinceMidnight,
-        end_seconds_since_midnight: calculatedSecondsOfTimeBlock + currSecondsSinceMidnight,
+        end_seconds_since_midnight:
+          calculatedSecondsOfTimeBlock + currSecondsSinceMidnight,
         day_of_week: index,
         timezone: "America/Vancouver",
-        availability_type: dayOfWeek[splitIndices[i - 1]] ? "AVAILABLE" : "NOT_AVAILABLE",
+        availability_type: dayOfWeek[splitIndices[i - 1]]
+          ? "AVAILABLE"
+          : "NOT_AVAILABLE",
       };
       chunkArray.push(formattedTime);
       currSecondsSinceMidnight += calculatedSecondsOfTimeBlock;
@@ -123,9 +157,9 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
     return chunkArray;
   };
 
-  const handleChangeSchedule = (schedule:boolean[][]) => {
+  const handleChangeSchedule = (schedule: boolean[][]) => {
     const returnFormattedSchedule: FormattedTimeBlock[] = [];
-    for (let i = 0; i < schedule.length; i++) {
+    for (let i = 0; i < schedule.length; i += 1) {
       returnFormattedSchedule.push(...formatDayOfWeek(schedule[i], i));
     }
     setFormattedSchedule(returnFormattedSchedule);
@@ -138,15 +172,21 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
   };
 
   return (
-    <Layout flexColumn title="Availability" parent="/physician/profile">
+    <Layout flexColumn title="Book Time On / Off" parent="/physician/profile">
       {/* root */}
-      <div className="ffc">
-        <div className="availability-container">
-          <Schedule initialSchedule={initialSchedule} onChange={handleChangeSchedule} />
+      <div className="ffc align">
+        <div style={{ width: "60%" }} className="flex column align">
+          <Fab
+            variant="extended"
+            className={`${globalClasses.button} ${globalClasses.coral}`}
+          >
+            <Add className={classes.icon} />
+            Add Event
+          </Fab>
         </div>
       </div>
     </Layout>
   );
 };
 
-export default Availability;
+export default Overrides;

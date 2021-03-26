@@ -1,6 +1,7 @@
-import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
-import _ from "lodash";
 import { CircularProgress } from "@material-ui/core";
+import _ from "lodash";
+import React, { ReactElement, useEffect, useState } from "react";
+
 export const DAYS_OF_WEEK = [
   "Sunday",
   "Monday",
@@ -38,9 +39,7 @@ const HOURS_OF_DAY = [
   "11PM",
 ];
 
-const SHORT_DAYS_OF_WEEK = DAYS_OF_WEEK.map((day) =>
-  day.substring(0, 3).toUpperCase()
-);
+const SHORT_DAYS_OF_WEEK = DAYS_OF_WEEK.map((day) => day.substring(0, 3).toUpperCase());
 
 const FALSE_BOOLEAN_ARRAY:boolean[][] = new Array(7).fill([]);
 for (let i = 0; i < FALSE_BOOLEAN_ARRAY.length; i++) {
@@ -51,8 +50,7 @@ type ScheduleProps = {
   initialSchedule?: boolean[][];
 };
 
-
-const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}: ScheduleProps): ReactElement => {
+const Schedule = ({ initialSchedule, onChange = (arr: boolean[][]) => undefined }: ScheduleProps): ReactElement => {
   const [highlighted, setHighlighted] = useState(_.cloneDeep(FALSE_BOOLEAN_ARRAY));
   const [selected, setSelected] = useState(initialSchedule || _.cloneDeep(FALSE_BOOLEAN_ARRAY));
   const [startIndex, setStartIndex] = useState<number | undefined>();
@@ -61,42 +59,42 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
 
   useEffect(() => {
     setSelected(initialSchedule || _.cloneDeep(FALSE_BOOLEAN_ARRAY));
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   }, [initialSchedule]);
 
   const handleTouchStart = (
     index: number,
-    event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>
+    event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
   ) => {
     setStartIndex(index);
     setCurrIndex(index);
-    
   };
 
   const handleMouseStart = (
     index: number,
-    event: React.MouseEvent<HTMLDivElement>
+    event: React.MouseEvent<HTMLDivElement>,
   ) => {
     event.preventDefault();
     setStartIndex(index);
     setCurrIndex(index);
-    console.log(index);
   };
 
   const handleMouseMove = (
     endIndex: number,
-    event: React.MouseEvent<HTMLDivElement>
+    event: React.MouseEvent<HTMLDivElement>,
   ) => {
     event.preventDefault();
     if (typeof startIndex === "undefined") {
       return;
-    }    
+    }
     handleHighlight(startIndex, endIndex);
     setCurrIndex(endIndex);
-
   };
 
   const handleMouseEnd = (
-    event: React.MouseEvent<HTMLDivElement>
+    event: React.MouseEvent<HTMLDivElement>,
   ) => {
     resetHighlights();
     event.preventDefault();
@@ -107,8 +105,7 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
     }
     resetHighlights();
     setHighlighted(_.cloneDeep(FALSE_BOOLEAN_ARRAY));
-    console.log(startIndex, currIndex);
-    
+
     handleSelect(startIndex, currIndex);
     setCurrIndex(undefined);
     setStartIndex(undefined);
@@ -129,17 +126,15 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
         return;
       }
       endIndex = currIndex;
-    }
-    else endIndex = Number(id?.split("-")[1]);
+    } else endIndex = Number(id?.split("-")[1]);
     handleHighlight(startIndex, endIndex);
     setCurrIndex(endIndex);
   };
 
   const handleTouchEnd = (
     index: number,
-    event: React.TouchEvent<HTMLDivElement>
+    event: React.TouchEvent<HTMLDivElement>,
   ) => {
-    
     resetHighlights();
     if (typeof startIndex === "undefined") {
       console.error("Error Selecting Availability, please try again");
@@ -166,31 +161,25 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
 
   const handleReleaseOffBox = () => {
     if (typeof startIndex === "undefined" || typeof currIndex === "undefined") {
-      console.log("oops undefined");
       reset();
       return;
     }
-    console.log(startIndex, currIndex);
     handleSelect(startIndex, currIndex);
     reset();
-  }
-
-  const indexToCoordinates = (index: number) => {
-    return {
-      x: index % 7,
-      y: Math.floor(index / 7) % 48,
-    };
   };
+
+  const indexToCoordinates = (index: number) => ({
+    x: index % 7,
+    y: Math.floor(index / 7) % 48,
+  });
 
   /**
    * toggles all items in selected corner to the value of the initally clicked box.
    * @param start coordinates of start corner of select rectangle
    * @param end coordinates of end corner of select rectangle
    */
-  const handleSelect = (startIndex: number, endIndex: number) => {
-    console.log("Selecting from", startIndex, "to", endIndex);
-
-    const start = indexToCoordinates(startIndex);
+  const handleSelect = (firstIndex: number, endIndex: number) => {
+    const start = indexToCoordinates(firstIndex);
     const end = indexToCoordinates(endIndex);
 
     const startXIndex = Math.min(end.x, start.x);
@@ -204,15 +193,15 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
         selected[i][j] = toSet;
       }
     }
-  }
+  };
 
   /**
    * toggles all items in selected corner to the value of the initally clicked box.
    * @param start coordinates of start corner of select rectangle
    * @param end coordinates of end corner of select rectangle
    */
-  const handleHighlight = (startIndex: number, endIndex: number) => {
-    const start = indexToCoordinates(startIndex);
+  const handleHighlight = (firstIndex: number, endIndex: number) => {
+    const start = indexToCoordinates(firstIndex);
     const end = indexToCoordinates(endIndex);
 
     const startXIndex = Math.min(end.x, start.x);
@@ -226,7 +215,6 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
         highlighted[i][j] = true;
       }
     }
-    
   };
 
   const resetHighlights = () => {
@@ -235,12 +223,12 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
         highlighted[i][j] = false;
       }
     }
-  }
+  };
 
   const renderBox = (n = 1) => {
     const list = Array(n)
       .fill(0)
-      .map((_, i) => {
+      .map((__, i) => {
         const rowNumber = Math.floor(i / 7);
         const topIndex = rowNumber * 14 + (i % 7);
         const botIndex = topIndex + 7;
@@ -249,20 +237,16 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
         let topBgColor: string;
         if (highlighted[topCoords.x][topCoords.y]) {
           topBgColor = "red";
-        }
-        else if (selected[topCoords.x][topCoords.y]) {
+        } else if (selected[topCoords.x][topCoords.y]) {
           topBgColor = "green";
-        }
-        else topBgColor = "";
+        } else topBgColor = "";
 
         let botBgColor: string;
         if (highlighted[botCoords.x][botCoords.y]) {
           botBgColor = "red";
-        }
-        else if (selected[botCoords.x][botCoords.y]) {
+        } else if (selected[botCoords.x][botCoords.y]) {
           botBgColor = "green";
-        }
-        else botBgColor = "";
+        } else botBgColor = "";
         return (
           <div key={i} className="box">
             <div
@@ -302,7 +286,7 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
   const renderHours = () => {
     const list = Array(24)
       .fill(0)
-      .map((_, i) => (
+      .map((__, i) => (
         <div
           key={i}
           style={{ color: "white", alignSelf: "center", justifySelf: "center" }}
@@ -317,7 +301,7 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
     setHighlighted(_.cloneDeep(FALSE_BOOLEAN_ARRAY));
     setCurrIndex(undefined);
     setStartIndex(undefined);
-  }
+  };
 
   const renderDaysOfWeek = () => {
     const list = SHORT_DAYS_OF_WEEK.map((day, index) => (
@@ -330,6 +314,14 @@ const Schedule = ({initialSchedule, onChange = (arr: boolean[][]) => undefined}:
     ));
     return list;
   };
+
+  if (loading) {
+    return (
+      <div className="ffc align justify">
+        <CircularProgress />
+      </div>
+    );
+  }
 
   return (
     <div className="ffc">

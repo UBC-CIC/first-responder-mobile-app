@@ -12,11 +12,11 @@ const Call = (): ReactElement => {
   /** Must have some kind of state */
   if (!state) {
     history.push("/firstResponder");
-    return <div></div>;
+    return <div />;
   }
 
   if (offline || state.offline || !navigator.onLine) return <OfflineCall />;
-  else return <OnlineCallOverData />;
+  return <OnlineCallOverData />;
 };
 
 export default Call;

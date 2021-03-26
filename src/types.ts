@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RosterAttendeeType } from "amazon-chime-sdk-component-library-react/lib/types";
-import { AttendeeInfo } from "./API";
-import {CreateFirstResponderProfileInput, CreateSpecialistProfileInput} from "./API";
+import { AttendeeInfo, CreateFirstResponderProfileInput, CreateSpecialistProfileInput } from "./API";
 
 export type CognitoUser = {
   Session: any;
@@ -24,7 +23,6 @@ export type CognitoUser = {
   userDataKey: string;
   username: string;
 };
-
 
 export type MeetingType = {
   id: string;
@@ -49,10 +47,11 @@ export type AttendeeInfoType = AttendeeInfo & {name: string};
 
 export type AttendeeType = RosterAttendeeType & { role: string };
 
-export type {CreateSpecialistProfileInput as SpecialistProfileType};
+export type { CreateSpecialistProfileInput as SpecialistProfileType };
 
-export type {CreateFirstResponderProfileInput as FirstResponderProfileType};
+export type { CreateFirstResponderProfileInput as FirstResponderProfileType };
 
+// eslint-disable-next-line no-shadow
 export enum ConnectionState {
   POOR,
   FAIR,
@@ -79,6 +78,7 @@ export type UserAvailability = {
     "schedules": Array<UserAvalabilitySchedule>;
 };
 
+// eslint-disable-next-line no-shadow
 export enum UserStatus {
     AVAILABLE = "AVAILABLE", // User is available per their schedule
     NOT_AVAILABLE = "NOT_AVAILABLE", // User is not available per their schedule
@@ -98,6 +98,6 @@ export type FormattedTimeBlock = {
   timezone: string;
 };
 
-export type AVAILABILITY_TYPE = 
-  "NOT_AVAILABLE" | 
+export type AVAILABILITY_TYPE =
+  "NOT_AVAILABLE" |
   "AVAILABLE"

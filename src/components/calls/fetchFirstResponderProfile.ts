@@ -11,12 +11,9 @@ const fetchFirstResponderProfile = async (options: GetFirstResponderProfileQuery
   })) as GraphQLResult<GetFirstResponderProfileQuery>;
   if (response.errors) {
     console.log(response.errors);
-  } else {
-    if (response.data?.getFirstResponderProfile) {
-      const profile =
-          response.data?.getFirstResponderProfile as FirstResponderProfileType;
-      return profile;
-    }
+  } else if (response.data?.getFirstResponderProfile) {
+    const profile = response.data?.getFirstResponderProfile as FirstResponderProfileType;
+    return profile;
   }
 };
 

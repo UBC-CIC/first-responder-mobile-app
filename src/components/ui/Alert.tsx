@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import React, { ReactNode } from "react";
 
 type AlertProps = {
@@ -8,19 +8,17 @@ type AlertProps = {
   icon: ReactNode;
 };
 
-const SnackBarActions = ({ handleClose, icon }: AlertProps) => {
-  return (
-    <React.Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        {icon}
-      </IconButton>
-    </React.Fragment>
-  );
-};
+const SnackBarActions = ({ handleClose, icon }: AlertProps) => (
+  <>
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleClose}
+    >
+      {icon}
+    </IconButton>
+  </>
+);
 
 export default SnackBarActions;

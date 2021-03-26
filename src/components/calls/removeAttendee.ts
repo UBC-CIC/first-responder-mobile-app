@@ -1,12 +1,12 @@
 import { API, graphqlOperation } from "aws-amplify";
-import { DeleteAttendeeDataMutationVariables, GetAttendeeDataQuery, GetAttendeeDataQueryVariables } from "../../API";
+import { DeleteAttendeeDataMutationVariables } from "../../API";
 import { deleteAttendeeData } from "../../graphql/mutations";
 
 const removeAttendee = async (
-  options: DeleteAttendeeDataMutationVariables
+  options: DeleteAttendeeDataMutationVariables,
 ): Promise<void> => {
   API.graphql(
-    graphqlOperation(deleteAttendeeData, options)
+    graphqlOperation(deleteAttendeeData, options),
   );
 };
 

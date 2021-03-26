@@ -4,15 +4,15 @@ import SaveIcon from "@material-ui/icons/Save";
 import { CSSProperties } from "@material-ui/styles";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import React, { ReactElement, useEffect, useState } from "react";
+import { CreateSpecialistProfileMutation, UpdateSpecialistProfileMutation } from "../../API";
 import "../../styles/physician/ContactInfo.css";
 import { CognitoUser, SpecialistProfileType } from "../../types";
-import { CreateSpecialistProfileMutation, UpdateSpecialistProfileMutation } from "../../API";
 import fetchPhysicianProfile from "../calls/fetchPhysicianProfile";
+import { createSpecialistProfile, updateSpecialistProfile } from "../calls/graphql/specialistProfile";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
 import Layout from "../ui/Layout";
-import { createSpecialistProfile, updateSpecialistProfile } from "../calls/graphql/specialistProfile";
 
 const useStyles = makeStyles({
   contactInfoForm: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 const headerStyle:CSSProperties = {
   color: Colors.theme.platinum,
   fontFamily: "Signika Negative",
-  textAlign: "center"
+  textAlign: "center",
 };
 
 const ContactInfo = (): ReactElement => {
@@ -54,14 +54,12 @@ const ContactInfo = (): ReactElement => {
         const { email, phone_number } = u.attributes;
         setPhone(phone_number);
         console.log(u.attributes);
-        
-
 
         console.log(phone_number);
-        
+
         const profile = await fetchPhysicianProfile({ phone_number });
         console.log(profile);
-        
+
         if (profile) {
           setForm({ ...profile, email, phone_number });
         } else {
@@ -80,7 +78,7 @@ const ContactInfo = (): ReactElement => {
       authMode: GRAPHQL_AUTH_MODE.API_KEY,
     })) as GraphQLResult<CreateSpecialistProfileMutation>;
     console.log(response);
-    
+
     if (response.errors) {
       console.log(response.errors);
     }
@@ -96,8 +94,8 @@ const ContactInfo = (): ReactElement => {
     } catch (response) {
       console.log(response);
       if (
-        response.errors[0].errorType ===
-        "DynamoDB:ConditionalCheckFailedException"
+        response.errors[0].errorType
+        === "DynamoDB:ConditionalCheckFailedException"
       ) {
         console.warn("UpdateProfile failed, creating profile instead");
         handleCreateProfile();
@@ -121,9 +119,8 @@ const ContactInfo = (): ReactElement => {
     createProfile(form);
   };
 
-
-  const renderTextField = (field: keyof SpecialistProfileType, label?: string) => {
-    return <DarkModeTextField
+  const renderTextField = (field: keyof SpecialistProfileType, label?: string) => (
+    <DarkModeTextField
       label={label}
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [field]: e.currentTarget.value });
@@ -131,7 +128,7 @@ const ContactInfo = (): ReactElement => {
       value={form[field]}
       required
     />
-  }
+  );
 
   /** TODO style this more, add more fields */
   return (
@@ -145,8 +142,16 @@ const ContactInfo = (): ReactElement => {
         }}
       >
         <div className="ffc align">
-          <h3 style={headerStyle}>Phone Number: {form.phone_number}</h3>
-          <h3 style={headerStyle}>Email: {form.email}</h3>
+          <h3 style={headerStyle}>
+            Phone Number:
+            {" "}
+            {form.phone_number}
+          </h3>
+          <h3 style={headerStyle}>
+            Email:
+            {" "}
+            {form.email}
+          </h3>
           <div className="form-name">
             {renderTextField("first_name", "First Name")}
             {renderTextField("last_name", "Last Name")}
