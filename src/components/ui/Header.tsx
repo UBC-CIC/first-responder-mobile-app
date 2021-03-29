@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import { ArrowBack, Wifi, WifiOff } from "@material-ui/icons";
 import CSS from "csstype";
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement, useContext, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import OfflineContext from "../context/OfflineContext";
 import Colors from "../styling/Colors";
@@ -17,11 +17,13 @@ const Header = ({
   style,
   parent,
   hideBackButton,
+  onChangeToOffline,
 }: {
   title?: string;
   style?: CSS.Properties;
   parent?: string;
   hideBackButton?: boolean;
+  onChangeToOffline?: Function;
 }): ReactElement => {
   const useStyles = makeStyles({
     header: {
@@ -38,6 +40,7 @@ const Header = ({
   });
   const history = useHistory();
   const classes = useStyles();
+  const [forceOffline, setForceOffline] = useState(false);
   const location = useLocation();
   const { offline, setOffline } = useContext(OfflineContext);
 
@@ -62,19 +65,22 @@ const Header = ({
             <ArrowBack />
           </IconButton>
         ) : (
-          <div
-            style={{ width: 30 }}
-          />
-        ) }
+          <div style={{ width: 30 }} />
+        )}
         <Typography variant="h6" className={classes.title}>
           {title}
         </Typography>
         <IconButton
           edge="end"
           color="inherit"
-          onClick={() => setOffline(!offline)}
+          onClick={() => {
+            if (onChangeToOffline) {
+              onChangeToOffline();
+              setForceOffline(true);
+            } else { setOffline(!offline); }
+          }}
         >
-          {offline || !navigator.onLine ? <WifiOff /> : <Wifi />}
+          {forceOffline || offline || !navigator.onLine ? <WifiOff /> : <Wifi />}
         </IconButton>
       </Toolbar>
     </AppBar>

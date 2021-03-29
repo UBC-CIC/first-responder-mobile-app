@@ -15,6 +15,7 @@ const Layout = ({
   parent,
   headerOfflineClickable = true,
   hideBackButton = false,
+  onChangeToOffline,
 }: {
   noHeader?: boolean;
   children?: ReactNode;
@@ -26,6 +27,7 @@ const Layout = ({
   parent?: string;
   headerOfflineClickable?: boolean;
   hideBackButton?: boolean;
+  onChangeToOffline?: Function;
 }): ReactElement => {
   const history = useHistory();
   return (
@@ -41,6 +43,7 @@ const Layout = ({
     >
       {!noHeader && (
         <Header
+          onChangeToOffline={onChangeToOffline}
           hideBackButton={hideBackButton}
           parent={parent}
           style={headerStyle}

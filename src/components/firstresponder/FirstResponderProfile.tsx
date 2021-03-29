@@ -152,6 +152,7 @@ const FirstResponderProfile = (): ReactElement => {
       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [field]: e.currentTarget.value });
       }}
+      disabled={offline || !navigator.onLine}
       value={form[field]}
       required
     />

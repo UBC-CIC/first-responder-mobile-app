@@ -1,15 +1,31 @@
 // import { SignOut } from "aws-amplify-react";
 import { Auth } from "@aws-amplify/auth";
-import { Fab, makeStyles } from "@material-ui/core";
+import {
+  Fab, FormControlLabel, makeStyles, Switch, withStyles,
+} from "@material-ui/core";
 import { EventBusy } from "@material-ui/icons";
 import CalendarIcon from "@material-ui/icons/EventNote";
 import SignOutIcon from "@material-ui/icons/ExitToApp";
 import ProfileIcon from "@material-ui/icons/Person";
-import { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
+
+const ThemedSwitch = withStyles({
+  switchBase: {
+    color: Colors.theme.coral,
+    "&$checked": {
+      color: Colors.theme.coral,
+    },
+    "&$checked + $track": {
+      backgroundColor: Colors.theme.coral,
+    },
+  },
+  checked: {},
+  track: {},
+})(Switch);
 
 const useStyles = makeStyles({
   root: {
@@ -40,12 +56,17 @@ const useStyles = makeStyles({
   signOutIcon: {
     marginLeft: 10,
   },
+  switchLabel: {
+    fontFamily: "Montserrat",
+    color: Colors.theme.platinum,
+  },
 });
 
 const PhysicianProfile = (): ReactElement => {
   const history = useHistory();
   const globalClasses = useGlobalStyles();
   const classes = useStyles();
+  const [available, setAvailable] = useState(true);
 
   const handleSignOut = () => {
     localStorage.removeItem("physiciansessionid");
@@ -75,10 +96,20 @@ const PhysicianProfile = (): ReactElement => {
             variant="extended"
             className={`${globalClasses.button} ${globalClasses.coral}`}
             onClick={() => history.push("/physician/overrides")}
+            disabled
           >
             <EventBusy className={classes.icon} />
             Book Time On / Off
           </Fab>
+          <FormControlLabel
+            control={<ThemedSwitch onChange={(evt, value) => setAvailable(value)} />}
+            checked={available}
+            className={classes.switchLabel}
+            label={available ? "Available" : "Unavailable"}
+            classes={{
+              label: classes.switchLabel,
+            }}
+          />
         </div>
         <div className={classes.signOutContainer}>
           <Fab

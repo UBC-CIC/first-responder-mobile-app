@@ -9,7 +9,9 @@ import {
   useRosterState,
   VideoTileGrid,
 } from "amazon-chime-sdk-component-library-react";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, {
+  ReactElement, useContext, useEffect, useState,
+} from "react";
 import { useHistory } from "react-router-dom";
 import "../../styles/VideoCall.css";
 import CloseIcon from "@material-ui/icons/Close";
@@ -26,6 +28,7 @@ import Colors from "../styling/Colors";
 import Layout from "../ui/Layout";
 import SnackBarActions from "../ui/Alert";
 import RosterDisplay from "./RosterDisplay";
+import OfflineContext from "../context/OfflineContext";
 
 const MAX_LOSS = 5;
 
@@ -41,6 +44,7 @@ const useStyles = makeStyles({
 });
 
 const OnlineCallOverData = (): ReactElement => {
+  const { offline, setOffline } = useContext(OfflineContext);
   const { toggleVideo: toggleLocalVideo } = useLocalVideo();
   const classes = useStyles();
   const audioVideo = useAudioVideo();
@@ -59,6 +63,7 @@ const OnlineCallOverData = (): ReactElement => {
   );
   const [packetLoss, setPacketLoss] = useState(0);
   const [lossCount, setLossCount] = useState(0);
+  const [inMeeting, setInMeeting] = useState(false);
 
   /** On mount */
   useEffect(() => {
@@ -111,6 +116,7 @@ const OnlineCallOverData = (): ReactElement => {
           } as AttendeeType),
         );
         setAttendees(items);
+        setInMeeting(true);
       }
     };
     if (meetingManager.meetingId) f();
@@ -126,7 +132,7 @@ const OnlineCallOverData = (): ReactElement => {
           .audioPacketsReceivedFractionLoss;
         setPacketLoss(loss);
       };
-      await meetingManager.start();
+      await meetingManager.start().catch((e) => console.log(e));
     };
 
     f();
@@ -181,15 +187,20 @@ const OnlineCallOverData = (): ReactElement => {
         phoneNumber,
       });
 
-      console.log("success", joinRes);
-
       const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
       const attendeeInfo = {
         ...joinRes.data?.joinChimeMeeting?.Attendee,
         name,
       } as AttendeeInfoType;
 
-      await meetingManager.join({ meetingInfo, attendeeInfo });
+      await meetingManager.join({ meetingInfo, attendeeInfo })
+        .then(() => {
+          if (joinRes.data) {
+            console.log("success", joinRes);
+          } else {
+            console.log(joinRes.errors);
+          }
+        }).catch((e) => console.log(e));
     } catch (e) {
       setSuggestionShown(true);
       console.error(e);
@@ -224,13 +235,19 @@ const OnlineCallOverData = (): ReactElement => {
   };
 
   const handleSwitch = () => {
-    if (meetingManager.meetingId) {
+    if (inMeeting) {
       console.log("calling +1 888 599 8558");
       document.location.href = "tel:+18885998558";
     } else {
       console.log("Creating New Meeting at +1 888 349 3697");
       document.location.href = "tel:+18883493697";
     }
+  };
+
+  const handleChangeToOffline = () => {
+    console.log(inMeeting);
+    // setOffline(true);
+    setSuggestionShown(true);
   };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
@@ -242,7 +259,11 @@ const OnlineCallOverData = (): ReactElement => {
   };
 
   return (
-    <Layout title="Online Call" parent={state.parent}>
+    <Layout
+      title="Online Call"
+      parent={state.parent}
+      onChangeToOffline={() => handleChangeToOffline()}
+    >
       <div style={{ color: "white" }}>
         Connection State:
         {" "}
@@ -253,17 +274,21 @@ const OnlineCallOverData = (): ReactElement => {
           <VideoTileGrid
             layout="standard"
             // TODO Convert into smarter component
-            noRemoteVideoView={
-              (
-                <div>
-                  <div style={{ color: "white", minHeight: "300px" }}>
-                    Nobody is sharing video at the moment
-                  </div>
+            noRemoteVideoView={(
+              <div>
+                <div style={{ color: "white", minHeight: "300px" }}>
+                  Nobody is sharing video at the moment
                 </div>
-              )
-            }
+              </div>
+            )}
           />
-          <Button variant="contained" disabled={connectionState === ConnectionState.POOR} onClick={() => handleToggleCamera()}>Toggle Video</Button>
+          <Button
+            variant="contained"
+            disabled={connectionState === ConnectionState.POOR}
+            onClick={() => handleToggleCamera()}
+          >
+            Toggle Video
+          </Button>
           <MicSelection />
           <SpeakerSelection />
           <RosterDisplay roster={roster} attendees={attendees} />

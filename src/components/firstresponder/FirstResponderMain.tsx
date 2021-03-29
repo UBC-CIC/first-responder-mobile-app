@@ -105,9 +105,7 @@ const FirstResponderMain = (): ReactElement => {
 
   return (
     <Layout
-      hideBackButton={
-        userType === "firstresponder"
-      }
+      hideBackButton={userType === "firstresponder"}
       title="First Responder Home"
       parent="/"
       flexColumn
@@ -140,17 +138,9 @@ const FirstResponderMain = (): ReactElement => {
           </Fab>
           <Fab
             variant="extended"
+            component="a"
             className={`${globalClasses.button} ${globalClasses.coral}`}
-            onClick={() => {
-              history.push("/call", {
-                meetingId: uuid(),
-                name: "First Responder",
-                role: "First Responder",
-                attendeeId: sessionId,
-                parent: "/firstresponder",
-                offline: true,
-              } as MeetingStateType);
-            }}
+            href="tel:1-888-651-1946"
           >
             <PhoneIcon className={classes.icon} />
             Call STARS over PHONE LINE

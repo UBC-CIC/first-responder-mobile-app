@@ -1,3 +1,2 @@
-declare module 'react-schedule-selector';
-declare module 'web-push';
-declare module "date-fns/add_minutes";
+declare module "react-datetime-picker"
+declare module "@welcome-ui"

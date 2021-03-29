@@ -22,7 +22,7 @@ const OfflineCall = (): ReactElement => {
     >
       <div className="ffc justify align">
         <Button
-          className={globalClasses.button}
+          className={globalClasses.wideButton}
           component="a"
           href="tel:1-888-651-1946"
           type="phone"

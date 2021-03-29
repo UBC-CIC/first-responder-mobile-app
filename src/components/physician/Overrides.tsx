@@ -1,7 +1,10 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { Fab, makeStyles } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import React, { ReactElement, useEffect, useState } from "react";
 import "../../styles/physician/Availability.css";
+import DatePicker from "react-datepicker";
+import TimePicker from "react-time-picker";
 import {
   FormattedTimeBlock,
   FullAvailabilityType,
@@ -11,6 +14,8 @@ import updateSpecialistAvailability from "../calls/updateSpecialistAvailability"
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
+import "react-datepicker/dist/react-datepicker.css";
+import Colors from "../styling/Colors";
 
 type GroupedTimeBlocks = {
   0: FormattedTimeBlock[];
@@ -30,7 +35,35 @@ const useStyles = makeStyles({
   icon: {
     marginRight: 10,
   },
+  input: {
+    border: "10px solid green",
+  },
+  textField: {
+    margin: 10,
+    padding: 10,
+    height: 30,
+    width: 80,
+    "& Mui-disabled": {
+      color: Colors.theme.platinum,
+    },
+  },
+  inputLabel: {
+    fontFamily: "Montserrat",
+    "& Mui-disabled": {
+      color: Colors.theme.platinum,
+    },
+  },
+  time: {
+    margin: 10,
+    padding: 10,
+    height: 30,
+    width: 100,
+    "& Mui-disabled": {
+      color: Colors.theme.platinum,
+    },
+  },
 });
+
 const Overrides = ({
   onUnmount = () => undefined,
 }: AvailabilityPropsType): ReactElement => {
@@ -48,6 +81,9 @@ const Overrides = ({
   const [phoneNumber, setPhoneNumber] = useState("");
   const globalClasses = useGlobalStyles();
   const classes = useStyles();
+  const [currentDate, setCurrentDate] = useState<any>();
+  const [currentTime, setCurrentTime] = useState<any>();
+
   useEffect(() => () => {
     const f = async () => {
       if (formattedAvailability) {
@@ -83,16 +119,14 @@ const Overrides = ({
     }
   }, [fetchedAvailability]);
 
-  const groupBy = function (
+  const groupBy = (
     arr: FormattedTimeBlock[],
     key: keyof FormattedTimeBlock,
-  ) {
-    return arr.reduce((accumulator: any, x) => {
-      const retObj = accumulator;
-      (retObj[x[key]] = retObj[x[key]] || []).push(x);
-      return retObj;
-    }, {});
-  };
+  ) => arr.reduce((accumulator: any, x) => {
+    const retObj = accumulator;
+    (retObj[x[key]] = retObj[x[key]] || []).push(x);
+    return retObj;
+  }, {});
 
   const convertAvailabilityToBoolean = (formatted: FullAvailabilityType) => {
     const { schedules } = formatted;
@@ -157,25 +191,30 @@ const Overrides = ({
     return chunkArray;
   };
 
-  const handleChangeSchedule = (schedule: boolean[][]) => {
-    const returnFormattedSchedule: FormattedTimeBlock[] = [];
-    for (let i = 0; i < schedule.length; i += 1) {
-      returnFormattedSchedule.push(...formatDayOfWeek(schedule[i], i));
-    }
-    setFormattedSchedule(returnFormattedSchedule);
-    const fullAvailability: FullAvailabilityType = {
-      overrides: [],
-      schedules: returnFormattedSchedule,
-    };
-
-    setFormattedAvailability(fullAvailability);
-  };
-
   return (
     <Layout flexColumn title="Book Time On / Off" parent="/physician/profile">
       {/* root */}
       <div className="ffc align">
-        <div style={{ width: "60%" }} className="flex column align">
+        <div className="ffc justify" />
+        <div style={{ width: "60%", flex: 0.5 }} className="flex column align">
+          <div style={{ display: "grid" }} />
+          <div className="flex" style={{}}>
+            <DatePicker
+              id="startDatePicker"
+              selected={currentDate}
+              onChange={(date) => {
+                console.log(date);
+                setCurrentDate(date);
+              }}
+              placeholderText="Start Date"
+              className={`${classes.inputLabel} ${classes.textField}`}
+            />
+            <input
+              type="time"
+              className={`${classes.time} ${classes.inputLabel}`}
+              required
+            />
+          </div>
           <Fab
             variant="extended"
             className={`${globalClasses.button} ${globalClasses.coral}`}
