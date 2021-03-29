@@ -37,9 +37,26 @@ const useStyles = makeStyles({
   },
 });
 
+const useButtonClasses = makeStyles({
+  root: {
+    width: "100%",
+    backgroundColor: "#FF8552",
+    borderRadius: 20,
+    height: "50px",
+    margin: "20px",
+  },
+  label: {
+    fontFamily: "Montserrat",
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+});
+
 const PhysicianMain = (): ReactElement => {
   const history = useHistory();
   const classes = useStyles();
+  const buttonClasses = useButtonClasses();
   const globalClasses = useGlobalStyles();
   const [meetings, setMeetings] = useState<MeetingType[] | undefined | null>();
   const sessionId = useSessionId();
@@ -86,7 +103,7 @@ const PhysicianMain = (): ReactElement => {
         </IconButton>
         <div className={globalClasses.wideButtonContainer}>
           <Button
-            className={globalClasses.wideButton}
+            classes={{ root: buttonClasses.root, label: buttonClasses.label }}
             onClick={() => history.push("/physician/profile")}
           >
             Edit Profile

@@ -10,7 +10,6 @@ import Layout from "./ui/Layout";
 
 const useStyles = makeStyles({
   button: {
-    margin: "20px",
   },
 });
 
@@ -20,6 +19,7 @@ const useButtonClasses = makeStyles({
     backgroundColor: "#FF8552",
     borderRadius: 20,
     height: "50px",
+    margin: "20px",
   },
   label: {
     fontFamily: "Montserrat",
@@ -75,7 +75,7 @@ const Home = (): ReactElement => {
               first responder
             </Button>
             <Button
-              className={`${globalClasses.wideButton} ${classes.button}`}
+              classes={{ root: buttonClasses.root, label: buttonClasses.label }}
               onClick={() => {
                 Amplify.Auth.configure(config);
                 history.push("/physician");
