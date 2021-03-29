@@ -14,6 +14,21 @@ const useStyles = makeStyles({
   },
 });
 
+const useButtonClasses = makeStyles({
+  root: {
+    width: "100%",
+    backgroundColor: "#FF8552",
+    borderRadius: 20,
+    height: "50px",
+  },
+  label: {
+    fontFamily: "Montserrat",
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+});
+
 if (localStorage.getItem("firstresponderphonenumber")) {
   Amplify.configure({
     ...config,
@@ -28,6 +43,7 @@ if (localStorage.getItem("firstresponderphonenumber")) {
 const Home = (): ReactElement => {
   const history = useHistory();
   const classes = useStyles();
+  const buttonClasses = useButtonClasses();
   const globalClasses = useGlobalStyles();
 
   if (localStorage.getItem("firstresponderphonenumber")) {
@@ -45,7 +61,7 @@ const Home = (): ReactElement => {
         <div className="body-container">
           <div className={`${globalClasses.wideButtonContainer} `}>
             <Button
-              className={`${globalClasses.wideButton} ${classes.button}`}
+              classes={{ root: buttonClasses.root, label: buttonClasses.label }}
               onClick={() => {
                 Amplify.configure({
                   ...config,

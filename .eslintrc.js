@@ -33,7 +33,7 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/destructuring-assignment": "warn",
     "react/no-unescaped-entities": "off",
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
     "global-require": "off",
     "max-len": "off",
     camelcase: "off",
