@@ -69,8 +69,12 @@ const PhysicianProfile = (): ReactElement => {
   const [available, setAvailable] = useState(true);
 
   const handleSignOut = () => {
-    localStorage.removeItem("physiciansessionid");
-    Auth.signOut();
+    Auth.signOut()
+      .then(() => {
+        localStorage.removeItem("firstresponderphonenumber");
+        localStorage.removeItem("physicianphonenumber");
+      })
+      .then(() => history.replace("/"));
   };
   return (
     <Layout title="Profile" flexColumn parent="/physician">

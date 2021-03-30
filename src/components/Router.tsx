@@ -22,6 +22,7 @@ import ContactInfo from "./physician/ContactInfo";
 import Overrides from "./physician/Overrides";
 import PhysicianMain from "./physician/PhysicianMain";
 import PhysicianProfile from "./physician/PhysicianProfile";
+import PhysicianSignIn from "./physician/PhysicianSignIn";
 import Call from "./shared/Call";
 import Colors from "./styling/Colors";
 import SnackBarActions from "./ui/Alert";
@@ -126,11 +127,7 @@ const PhysicianRoutes = withAuthenticator(
     includeGreetings: false,
     authenticatorComponents: [
       <Header title="Sign In" key={-1} parent="/" />,
-      <SignIn key={0} />,
-      <SignUp key={1} />,
-      <ConfirmSignUp key={3} />,
-      <VerifyContact key={2} />,
-      <ForgotPassword key={5} />,
+      <PhysicianSignIn key={0} />,
     ],
     theme: AuthTheme,
   } as any,

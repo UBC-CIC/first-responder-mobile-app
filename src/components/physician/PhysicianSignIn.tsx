@@ -1,15 +1,12 @@
 import Auth from "@aws-amplify/auth";
 import {
-  Button,
-  makeStyles,
-  TextField,
-  withStyles,
+  Button, makeStyles, TextField, withStyles,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import "../../styles/firstresponder/SignIn.css";
 import PhoneInput from "react-phone-input-2";
 import Colors from "../styling/Colors";
-import Layout from "./Layout";
+import Layout from "../ui/Layout";
 import "react-phone-input-2/lib/style.css";
 
 // eslint-disable-next-line no-shadow
@@ -65,7 +62,7 @@ const DarkTextField = withStyles({
     },
   },
 })(TextField);
-const SignIn = () => {
+const PhysicianSignIn = () => {
   const classes = useStyles();
 
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -80,18 +77,17 @@ const SignIn = () => {
     try {
       setAuthState(AuthState.STARTED);
       await Auth.signUp({
-        username: `${formattedNumber}-fr`,
+        username: `${formattedNumber}-ph`,
         password: Date.now().toString(),
         attributes: {
-          phoneNumber: formattedNumber,
-          "custom:role": "FIRSTRESPONDER",
+          "custom:role": "PHYSICIAN",
         },
       });
     } catch (e) {
       // Handle sign up error
+      console.log(e);
       if (e.code !== "UsernameExistsException") {
         setAuthState(AuthState.ERROR);
-        console.log(e);
       }
     }
     try {
@@ -110,7 +106,7 @@ const SignIn = () => {
       const cognitoUser = await Auth.sendCustomChallengeAnswer(user, password);
       console.log(cognitoUser);
       if (cognitoUser.username) {
-        localStorage.setItem("firstresponderphonenumber", cognitoUser.username);
+        localStorage.setItem("physicianphonenumber", cognitoUser.username);
       }
     } catch {
       // Handle 3 error thrown for 3 incorrect attempts.
@@ -189,4 +185,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default PhysicianSignIn;

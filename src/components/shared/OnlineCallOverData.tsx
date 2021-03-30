@@ -29,6 +29,7 @@ import Layout from "../ui/Layout";
 import SnackBarActions from "../ui/Alert";
 import RosterDisplay from "./RosterDisplay";
 import OfflineContext from "../context/OfflineContext";
+import "../../styles/Call.css";
 
 const MAX_LOSS = 5;
 
@@ -41,6 +42,14 @@ const useStyles = makeStyles({
     backgroundColor: Colors.theme.error,
     color: Colors.theme.platinum,
   },
+  videoGrid: {
+    gridTemplateColumns: "1fr 1fr !important",
+    gridTemplateRows: "1fr 1fr !important",
+    maxHeight: "500px",
+  },
+  scrollContainer: {
+    overflowY: "auto",
+  },
 });
 
 const OnlineCallOverData = (): ReactElement => {
@@ -52,7 +61,7 @@ const OnlineCallOverData = (): ReactElement => {
   const { roster } = useRosterState();
   const history = useHistory<MeetingStateType>();
   const state = history.location?.state;
-  const phone = usePhoneNumber() || state.meetingId;
+  const phone = state?.phoneNumber || usePhoneNumber();
   const metrics = useBandwidthMetrics();
   const [localVideoShown, setLocalVideoShown] = useState(false);
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
@@ -248,6 +257,7 @@ const OnlineCallOverData = (): ReactElement => {
     console.log(inMeeting);
     // setOffline(true);
     setSuggestionShown(true);
+    audioVideo?.stop();
   };
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
@@ -272,6 +282,7 @@ const OnlineCallOverData = (): ReactElement => {
       {!suggestionShown ? (
         <div className="video-container">
           <VideoTileGrid
+            className={classes.videoGrid}
             layout="standard"
             // TODO Convert into smarter component
             noRemoteVideoView={(
@@ -282,6 +293,7 @@ const OnlineCallOverData = (): ReactElement => {
               </div>
             )}
           />
+
           <Button
             variant="contained"
             disabled={connectionState === ConnectionState.POOR}
@@ -289,9 +301,11 @@ const OnlineCallOverData = (): ReactElement => {
           >
             Toggle Video
           </Button>
-          <MicSelection />
-          <SpeakerSelection />
-          <RosterDisplay roster={roster} attendees={attendees} />
+          <div style={{ overflow: "auto", flex: 1 }}>
+            <RosterDisplay roster={roster} attendees={attendees} />
+            <span style={{ fontFamily: "Montserrat", textAlign: "center" }}><MicSelection /></span>
+            {/* <SpeakerSelection /> */}
+          </div>
         </div>
       ) : (
         <Snackbar
