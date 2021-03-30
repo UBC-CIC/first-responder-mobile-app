@@ -159,7 +159,7 @@ const FirstResponderProfile = (): ReactElement => {
   );
 
   return (
-    <Layout title="First Responder Profile" parent="/firstresponder" flexColumn>
+    <Layout title="First Responder Profile" parent="/main" flexColumn>
       <div className={classes.root}>
         <h3 style={headerStyle}>
           Your Phone Number:

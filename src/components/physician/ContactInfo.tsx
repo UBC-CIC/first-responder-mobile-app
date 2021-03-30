@@ -181,7 +181,7 @@ const ContactInfo = (): ReactElement => {
 
   /** TODO style this more, add more fields */
   return (
-    <Layout className="ffc" title="Contact Info" parent="/physician/profile">
+    <Layout className="ffc" title="Contact Info" parent="/main/profile">
       <Paper
         component="form"
         className={classes.contactInfoForm}

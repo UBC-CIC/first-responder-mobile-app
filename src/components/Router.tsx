@@ -12,7 +12,10 @@ import {
   VerifyContact, withAuthenticator,
 } from "aws-amplify-react";
 import React, { ReactElement, useState } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter, Redirect, Route, Switch,
+} from "react-router-dom";
+import FirstResponderLogin from "./firstresponder/FirstResponderLogin";
 import FirstResponderMain from "./firstresponder/FirstResponderMain";
 import FirstResponderProfile from "./firstresponder/FirstResponderProfile";
 import Home from "./Home";
@@ -20,9 +23,9 @@ import Alerts from "./physician/Alerts";
 import Availability from "./physician/Availability";
 import ContactInfo from "./physician/ContactInfo";
 import Overrides from "./physician/Overrides";
+import PhysicianLogin from "./physician/PhysicianLogin";
 import PhysicianMain from "./physician/PhysicianMain";
 import PhysicianProfile from "./physician/PhysicianProfile";
-import PhysicianSignIn from "./physician/PhysicianSignIn";
 import Call from "./shared/Call";
 import Colors from "./styling/Colors";
 import SnackBarActions from "./ui/Alert";
@@ -39,15 +42,27 @@ const Router = (): ReactElement => (
 
       {/* Physician w/ Authenticator */}
 
-      <Route path="/physician">
-        <PhysicianRoutes />
+      <Route path="/main">
+        {() => {
+          if (localStorage.getItem("physicianphonenumber")) return <PhysicianRoutes />;
+          if (localStorage.getItem("firstresponderphonenumber")) return <FirstResponderRoutes />;
+          return <Redirect to="/" />;
+        }}
+      </Route>
+
+      <Route exact path="/firstresponderLogin">
+        <FirstResponderLogin />
+      </Route>
+
+      <Route exact path="/physicianLogin">
+        <PhysicianLogin />
       </Route>
 
       {/* First Responder w/ Authenticator */}
 
-      <Route path="/firstresponder">
+      {/* <Route path="/firstresponder">
         <FirstResponderRoutes />
-      </Route>
+      </Route> */}
       {/* Shared */}
 
       <Route exact path="/call">
@@ -82,13 +97,13 @@ const PhysicianRoutes = withAuthenticator(
 
     return (
       <>
-        <Route exact path="/physician">
+        <Route exact path="/main">
           <PhysicianMain />
         </Route>
-        <Route exact path="/physician/alerts">
+        <Route exact path="/main/alerts">
           <Alerts />
         </Route>
-        <Route exact path="/physician/profile">
+        <Route exact path="/main/profile">
           <PhysicianProfile />
           <Snackbar
             open={success}
@@ -107,17 +122,17 @@ const PhysicianRoutes = withAuthenticator(
             autoHideDuration={3000}
           />
         </Route>
-        <Route exact path="/physician/availability">
+        <Route exact path="/main/availability">
           <Availability
             onUnmount={(successParam) => (successParam ? setSuccess(true) : setFailure(true))}
           />
         </Route>
-        <Route exact path="/physician/overrides">
+        <Route exact path="/main/overrides">
           <Overrides
             onUnmount={(successParam) => (successParam ? setSuccess(true) : setFailure(true))}
           />
         </Route>
-        <Route exact path="/physician/contactinfo">
+        <Route exact path="/main/contactinfo">
           <ContactInfo />
         </Route>
       </>
@@ -127,7 +142,7 @@ const PhysicianRoutes = withAuthenticator(
     includeGreetings: false,
     authenticatorComponents: [
       <Header title="Sign In" key={-1} parent="/" />,
-      <PhysicianSignIn key={0} />,
+      <PhoneSignIn key={0} />,
     ],
     theme: AuthTheme,
   } as any,
@@ -136,10 +151,10 @@ const PhysicianRoutes = withAuthenticator(
 const FirstResponderRoutes = withAuthenticator(
   () => (
     <>
-      <Route exact path="/firstresponder">
+      <Route exact path="/main">
         <FirstResponderMain />
       </Route>
-      <Route exact path="/firstresponder/profile">
+      <Route exact path="/main/profile">
         <FirstResponderProfile />
       </Route>
     </>

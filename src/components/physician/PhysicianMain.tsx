@@ -94,7 +94,7 @@ const PhysicianMain = (): ReactElement => {
       <div className={classes.root}>
         <IconButton
           className={classes.coral}
-          onClick={() => history.push("/physician/alerts")}
+          onClick={() => history.push("/main/alerts")}
         >
           <Badge
             badgeContent={meetings?.length}
@@ -107,7 +107,7 @@ const PhysicianMain = (): ReactElement => {
         <div className={globalClasses.wideButtonContainer}>
           <Button
             classes={{ root: buttonClasses.root, label: buttonClasses.label }}
-            onClick={() => history.push("/physician/profile")}
+            onClick={() => history.push("/main/profile")}
           >
             Edit Profile
           </Button>

@@ -2,12 +2,15 @@ import Auth from "@aws-amplify/auth";
 import {
   Button, makeStyles, TextField, withStyles,
 } from "@material-ui/core";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import { isNumber } from "lodash";
 import React, { useState } from "react";
-import "../../styles/firstresponder/SignIn.css";
 import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import "../../styles/firstresponder/SignIn.css";
+import { fetchPhysicianProfile } from "../calls";
 import Colors from "../styling/Colors";
 import Layout from "../ui/Layout";
-import "react-phone-input-2/lib/style.css";
 
 // eslint-disable-next-line no-shadow
 enum AuthState {
@@ -16,6 +19,8 @@ enum AuthState {
   SMS_SENT,
   COMPLETE,
   ERROR,
+  NOT_AUTHENTICATED,
+  INCORRECT
 }
 
 const useStyles = makeStyles({
@@ -32,6 +37,9 @@ const useStyles = makeStyles({
       border: `2px solid ${Colors.theme.platinum}`,
     },
     marginTop: 20,
+  },
+  errorText: {
+    color: Colors.theme.error,
   },
 });
 
@@ -72,32 +80,35 @@ const PhysicianSignIn = () => {
   const [numFails, setNumFails] = useState(0);
   const handleStartAuth = async () => {
     const formattedNumber = `+${phoneNumber}`;
-    console.log(formattedNumber);
+    const fetched = await fetchPhysicianProfile({ phone_number: formattedNumber });
+    if (fetched) {
+      console.log(formattedNumber);
 
-    try {
-      setAuthState(AuthState.STARTED);
-      await Auth.signUp({
-        username: `${formattedNumber}-ph`,
-        password: Date.now().toString(),
-        attributes: {
-          "custom:role": "PHYSICIAN",
-        },
-      });
-    } catch (e) {
+      try {
+        setAuthState(AuthState.STARTED);
+        await Auth.signUp({
+          username: `${formattedNumber}`,
+          password: Date.now().toString(),
+        });
+        console.log("Await");
+      } catch (e) {
       // Handle sign up error
-      console.log(e);
-      if (e.code !== "UsernameExistsException") {
-        setAuthState(AuthState.ERROR);
+        console.log(e);
+        if (e.code !== "UsernameExistsException") {
+          setAuthState(AuthState.ERROR);
+        }
       }
-    }
-    try {
-      const cognitoUser = await Auth.signIn(formattedNumber);
-      setAuthState(AuthState.SMS_SENT);
-      setUser(cognitoUser);
-    } catch (e) {
+      try {
+        const cognitoUser = await Auth.signIn(formattedNumber);
+        setAuthState(AuthState.SMS_SENT);
+        setUser(cognitoUser);
+      } catch (e) {
       // Handle sign in errors
-      setAuthState(AuthState.ERROR);
-      console.error(e);
+        setAuthState(AuthState.ERROR);
+        console.error(e);
+      }
+    } else {
+      setAuthState(AuthState.NOT_AUTHENTICATED);
     }
   };
 
@@ -110,9 +121,23 @@ const PhysicianSignIn = () => {
       }
     } catch {
       // Handle 3 error thrown for 3 incorrect attempts.
+      setAuthState(AuthState.INCORRECT);
       if (numFails + 1 === 3) {
         setAuthState(AuthState.ERROR);
       } else setNumFails(numFails + 1);
+    }
+  };
+
+  const renderErrorMessage = () => {
+    switch (authState) {
+    case AuthState.ERROR:
+      return "There was an error signing up: please check internet connection and try again";
+    case AuthState.NOT_AUTHENTICATED:
+      return "There was an error signing up: you are not registered as a certified physician";
+    case AuthState.INCORRECT:
+      return "Incorrect One Time Password";
+    default:
+      return "";
     }
   };
 
@@ -128,14 +153,19 @@ const PhysicianSignIn = () => {
         onChange={(phone) => {
           setPhoneNumber(phone);
         }}
+        disabled={authState === AuthState.NOT_AUTHENTICATED}
       />
       <Button
         variant="contained"
         className={classes.button}
         onClick={() => handleStartAuth()}
+        disabled={authState === AuthState.NOT_AUTHENTICATED}
       >
         Sign In
       </Button>
+      <FormHelperText className={classes.errorText}>
+        {renderErrorMessage()}
+      </FormHelperText>
     </div>
   );
 
@@ -144,9 +174,15 @@ const PhysicianSignIn = () => {
       <h3 style={headerStyle}>Enter One Time Password</h3>
       <DarkTextField
         label="One Time Password"
+        type="number"
         required
         value={password}
         onChange={(e) => {
+          e.preventDefault();
+          e.target.value = e.target.value
+            .toString()
+            .slice(0, 6);
+          setAuthState(AuthState.SMS_SENT);
           setPassword(e.target.value);
         }}
       />
@@ -157,6 +193,9 @@ const PhysicianSignIn = () => {
       >
         Submit
       </Button>
+      <FormHelperText className={classes.errorText}>
+        {renderErrorMessage()}
+      </FormHelperText>
     </div>
   );
 
@@ -165,6 +204,7 @@ const PhysicianSignIn = () => {
     case AuthState.NOT_STARTED:
     case AuthState.STARTED:
       return signInForm;
+    case AuthState.INCORRECT:
     case AuthState.SMS_SENT:
       return OTPForm;
 

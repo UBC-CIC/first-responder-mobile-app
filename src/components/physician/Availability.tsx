@@ -138,7 +138,7 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
   };
 
   return (
-    <Layout flexColumn title="Availability" parent="/physician/profile">
+    <Layout flexColumn title="Availability" parent="/main/profile">
       {/* root */}
       <div className="ffc">
         <div className="availability-container">

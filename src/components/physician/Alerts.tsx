@@ -76,7 +76,7 @@ const Alerts = (): ReactElement => {
           : "Professional",
         role: profile?.user_role || "Professional",
         attendeeId: sessionId,
-        parent: "/physician/alerts",
+        parent: "/main/alerts",
         phoneNumber: profile?.phone_number,
       } as MeetingStateType);
     }
@@ -104,7 +104,7 @@ const Alerts = (): ReactElement => {
   };
 
   return (
-    <Layout title="Alerts" flexColumn parent="/physician">
+    <Layout title="Alerts" flexColumn parent="/main">
       <div className="ffc align">{renderMeetings()}</div>
     </Layout>
   );

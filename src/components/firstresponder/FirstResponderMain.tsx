@@ -137,7 +137,7 @@ const FirstResponderMain = (): ReactElement => {
                 name: getName(),
                 role: profile?.occupation || "First Responder",
                 attendeeId: sessionId,
-                parent: "/firstresponder",
+                parent: "/main",
                 phoneNumber: profile?.phone_number,
               } as MeetingStateType);
             }}
@@ -159,7 +159,7 @@ const FirstResponderMain = (): ReactElement => {
         <Fab
           variant="extended"
           className={`${globalClasses.button} ${globalClasses.coral}`}
-          onClick={() => history.push("/firstresponder/profile")}
+          onClick={() => history.push("/main/profile")}
         >
           <ProfileIcon className={classes.icon} />
           Edit Profile

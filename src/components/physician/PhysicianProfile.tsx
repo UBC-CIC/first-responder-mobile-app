@@ -77,13 +77,13 @@ const PhysicianProfile = (): ReactElement => {
       .then(() => history.replace("/"));
   };
   return (
-    <Layout title="Profile" flexColumn parent="/physician">
+    <Layout title="Profile" flexColumn parent="/main">
       <div className={classes.root}>
         <div className={classes.mainContainer}>
           <Fab
             variant="extended"
             className={`${globalClasses.button} ${globalClasses.coral}`}
-            onClick={() => history.push("/physician/contactinfo")}
+            onClick={() => history.push("/main/contactinfo")}
           >
             <ProfileIcon className={classes.icon} />
             Edit Contact Info
@@ -91,7 +91,7 @@ const PhysicianProfile = (): ReactElement => {
           <Fab
             variant="extended"
             className={`${globalClasses.button} ${globalClasses.coral}`}
-            onClick={() => history.push("/physician/availability")}
+            onClick={() => history.push("/main/availability")}
           >
             <CalendarIcon className={classes.icon} />
             Standard Weekday Schedule
@@ -99,7 +99,7 @@ const PhysicianProfile = (): ReactElement => {
           <Fab
             variant="extended"
             className={`${globalClasses.button} ${globalClasses.coral}`}
-            onClick={() => history.push("/physician/overrides")}
+            onClick={() => history.push("/main/overrides")}
             disabled
           >
             <EventBusy className={classes.icon} />

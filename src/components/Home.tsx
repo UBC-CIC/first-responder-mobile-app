@@ -49,13 +49,15 @@ const Home = (): ReactElement => {
       const currUser = await Auth.currentAuthenticatedUser();
       setUser(currUser);
       console.log(currUser);
+      if (currUser) history.replace("/main");
     };
     f();
   });
-  if (localStorage.getItem("firstresponderphonenumber")) {
-    history.replace("/firstresponder");
-  } else if (localStorage.getItem("physicianphonenumber")) {
-    history.replace("/physician");
+  if (
+    localStorage.getItem("firstresponderphonenumber")
+    || localStorage.getItem("physicianphonenumber")
+  ) {
+    history.replace("/main");
   }
 
   return (
@@ -72,7 +74,7 @@ const Home = (): ReactElement => {
                 Amplify.Auth.configure(
                   { ...passwordless },
                 );
-                history.push("/firstresponder");
+                history.push("/firstresponderLogin");
               }}
             >
               first responder
@@ -81,7 +83,7 @@ const Home = (): ReactElement => {
               classes={{ root: buttonClasses.root, label: buttonClasses.label }}
               onClick={() => {
                 Amplify.Auth.configure(config);
-                history.push("/physician");
+                history.push("/physicianLogin");
               }}
             >
               Medical Professional

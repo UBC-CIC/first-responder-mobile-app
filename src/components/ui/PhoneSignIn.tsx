@@ -80,12 +80,8 @@ const SignIn = () => {
     try {
       setAuthState(AuthState.STARTED);
       await Auth.signUp({
-        username: `${formattedNumber}-fr`,
+        username: `${formattedNumber}`,
         password: Date.now().toString(),
-        attributes: {
-          phoneNumber: formattedNumber,
-          "custom:role": "FIRSTRESPONDER",
-        },
       });
     } catch (e) {
       // Handle sign up error
@@ -112,7 +108,9 @@ const SignIn = () => {
       if (cognitoUser.username) {
         localStorage.setItem("firstresponderphonenumber", cognitoUser.username);
       }
-    } catch {
+    } catch (e) {
+      console.log(e);
+
       // Handle 3 error thrown for 3 incorrect attempts.
       if (numFails + 1 === 3) {
         setAuthState(AuthState.ERROR);
