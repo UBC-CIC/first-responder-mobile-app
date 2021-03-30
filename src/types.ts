@@ -38,6 +38,7 @@ export type MeetingStateType = {
   attendeeId: string;
   parent: string;
   offline?: boolean;
+  phoneNumber?: string;
 };
 
 export type AlertsStateType= {

@@ -192,7 +192,7 @@ const Overrides = ({
   };
 
   return (
-    <Layout flexColumn title="Book Time On / Off" parent="/physician/profile">
+    <Layout flexColumn title="Book Time On / Off" parent="/main/profile">
       {/* root */}
       <div className="ffc align">
         <div className="ffc justify" />

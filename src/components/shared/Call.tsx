@@ -11,7 +11,7 @@ const Call = (): ReactElement => {
   const { offline } = useContext(OfflineContext);
   /** Must have some kind of state */
   if (!state) {
-    history.push("/firstResponder");
+    history.push("/main");
     return <div />;
   }
 

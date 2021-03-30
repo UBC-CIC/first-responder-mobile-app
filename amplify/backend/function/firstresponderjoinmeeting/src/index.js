@@ -50,7 +50,36 @@ const getMeeting = async (meetingId) => {
   return meetingData;
 };
 
-const putMeeting = async (title, meetingInfo, phoneNumber) => {
+const appendAttendeeList = async (meetingInfo, phoneNumber, attendeeId) => {
+  const { Meeting } = meetingInfo;
+  const attendee = {
+    M: {
+      attendee_id: { S: attendeeId },
+      phone_number: { S: phoneNumber },
+      attendee_type: { S: "NOT_SPECIFIED" },
+      attendee_join_type: { S: "DATA" },
+    },
+  };
+
+  await ddb
+    .updateItem({
+      TableName: "meeting-detail",
+      Key: { meeting_id: { S: Meeting.MeetingId } },
+      ReturnValues: "ALL_NEW",
+      UpdateExpression:
+        "set #attendees = list_append(if_not_exists(#attendees, :empty_list), :attendee)",
+      ExpressionAttributeNames: {
+        "#attendees": "attendees",
+      },
+      ExpressionAttributeValues: {
+        ":attendee": { L: [attendee] },
+        ":empty_list": { L: [] },
+      },
+    })
+    .promise();
+};
+
+const putMeeting = async (title, meetingInfo, phoneNumber, attendeeId) => {
   const { Meeting } = meetingInfo;
   console.log("NUMBER: ", phoneNumber);
   await ddb
@@ -149,6 +178,11 @@ exports.handler = async (event, context, callback) => {
     name,
     meetingInfo.Meeting.MeetingId,
     role
+  );
+  await appendAttendeeList(
+    meetingInfo,
+    phoneNumber,
+    attendeeInfo.Attendee.AttendeeId
   );
 
   const joinInfo = {

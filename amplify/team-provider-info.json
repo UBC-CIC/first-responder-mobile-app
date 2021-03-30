@@ -15,13 +15,11 @@
       "function": {
         "firstresponderjoinmeeting": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstresponderjoinmeeting-6b73454f63657a537930-build.zip"
+          "s3Key": "amplify-builds/firstresponderjoinmeeting-34526851786977464136-build.zip"
         }
       },
       "auth": {
-        "starspwaphysicians": {},
-        "firstrespondermobilecbc374ce": {},
-        "userPoolGroups": {}
+        "starspwaphysicians": {}
       },
       "storage": {
         "userprofile": {

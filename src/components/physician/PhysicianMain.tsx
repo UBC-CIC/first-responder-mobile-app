@@ -2,10 +2,13 @@ import {
   Badge, Button, IconButton, makeStyles,
 } from "@material-ui/core";
 import BellIcon from "@material-ui/icons/Notifications";
+import Amplify from "aws-amplify";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import bg from "../../assets/physician-home-bg.svg";
+import config from "../../aws-exports";
+import passwordless from "../../passwordless-aws-exports";
 import { MeetingType } from "../../types";
 import listAllMeetings from "../calls/listAllMeetings";
 import useSessionId from "../hooks/useSessionId";
@@ -13,6 +16,12 @@ import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
 
+// Amplify.configure({
+//   ...config,
+//   Auth: {
+//     ...passwordless,
+//   },
+// });
 const useStyles = makeStyles({
   bellIcon: {
     width: "100px",
@@ -62,12 +71,6 @@ const PhysicianMain = (): ReactElement => {
   const sessionId = useSessionId();
 
   useEffect(() => {
-    if (!localStorage.getItem("physiciansessionid")) {
-      localStorage.setItem("physiciansessionid", uuid());
-    }
-  }, []);
-
-  useEffect(() => {
     const f = async () => {
       const res = await listAllMeetings();
       if (res.data) {
@@ -85,13 +88,13 @@ const PhysicianMain = (): ReactElement => {
     <Layout
       title="Physician Home"
       flexColumn
-      hideBackButton={!!localStorage.getItem("physiciansessionid")}
+      hideBackButton={!!localStorage.getItem("physicianphonenumber")}
       parent="/"
     >
       <div className={classes.root}>
         <IconButton
           className={classes.coral}
-          onClick={() => history.push("/physician/alerts")}
+          onClick={() => history.push("/main/alerts")}
         >
           <Badge
             badgeContent={meetings?.length}
@@ -104,7 +107,7 @@ const PhysicianMain = (): ReactElement => {
         <div className={globalClasses.wideButtonContainer}>
           <Button
             classes={{ root: buttonClasses.root, label: buttonClasses.label }}
-            onClick={() => history.push("/physician/profile")}
+            onClick={() => history.push("/main/profile")}
           >
             Edit Profile
           </Button>

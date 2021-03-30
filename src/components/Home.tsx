@@ -1,10 +1,11 @@
 import { Button, makeStyles } from "@material-ui/core";
-import Amplify from "aws-amplify";
-import { ReactElement } from "react";
+import Amplify, { Auth } from "aws-amplify";
+import { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import config from "../aws-exports";
 import passwordless from "../passwordless-aws-exports";
 import "../styles/Home.css";
+import { CognitoUser } from "../types";
 import { useGlobalStyles } from "./styling/GlobalMuiStyles";
 import Layout from "./ui/Layout";
 
@@ -29,27 +30,34 @@ const useButtonClasses = makeStyles({
   },
 });
 
-if (localStorage.getItem("firstresponderphonenumber")) {
-  Amplify.configure({
-    ...config,
-    Auth: {
-      ...passwordless,
-    },
-  });
-} else if (localStorage.getItem("physiciansessionid")) {
-  Amplify.configure(config);
-}
+Amplify.configure({
+  ...config,
+  Auth: {
+    ...passwordless,
+  },
+});
 
 const Home = (): ReactElement => {
   const history = useHistory();
   const classes = useStyles();
   const buttonClasses = useButtonClasses();
   const globalClasses = useGlobalStyles();
+  const [user, setUser] = useState<CognitoUser | undefined>();
 
-  if (localStorage.getItem("firstresponderphonenumber")) {
-    history.replace("/firstresponder");
-  } else if (localStorage.getItem("physiciansessionid")) {
-    history.replace("/physician");
+  useEffect(() => {
+    const f = async () => {
+      const currUser = await Auth.currentAuthenticatedUser();
+      setUser(currUser);
+      console.log(currUser);
+      if (currUser) history.replace("/main");
+    };
+    f();
+  });
+  if (
+    localStorage.getItem("firstresponderphonenumber")
+    || localStorage.getItem("physicianphonenumber")
+  ) {
+    history.replace("/main");
   }
 
   return (
@@ -63,13 +71,10 @@ const Home = (): ReactElement => {
             <Button
               classes={{ root: buttonClasses.root, label: buttonClasses.label }}
               onClick={() => {
-                Amplify.configure({
-                  ...config,
-                  Auth: {
-                    ...passwordless,
-                  },
-                });
-                history.push("/firstresponder");
+                Amplify.Auth.configure(
+                  { ...passwordless },
+                );
+                history.push("/firstresponderLogin");
               }}
             >
               first responder
@@ -78,7 +83,7 @@ const Home = (): ReactElement => {
               classes={{ root: buttonClasses.root, label: buttonClasses.label }}
               onClick={() => {
                 Amplify.Auth.configure(config);
-                history.push("/physician");
+                history.push("/physicianLogin");
               }}
             >
               Medical Professional

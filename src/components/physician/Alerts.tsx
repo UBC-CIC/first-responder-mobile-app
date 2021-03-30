@@ -2,6 +2,7 @@ import { Button, makeStyles } from "@material-ui/core";
 import { Auth } from "aws-amplify";
 import { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 import {
   CognitoUser,
   MeetingStateType,
@@ -20,15 +21,30 @@ const useStyles = makeStyles({
     margin: 10,
   },
 });
+const useButtonClasses = makeStyles({
+  root: {
+    width: "100%",
+    backgroundColor: "#FF8552",
+    borderRadius: 20,
+    height: "50px",
+    margin: "20px",
+  },
+  label: {
+    fontFamily: "Montserrat",
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+});
 
 const Alerts = (): ReactElement => {
   const [meetings, setMeetings] = useState<MeetingType[] | undefined>([]);
   const history = useHistory<MeetingStateType>();
   const globalClasses = useGlobalStyles();
   const classes = useStyles();
+  const buttonClasses = useButtonClasses();
   const sessionId = useSessionId();
   const [profile, setProfile] = useState<SpecialistProfileType>();
-
   useEffect(() => {
     const f = async () => {
       const u: CognitoUser = await Auth.currentAuthenticatedUser();
@@ -60,7 +76,8 @@ const Alerts = (): ReactElement => {
           : "Professional",
         role: profile?.user_role || "Professional",
         attendeeId: sessionId,
-        parent: "/physician/alerts",
+        parent: "/main/alerts",
+        phoneNumber: profile?.phone_number,
       } as MeetingStateType);
     }
   };
@@ -70,7 +87,7 @@ const Alerts = (): ReactElement => {
       return meetings?.map((meeting, index) => (
         <div className={globalClasses.wideButtonContainer} key={meeting.id}>
           <Button
-            className={`${globalClasses.wideButton} ${classes.button}`}
+            classes={{ root: buttonClasses.root, label: buttonClasses.label }}
             onClick={() => handleJoin(meeting.id)}
           >
             {/* TODO Call to backend for topic of accident */}
@@ -87,7 +104,7 @@ const Alerts = (): ReactElement => {
   };
 
   return (
-    <Layout title="Alerts" flexColumn parent="/physician">
+    <Layout title="Alerts" flexColumn parent="/main">
       <div className="ffc align">{renderMeetings()}</div>
     </Layout>
   );
