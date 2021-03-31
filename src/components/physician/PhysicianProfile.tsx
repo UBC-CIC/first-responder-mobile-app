@@ -1,4 +1,4 @@
-// import { SignOut } from "aws-amplify-react";
+/** UI Hub for various physician functions */
 import { Auth } from "@aws-amplify/auth";
 import {
   Fab, FormControlLabel, makeStyles, Switch, withStyles,

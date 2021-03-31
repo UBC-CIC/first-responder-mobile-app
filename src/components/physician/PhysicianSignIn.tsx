@@ -1,9 +1,9 @@
+/* UI for OTP Phone Number login for physician flow */
 import Auth from "@aws-amplify/auth";
 import {
   Button, makeStyles, TextField, withStyles,
 } from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
-import { isNumber } from "lodash";
 import React, { useState } from "react";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";

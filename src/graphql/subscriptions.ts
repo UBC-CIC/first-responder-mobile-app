@@ -37,7 +37,6 @@ export const onCreateSpecialistProfile = /* GraphQL */ `
       phone_number: $phone_number
       user_status: $user_status
     ) {
-      availability
       created_date_time
       email
       first_name
@@ -88,7 +87,6 @@ export const onDeleteSpecialistProfile = /* GraphQL */ `
       phone_number: $phone_number
       user_status: $user_status
     ) {
-      availability
       created_date_time
       email
       first_name
@@ -139,7 +137,6 @@ export const onUpdateSpecialistProfile = /* GraphQL */ `
       phone_number: $phone_number
       user_status: $user_status
     ) {
-      availability
       created_date_time
       email
       first_name
@@ -278,6 +275,90 @@ export const onDeleteAttendeeData = /* GraphQL */ `
       meetingID
       name
       role
+    }
+  }
+`;
+export const onCreateMeetingDetail = /* GraphQL */ `
+  subscription OnCreateMeetingDetail(
+    $meeting_id: String
+    $create_date_time: String
+    $meeting_status: String
+    $end_date_time: String
+  ) {
+    onCreateMeetingDetail(
+      meeting_id: $meeting_id
+      create_date_time: $create_date_time
+      meeting_status: $meeting_status
+      end_date_time: $end_date_time
+    ) {
+      meeting_id
+      create_date_time
+      meeting_status
+      end_date_time
+      attendees {
+        attendee_id
+        attendee_join_type
+        attendee_type
+        name
+        phone_number
+        role
+      }
+    }
+  }
+`;
+export const onUpdateMeetingDetail = /* GraphQL */ `
+  subscription OnUpdateMeetingDetail(
+    $meeting_id: String
+    $create_date_time: String
+    $meeting_status: String
+    $end_date_time: String
+  ) {
+    onUpdateMeetingDetail(
+      meeting_id: $meeting_id
+      create_date_time: $create_date_time
+      meeting_status: $meeting_status
+      end_date_time: $end_date_time
+    ) {
+      meeting_id
+      create_date_time
+      meeting_status
+      end_date_time
+      attendees {
+        attendee_id
+        attendee_join_type
+        attendee_type
+        name
+        phone_number
+        role
+      }
+    }
+  }
+`;
+export const onDeleteMeetingDetail = /* GraphQL */ `
+  subscription OnDeleteMeetingDetail(
+    $meeting_id: String
+    $create_date_time: String
+    $meeting_status: String
+    $end_date_time: String
+  ) {
+    onDeleteMeetingDetail(
+      meeting_id: $meeting_id
+      create_date_time: $create_date_time
+      meeting_status: $meeting_status
+      end_date_time: $end_date_time
+    ) {
+      meeting_id
+      create_date_time
+      meeting_status
+      end_date_time
+      attendees {
+        attendee_id
+        attendee_join_type
+        attendee_type
+        name
+        phone_number
+        role
+      }
     }
   }
 `;

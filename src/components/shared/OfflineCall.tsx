@@ -1,13 +1,11 @@
 import { Button } from "@material-ui/core";
 import { ReactElement, useEffect } from "react";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
 
 const OfflineCall = (): ReactElement => {
   const globalClasses = useGlobalStyles();
-  const [user, userType] = useAuthenticatedUser();
-  const parentPath = `/${userType}`;
+
   useEffect(() => {
     console.log("calling +1 888 651 1946");
     document.location.href = "tel:1-888-651-1946";
@@ -16,9 +14,7 @@ const OfflineCall = (): ReactElement => {
     <Layout
       title="Offline Call"
       flexColumn
-      parent={
-        parentPath
-      }
+      parent="/main"
     >
       <div className="ffc justify align">
         <Button

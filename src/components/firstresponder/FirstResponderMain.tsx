@@ -5,19 +5,16 @@ import SignOutIcon from "@material-ui/icons/ExitToApp";
 import ProfileIcon from "@material-ui/icons/Person";
 import PhoneIcon from "@material-ui/icons/Phone";
 import WifiIcon from "@material-ui/icons/Wifi";
-import Amplify, { Auth } from "aws-amplify";
+import { Auth } from "aws-amplify";
 import React, {
   ReactElement, useContext, useEffect, useState,
 } from "react";
 import { useHistory } from "react-router-dom";
 import bg from "../../assets/first-responder-home-bg.svg";
-import config from "../../aws-exports";
-import passwordless from "../../passwordless-aws-exports";
 import "../../styles/firstresponder/Home.css";
 import { FirstResponderProfileType, MeetingStateType } from "../../types";
 import { fetchFirstResponderProfile } from "../calls";
 import OfflineContext from "../context/OfflineContext";
-import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
@@ -58,7 +55,6 @@ const FirstResponderMain = (): ReactElement => {
   const classes = useStyles();
   const globalClasses = useGlobalStyles();
   const { offline } = useContext(OfflineContext);
-  const [user, userType] = useAuthenticatedUser();
 
   const [modalOpen, setModalOpen] = useState(false);
   const phone = usePhoneNumber();

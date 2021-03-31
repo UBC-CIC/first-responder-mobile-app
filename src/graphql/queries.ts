@@ -15,7 +15,6 @@ export const getFirstResponderProfile = /* GraphQL */ `
 export const getSpecialistProfile = /* GraphQL */ `
   query GetSpecialistProfile($phone_number: String!) {
     getSpecialistProfile(phone_number: $phone_number) {
-      availability
       created_date_time
       email
       first_name
@@ -64,7 +63,6 @@ export const listSpecialistProfiles = /* GraphQL */ `
       nextToken: $nextToken
     ) {
       items {
-        availability
         created_date_time
         email
         first_name
@@ -94,7 +92,6 @@ export const querySpecialistProfilesByUserStatusGsi = /* GraphQL */ `
       user_status: $user_status
     ) {
       items {
-        availability
         created_date_time
         email
         first_name
@@ -172,6 +169,62 @@ export const listAttendeeData = /* GraphQL */ `
         meetingID
         name
         role
+      }
+      nextToken
+    }
+  }
+`;
+export const getMeetingDetail = /* GraphQL */ `
+  query GetMeetingDetail($meeting_id: String!) {
+    getMeetingDetail(meeting_id: $meeting_id) {
+      meeting_id
+      create_date_time
+      meeting_status
+      end_date_time
+      attendees {
+        attendee_id
+        attendee_join_type
+        attendee_type
+        name
+        phone_number
+        role
+      }
+    }
+  }
+`;
+export const listMeetingDetails = /* GraphQL */ `
+  query ListMeetingDetails(
+    $filter: TableMeetingDetailFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMeetingDetails(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        meeting_id
+        create_date_time
+        meeting_status
+        end_date_time
+      }
+      nextToken
+    }
+  }
+`;
+export const queryMeetingDetailsByMeetingStatusGsi = /* GraphQL */ `
+  query QueryMeetingDetailsByMeetingStatusGsi(
+    $meeting_status: String!
+    $first: Int
+    $after: String
+  ) {
+    queryMeetingDetailsByMeetingStatusGsi(
+      meeting_status: $meeting_status
+      first: $first
+      after: $after
+    ) {
+      items {
+        meeting_id
+        create_date_time
+        meeting_status
+        end_date_time
       }
       nextToken
     }

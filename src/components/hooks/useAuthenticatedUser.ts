@@ -13,14 +13,7 @@ const useAuthenticatedUser = () => {
     };
     f();
   }, []);
-  // if (user?.pool.userPoolId === config.aws_user_pools_id) {
-  //   return [user, "physician"] as [CognitoUser, string];
-  // }
-  // if (user?.pool.userPoolId === passwordless.userPoolId) {
-  //   return [user, "firstresponder"] as [CognitoUser, string];
-  // }
-
-  return [user, ""] as [CognitoUser, string];
+  return user as CognitoUser;
 };
 
 export default useAuthenticatedUser;

@@ -1,3 +1,4 @@
+/** mobile-friendly UI for selecting availability during the week */
 import { CircularProgress } from "@material-ui/core";
 import _ from "lodash";
 import React, { ReactElement, useEffect, useState } from "react";

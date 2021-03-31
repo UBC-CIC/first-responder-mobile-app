@@ -22,7 +22,7 @@ type AvailabilityPropsType = {
 }
 
 const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): ReactElement => {
-  const [user] = useAuthenticatedUser();
+  const user = useAuthenticatedUser();
   const [formattedAvailability, setFormattedAvailability] = useState<FullAvailabilityType | undefined>();
   const [formattedSchedule, setFormattedSchedule] = useState<FormattedTimeBlock[] | undefined>();
   const [fetchedAvailability, setFetchedAvailability] = useState<FullAvailabilityType | undefined>();

@@ -22,7 +22,6 @@ export const createFirstResponderProfile = /* GraphQL */ `
 export const createSpecialistProfile = /* GraphQL */ `
   mutation CreateSpecialistProfile($input: CreateSpecialistProfileInput!) {
     createSpecialistProfile(input: $input) {
-      availability
       created_date_time
       email
       first_name
@@ -53,7 +52,6 @@ export const deleteFirstResponderProfile = /* GraphQL */ `
 export const deleteSpecialistProfile = /* GraphQL */ `
   mutation DeleteSpecialistProfile($input: DeleteSpecialistProfileInput!) {
     deleteSpecialistProfile(input: $input) {
-      availability
       created_date_time
       email
       first_name
@@ -115,7 +113,6 @@ export const updateFirstResponderProfile = /* GraphQL */ `
 export const updateSpecialistProfile = /* GraphQL */ `
   mutation UpdateSpecialistProfile($input: UpdateSpecialistProfileInput!) {
     updateSpecialistProfile(input: $input) {
-      availability
       created_date_time
       email
       first_name
@@ -218,6 +215,60 @@ export const deleteAttendeeData = /* GraphQL */ `
       meetingID
       name
       role
+    }
+  }
+`;
+export const createMeetingDetail = /* GraphQL */ `
+  mutation CreateMeetingDetail($input: CreateMeetingDetailInput!) {
+    createMeetingDetail(input: $input) {
+      meeting_id
+      create_date_time
+      meeting_status
+      end_date_time
+      attendees {
+        attendee_id
+        attendee_join_type
+        attendee_type
+        name
+        phone_number
+        role
+      }
+    }
+  }
+`;
+export const updateMeetingDetail = /* GraphQL */ `
+  mutation UpdateMeetingDetail($input: UpdateMeetingDetailInput!) {
+    updateMeetingDetail(input: $input) {
+      meeting_id
+      create_date_time
+      meeting_status
+      end_date_time
+      attendees {
+        attendee_id
+        attendee_join_type
+        attendee_type
+        name
+        phone_number
+        role
+      }
+    }
+  }
+`;
+export const deleteMeetingDetail = /* GraphQL */ `
+  mutation DeleteMeetingDetail($input: DeleteMeetingDetailInput!) {
+    deleteMeetingDetail(input: $input) {
+      meeting_id
+      create_date_time
+      meeting_status
+      end_date_time
+      attendees {
+        attendee_id
+        attendee_join_type
+        attendee_type
+        name
+        phone_number
+        role
+      }
     }
   }
 `;

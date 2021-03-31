@@ -30,6 +30,7 @@ import SnackBarActions from "../ui/Alert";
 import RosterDisplay from "./RosterDisplay";
 import OfflineContext from "../context/OfflineContext";
 import "../../styles/Call.css";
+import fetchMeetingAttendees from "../calls/fetchMeetingAttendee";
 
 const MAX_LOSS = 5;
 
@@ -89,12 +90,24 @@ const OnlineCallOverData = (): ReactElement => {
     f();
     meetingManager.getAttendee = async (chimeAttendeeId) => {
       try {
-        const res = await fetchAttendee({ id: chimeAttendeeId });
+        if (!meetingManager.meetingId) {
+          return Promise.resolve({ name: "Attendee" });
+        }
+        const res = await fetchMeetingAttendees({ meeting_id: meetingManager.meetingId });
 
         if (res.errors) {
           console.error(res.errors);
+          return Promise.resolve({ name: "Attendee" });
         }
-        return Promise.resolve({ name: res.data?.getAttendeeData?.name });
+        const fetchedAttendees = res.data?.getMeetingDetail?.attendees;
+
+        if (!fetchedAttendees) { return Promise.resolve({ name: "Attendee" }); }
+
+        const match = fetchedAttendees.find((attendee) => attendee?.attendee_id === chimeAttendeeId);
+        console.log(match);
+
+        if (match?.name) return Promise.resolve({ name: match.name });
+        return Promise.resolve({ name: "Attendee" });
       } catch (e) {
         console.error("Failed to get attendee's name: ", e);
 
@@ -109,19 +122,24 @@ const OnlineCallOverData = (): ReactElement => {
   useEffect(() => {
     const f = async () => {
       /** Get attendees from DB in order to tell their role */
-      const newAtt = await listMeetingAttendees({
-        filter: {
-          meetingID: {
-            eq: meetingManager.meetingId,
-          },
-        },
+      if (!meetingManager.meetingId) return;
+      const newAtt = await fetchMeetingAttendees({
+        meeting_id: meetingManager.meetingId,
       });
 
-      if (newAtt.data?.listAttendeeData?.items) {
-        const items = newAtt.data.listAttendeeData?.items?.map(
-          (item) => ({
-            chimeAttendeeId: item?.id,
-            ...item,
+      // const newAtt = await listMeetingAttendees({
+      //   filter: {
+      //     meetingID: {
+      //       eq: meetingManager.meetingId,
+      //     },
+      //   },
+      // });
+
+      if (newAtt.data?.getMeetingDetail?.attendees) {
+        const items = newAtt.data.getMeetingDetail?.attendees?.map(
+          (attendee) => ({
+            chimeAttendeeId: attendee?.attendee_id,
+            ...attendee,
           } as AttendeeType),
         );
         setAttendees(items);
@@ -195,12 +213,15 @@ const OnlineCallOverData = (): ReactElement => {
         externalAttendeeId,
         phoneNumber,
       });
+      console.log(joinRes);
 
       const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
       const attendeeInfo = {
         ...joinRes.data?.joinChimeMeeting?.Attendee,
         name,
       } as AttendeeInfoType;
+
+      console.log(meetingInfo);
 
       await meetingManager.join({ meetingInfo, attendeeInfo })
         .then(() => {
@@ -303,8 +324,13 @@ const OnlineCallOverData = (): ReactElement => {
           </Button>
           <div style={{ overflow: "auto", flex: 1 }}>
             <RosterDisplay roster={roster} attendees={attendees} />
-            <span style={{ fontFamily: "Montserrat", textAlign: "center" }}><MicSelection /></span>
-            {/* <SpeakerSelection /> */}
+            <span style={{ fontFamily: "Montserrat", textAlign: "center" }}>
+              <MicSelection />
+            </span>
+
+            <span style={{ fontFamily: "Montserrat", textAlign: "center" }}>
+              <SpeakerSelection />
+            </span>
           </div>
         </div>
       ) : (
