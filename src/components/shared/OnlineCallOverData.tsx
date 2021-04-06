@@ -77,7 +77,6 @@ const OnlineCallOverData = (): ReactElement => {
 
   /** On mount */
   useEffect(() => {
-    console.log({ ...state, phone });
     const f = async () => {
       await handleCreateandJoinMeeting(
         state.meetingId,
@@ -104,7 +103,6 @@ const OnlineCallOverData = (): ReactElement => {
         if (!fetchedAttendees) { return Promise.resolve({ name: "Attendee" }); }
 
         const match = fetchedAttendees.find((attendee) => attendee?.attendee_id === chimeAttendeeId);
-        console.log(match);
 
         if (match?.name) return Promise.resolve({ name: match.name });
         return Promise.resolve({ name: "Attendee" });
@@ -159,7 +157,7 @@ const OnlineCallOverData = (): ReactElement => {
           .audioPacketsReceivedFractionLoss;
         setPacketLoss(loss);
       };
-      await meetingManager.start().catch((e) => console.log(e));
+      await meetingManager.start().catch((e) => console.error(e));
     };
 
     f();
@@ -202,10 +200,6 @@ const OnlineCallOverData = (): ReactElement => {
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
     try {
-      console.log({
-        title, name, role, externalAttendeeId, phoneNumber,
-      });
-
       const joinRes = await joinMeeting({
         title,
         name,
@@ -213,7 +207,6 @@ const OnlineCallOverData = (): ReactElement => {
         externalAttendeeId,
         phoneNumber,
       });
-      console.log(joinRes);
 
       const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
       const attendeeInfo = {
@@ -221,14 +214,12 @@ const OnlineCallOverData = (): ReactElement => {
         name,
       } as AttendeeInfoType;
 
-      console.log(meetingInfo);
-
       await meetingManager.join({ meetingInfo, attendeeInfo })
         .then(() => {
           if (joinRes.data) {
             console.log("success", joinRes);
           } else {
-            console.log(joinRes.errors);
+            console.error(joinRes.errors);
           }
         }).catch((e) => console.log(e));
     } catch (e) {

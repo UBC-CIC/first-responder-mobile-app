@@ -10,7 +10,7 @@ const fetchFirstResponderProfile = async (options: GetFirstResponderProfileQuery
     authMode: GRAPHQL_AUTH_MODE.API_KEY,
   })) as GraphQLResult<GetFirstResponderProfileQuery>;
   if (response.errors) {
-    console.log(response.errors);
+    console.error(response.errors);
   } else if (response.data?.getFirstResponderProfile) {
     const profile = response.data?.getFirstResponderProfile as FirstResponderProfileType;
     return profile;

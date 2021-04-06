@@ -30,7 +30,7 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
   const [phoneNumber, setPhoneNumber] = useState("");
   useEffect(() => () => {
     const f = async () => {
-      if (formattedAvailability) {
+      if (formattedAvailability && phoneNumber) {
         const res = await updateSpecialistAvailability({
           input: {
             availability: JSON.stringify(formattedAvailability),
@@ -53,7 +53,7 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
       if (!availability) return;
       setFetchedAvailability(availability);
     };
-    if (!fetchedAvailability) { f(); }
+    if (!fetchedAvailability && user) { f(); }
   }, [user]);
 
   useEffect(() => {

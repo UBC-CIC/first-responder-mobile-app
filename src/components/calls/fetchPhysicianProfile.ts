@@ -15,7 +15,7 @@ const fetchPhysicianProfile = async (
     authMode: GRAPHQL_AUTH_MODE.API_KEY,
   })) as GraphQLResult<GetSpecialistProfileQuery>;
   if (response.errors) {
-    console.log(response.errors);
+    console.error(response.errors);
   } else if (response.data?.getSpecialistProfile) {
     const profile = response.data?.getSpecialistProfile as SpecialistProfileType;
     return profile;

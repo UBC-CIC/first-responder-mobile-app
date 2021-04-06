@@ -6,11 +6,15 @@ import Amplify from "aws-amplify";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
+import { MeetingDetail } from "../../API";
 import bg from "../../assets/physician-home-bg.svg";
 import config from "../../aws-exports";
 import passwordless from "../../passwordless-aws-exports";
 import { MeetingType } from "../../types";
+import { getRelevantMeetings } from "../calls/getRelevantMeetings";
 import listAllMeetings from "../calls/listAllMeetings";
+import listAllMeetingDetails from "../calls/listMeetingDetails";
+import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
@@ -64,25 +68,28 @@ const useButtonClasses = makeStyles({
 
 const PhysicianMain = (): ReactElement => {
   const history = useHistory();
+  const user = useAuthenticatedUser();
   const classes = useStyles();
   const buttonClasses = useButtonClasses();
   const globalClasses = useGlobalStyles();
-  const [meetings, setMeetings] = useState<MeetingType[] | undefined | null>();
+  const [meetings, setMeetings] = useState<MeetingDetail[] | undefined | null>();
   const sessionId = useSessionId();
 
   useEffect(() => {
     const f = async () => {
-      const res = await listAllMeetings();
-      if (res.data) {
-        const meetingsFromDB = res.data.listMeetings?.items?.map((item) => {
-          const newItem: MeetingType = item as any;
-          return newItem;
-        });
-        setMeetings(meetingsFromDB);
-      }
+      const relevantMeetings = await getRelevantMeetings(user.attributes.phone_number);
+      if (relevantMeetings) { setMeetings(relevantMeetings); }
+
+      // if (res.data) {
+      //   const meetingsFromDB = res.data.listMeetings?.items?.map((item) => {
+      //     const newItem: MeetingType = item as any;
+      //     return newItem;
+      //   });
+      //   setMeetings(meetingsFromDB);
+      // }
     };
-    f();
-  }, []);
+    if (user) f();
+  }, [user]);
 
   return (
     <Layout

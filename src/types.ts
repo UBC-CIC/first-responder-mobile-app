@@ -102,3 +102,7 @@ export type FormattedTimeBlock = {
 export type AVAILABILITY_TYPE =
   "NOT_AVAILABLE" |
   "AVAILABLE"
+
+export interface SubscriptionValue<T> {
+  value: { data: T };
+}

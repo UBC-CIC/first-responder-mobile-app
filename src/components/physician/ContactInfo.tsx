@@ -69,12 +69,7 @@ const ContactInfo = (): ReactElement => {
         const u: CognitoUser = await Auth.currentAuthenticatedUser();
         const { email, phone_number } = u.attributes;
         setPhone(phone_number);
-        console.log(u.attributes);
-
-        console.log(phone_number);
-
         const profile = await fetchPhysicianProfile({ phone_number });
-        console.log(profile);
 
         if (profile) {
           setForm({ ...profile, phone_number });
@@ -82,7 +77,7 @@ const ContactInfo = (): ReactElement => {
           setForm({ ...form, phone_number });
         }
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     };
     f();
@@ -93,10 +88,8 @@ const ContactInfo = (): ReactElement => {
       ...graphqlOperation(createSpecialistProfile, { input: options }),
       authMode: GRAPHQL_AUTH_MODE.API_KEY,
     })) as GraphQLResult<CreateSpecialistProfileMutation>;
-    console.log(response);
-
     if (response.errors) {
-      console.log(response.errors);
+      console.error(response.errors);
       setFailure(true);
     } else {
       setSuccess(true);
@@ -109,12 +102,11 @@ const ContactInfo = (): ReactElement => {
         ...graphqlOperation(updateSpecialistProfile, { input: options }),
         authMode: GRAPHQL_AUTH_MODE.API_KEY,
       })) as GraphQLResult<UpdateSpecialistProfileMutation>;
-      console.log(response);
       if (response.data) {
         setSuccess(true);
       }
     } catch (response) {
-      console.log(response);
+      console.error(response);
       if (
         response.errors[0].errorType
         === "DynamoDB:ConditionalCheckFailedException"

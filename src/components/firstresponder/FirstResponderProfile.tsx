@@ -79,8 +79,7 @@ const FirstResponderProfile = (): ReactElement => {
           setForm({ ...form, phone_number });
         }
       } catch (e) {
-        console.log("e");
-        console.log(phone);
+        console.error(e);
 
         setForm({
           phone_number,
@@ -102,7 +101,7 @@ const FirstResponderProfile = (): ReactElement => {
       authMode: GRAPHQL_AUTH_MODE.API_KEY,
     })) as GraphQLResult<CreateFirstResponderProfileMutation>;
     if (response.errors) {
-      console.log(response.errors);
+      console.error(response.errors);
     }
   };
 
@@ -112,7 +111,6 @@ const FirstResponderProfile = (): ReactElement => {
         ...graphqlOperation(updateFirstResponderProfile, { input: options }),
         authMode: GRAPHQL_AUTH_MODE.API_KEY,
       })) as GraphQLResult<UpdateFirstResponderProfileMutation>;
-      console.log(response);
     } catch (response) {
       console.error(response);
 

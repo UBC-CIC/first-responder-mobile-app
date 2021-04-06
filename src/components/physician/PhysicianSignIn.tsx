@@ -82,20 +82,17 @@ const PhysicianSignIn = () => {
     const formattedNumber = `+${phoneNumber}`;
     const fetched = await fetchPhysicianProfile({ phone_number: formattedNumber });
     if (fetched) {
-      console.log(formattedNumber);
-
       try {
         setAuthState(AuthState.STARTED);
         await Auth.signUp({
           username: `${formattedNumber}`,
           password: Date.now().toString(),
         });
-        console.log("Await");
       } catch (e) {
       // Handle sign up error
-        console.log(e);
         if (e.code !== "UsernameExistsException") {
           setAuthState(AuthState.ERROR);
+          console.error(e);
         }
       }
       try {
@@ -115,7 +112,6 @@ const PhysicianSignIn = () => {
   const handleOTP = async () => {
     try {
       const cognitoUser = await Auth.sendCustomChallengeAnswer(user, password);
-      console.log(cognitoUser);
       if (cognitoUser.username) {
         localStorage.setItem("physicianphonenumber", cognitoUser.username);
       }

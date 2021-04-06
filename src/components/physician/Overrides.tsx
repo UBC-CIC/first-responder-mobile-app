@@ -203,7 +203,6 @@ const Overrides = ({
               id="startDatePicker"
               selected={currentDate}
               onChange={(date) => {
-                console.log(date);
                 setCurrentDate(date);
               }}
               placeholderText="Start Date"

@@ -320,17 +320,17 @@ export const onUpdateMeetingDetail = /* GraphQL */ `
       end_date_time: $end_date_time
     ) {
       meeting_id
-      create_date_time
-      meeting_status
-      end_date_time
-      attendees {
-        attendee_id
-        attendee_join_type
-        attendee_type
-        name
-        phone_number
-        role
-      }
+      # create_date_time
+      # meeting_status
+      # end_date_time
+      # attendees {
+      #   attendee_id
+      #   attendee_join_type
+      #   attendee_type
+      #   name
+      #   phone_number
+      #   role
+      # }
     }
   }
 `;

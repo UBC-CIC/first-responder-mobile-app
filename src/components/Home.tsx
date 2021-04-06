@@ -48,7 +48,6 @@ const Home = (): ReactElement => {
     const f = async () => {
       const currUser = await Auth.currentAuthenticatedUser();
       setUser(currUser);
-      console.log(currUser);
       if (currUser) history.replace("/main");
     };
     f();
