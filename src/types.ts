@@ -33,12 +33,14 @@ export type MeetingType = {
 
 export type MeetingStateType = {
   meetingId: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   role: string;
   attendeeId: string;
   parent: string;
   offline?: boolean;
   phoneNumber?: string;
+  organization?: string;
 };
 
 export type AlertsStateType= {
@@ -46,7 +48,7 @@ export type AlertsStateType= {
 }
 export type AttendeeInfoType = AttendeeInfo & {name: string};
 
-export type AttendeeType = RosterAttendeeType & { role: string };
+export type AttendeeType = RosterAttendeeType & { user_role: string };
 
 export type { CreateSpecialistProfileInput as SpecialistProfileType };
 

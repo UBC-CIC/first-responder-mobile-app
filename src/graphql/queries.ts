@@ -185,9 +185,11 @@ export const getMeetingDetail = /* GraphQL */ `
         attendee_id
         attendee_join_type
         attendee_type
-        name
+        first_name
+        last_name
         phone_number
-        role
+        user_role
+        organization
       }
     }
   }

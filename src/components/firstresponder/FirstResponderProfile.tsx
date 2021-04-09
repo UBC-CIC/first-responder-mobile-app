@@ -8,13 +8,13 @@ import React, {
   useEffect,
   useState,
 } from "react";
-
 import { Redirect } from "react-router";
 import {
   CreateFirstResponderProfileInput,
   CreateFirstResponderProfileMutation,
   UpdateFirstResponderProfileMutation,
 } from "../../API";
+import { FR_NAME } from "../../Constants";
 import {
   createFirstResponderProfile,
   updateFirstResponderProfile,
@@ -28,11 +28,6 @@ import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
 import Layout from "../ui/Layout";
 
-const headerStyle = {
-  color: Colors.theme.platinum,
-  fontFamily: "Signika Negative",
-};
-
 const useStyles = makeStyles({
   root: {
     display: "flex",
@@ -44,6 +39,10 @@ const useStyles = makeStyles({
   icon: {
     color: Colors.theme.platinum,
     marginRight: 10,
+  },
+  header: {
+    color: Colors.theme.platinum,
+    fontFamily: "Signika Negative",
   },
 });
 
@@ -157,9 +156,9 @@ const FirstResponderProfile = (): ReactElement => {
   );
 
   return (
-    <Layout title="First Responder Profile" parent="/main" flexColumn>
+    <Layout title={`${FR_NAME.full} Home`} parent="/main" flexColumn>
       <div className={classes.root}>
-        <h3 style={headerStyle}>
+        <h3 className={classes.header}>
           Your Phone Number:
           {" "}
           {form.phone_number}

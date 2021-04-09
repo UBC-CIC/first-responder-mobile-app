@@ -12,9 +12,10 @@ export const listMeetingDetails = /* GraphQL */ `
           attendee_id
           attendee_join_type
           attendee_type
-          name
+          first_name
+          last_name
           phone_number
-          role
+          user_role
         }
       }
       nextToken
@@ -36,9 +37,11 @@ export type ListMeetingDetailsQuery = {
       attendee_id: string,
       attendee_join_type?: string | null,
       attendee_type?: string | null,
-      name?: string | null,
+      first_name?: string | null,
+      last_name?: string | null,
       phone_number: string,
-      role?: string | null,
+      user_role?: string | null,
+      organization?: string | null,
     } | null > | null,
     } >,
     nextToken?: string | null,

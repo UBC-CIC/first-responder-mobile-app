@@ -9,6 +9,7 @@ import { v4 as uuid } from "uuid";
 import { MeetingDetail } from "../../API";
 import bg from "../../assets/physician-home-bg.svg";
 import config from "../../aws-exports";
+import { SPECIALIST_NAME } from "../../Constants";
 import passwordless from "../../passwordless-aws-exports";
 import { MeetingType } from "../../types";
 import { getRelevantMeetings } from "../calls/getRelevantMeetings";
@@ -93,7 +94,7 @@ const PhysicianMain = (): ReactElement => {
 
   return (
     <Layout
-      title="Physician Home"
+      title={`${SPECIALIST_NAME} Home`}
       flexColumn
       hideBackButton={!!localStorage.getItem("physicianphonenumber")}
       parent="/"

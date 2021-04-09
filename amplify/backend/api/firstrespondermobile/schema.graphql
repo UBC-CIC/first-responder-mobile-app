@@ -15,9 +15,11 @@ type AttendeeDetail {
   attendee_id: String!
   attendee_join_type: String
   attendee_type: String
-  name: String
+  first_name: String
+  last_name: String
   phone_number: String!
-  role: String
+  user_role: String
+  organization: String
 }
 
 type AttendeeInfo {
@@ -261,12 +263,15 @@ type Mutation {
   ): SpecialistProfile
   joinChimeMeeting(
     externalAttendeeId: String
-    name: String
+    firstName: String
+    lastName: String
     phoneNumber: String
     region: String
     role: String
     title: String
-  ): MeetingInfo
+    attendeeType: String
+    organization: String
+  ): MeetingInfo @function(name: "firstresponderjoinmeeting-${env}")
   updateFirstResponderProfile(
     input: UpdateFirstResponderProfileInput!
   ): FirstResponderProfile

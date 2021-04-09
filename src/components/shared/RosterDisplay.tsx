@@ -6,6 +6,7 @@ import {
 } from "amazon-chime-sdk-component-library-react";
 import { RosterType } from "amazon-chime-sdk-component-library-react/lib/types";
 import { ReactElement } from "react";
+import { FR_NAME } from "../../Constants";
 import { AttendeeType } from "../../types";
 
 const RosterDisplay = ({
@@ -18,12 +19,12 @@ const RosterDisplay = ({
   noMicIcon?: boolean;
 }): ReactElement => {
   const attendeeItems = attendees.map((attendee) => {
-    const { chimeAttendeeId, role } = attendee;
+    const { chimeAttendeeId, user_role } = attendee;
     if (!roster[chimeAttendeeId]) return;
-    if (noMicIcon && role === "First Responder") {
+    if (noMicIcon && user_role === FR_NAME.full) {
       return (
         <RosterAttendee
-          subtitle={role}
+          subtitle={user_role}
           key={chimeAttendeeId}
           attendeeId={chimeAttendeeId}
           microphone={<div />}
@@ -32,7 +33,7 @@ const RosterDisplay = ({
     }
     return (
       <RosterAttendee
-        subtitle={role}
+        subtitle={user_role}
         key={chimeAttendeeId}
         attendeeId={chimeAttendeeId}
       />

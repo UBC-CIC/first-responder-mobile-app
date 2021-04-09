@@ -1,19 +1,25 @@
 export const joinChimeMeeting = /* GraphQL */ `
   mutation JoinChimeMeeting(
     $externalAttendeeId: String
-    $name: String
+    $firstName: String
+    $lastName: String
     $phoneNumber: String
     $region: String
     $role: String
     $title: String
+    $attendeeType: String
+    $organization: String
   ) {
     joinChimeMeeting(
       externalAttendeeId: $externalAttendeeId
-      name: $name
+      firstName: $firstName
+      lastName: $lastName
       phoneNumber: $phoneNumber
       region: $region
       role: $role
       title: $title
+      attendeeType: $attendeeType
+      organization: $organization
     ) {
       Meeting {
       MediaPlacement {

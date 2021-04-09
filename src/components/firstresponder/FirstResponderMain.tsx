@@ -10,7 +10,9 @@ import React, {
   ReactElement, useContext, useEffect, useState,
 } from "react";
 import { useHistory } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 import bg from "../../assets/first-responder-home-bg.svg";
+import { FR_NAME } from "../../Constants";
 import "../../styles/firstresponder/Home.css";
 import { FirstResponderProfileType, MeetingStateType } from "../../types";
 import { fetchFirstResponderProfile } from "../calls";
@@ -21,12 +23,6 @@ import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
 
-// Amplify.configure({
-//   ...config,
-//   Auth: {
-//     ...passwordless,
-//   },
-// });
 const useStyles = makeStyles({
   icon: {
     marginRight: 10,
@@ -48,6 +44,9 @@ const useStyles = makeStyles({
     backgroundColor: Colors.theme.error,
     color: Colors.theme.platinum,
   },
+  buttonContainer: { flex: 0, justifyContent: "space-between" },
+  backdrop: { height: "100%", pointerEvents: "none" },
+  center: { textAlign: "center" },
 });
 
 const FirstResponderMain = (): ReactElement => {
@@ -73,9 +72,9 @@ const FirstResponderMain = (): ReactElement => {
         } catch (e) {
           setProfile({
             phone_number: phone,
-            first_name: "First",
-            last_name: "Responder",
-            occupation: "First Responder",
+            first_name: FR_NAME.first,
+            last_name: FR_NAME.last,
+            occupation: FR_NAME.full,
           });
         }
       }
@@ -85,21 +84,29 @@ const FirstResponderMain = (): ReactElement => {
     if (phone) {
       setProfile({
         phone_number: phone,
-        first_name: "First",
-        last_name: "Responder",
-        occupation: "First Responder",
+        first_name: FR_NAME.first,
+        last_name: FR_NAME.last,
+        occupation: FR_NAME.full,
       });
     }
   }, []);
 
-  const getName = () => {
-    if (profile?.first_name && profile.last_name) {
-      return `${profile.first_name} ${profile.last_name}`;
+  useEffect(() => {
+    console.log("geolocation");
+
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position: any) => {
+          console.log(position);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    } else {
+      console.log("geolocation disabled");
     }
-    if (profile?.first_name) return profile.first_name;
-    if (profile?.last_name) return profile.last_name;
-    return "First Responder";
-  };
+  });
 
   const handleSignOut = () => {
     Auth.signOut().then(() => {
@@ -111,7 +118,7 @@ const FirstResponderMain = (): ReactElement => {
   return (
     <Layout
       hideBackButton={!!localStorage.getItem("firstresponderphonenumber")}
-      title="First Responder Home"
+      title={`${FR_NAME.full} Home`}
       parent="/"
       flexColumn
       style={{
@@ -121,17 +128,17 @@ const FirstResponderMain = (): ReactElement => {
     >
       <div className="firstresponder-root">
         <div
-          className="ffc"
-          style={{ flex: 0, justifyContent: "space-between" }}
+          className={`ffc ${classes.buttonContainer}`}
         >
           <Fab
             variant="extended"
             className={`${globalClasses.button} ${globalClasses.coral}`}
             onClick={() => {
               history.push("/call", {
-                meetingId: phone,
-                name: getName(),
-                role: profile?.occupation || "First Responder",
+                meetingId: uuid(),
+                firstName: profile?.first_name || FR_NAME.first,
+                lastName: profile?.last_name || FR_NAME.last,
+                role: profile?.occupation || FR_NAME.full,
                 attendeeId: sessionId,
                 parent: "/main",
                 phoneNumber: profile?.phone_number,
@@ -181,11 +188,10 @@ const FirstResponderMain = (): ReactElement => {
         >
           <Fade in={modalOpen}>
             <div
-              style={{ height: "100%", pointerEvents: "none" }}
-              className="ffc justify align"
+              className={`ffc justify align ${classes.backdrop}`}
             >
               <Paper className={classes.paper}>
-                <p style={{ textAlign: "center" }}>
+                <p className={classes.center}>
                   Are you sure you would like to log out? You
                   {" "}
                   <strong> cannot </strong>
@@ -193,7 +199,7 @@ const FirstResponderMain = (): ReactElement => {
                   log back in without internet
                   connection.
                 </p>
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div className="flex column">
                   <Fab
                     variant="extended"
                     className={`${globalClasses.button} ${classes.warning}`}

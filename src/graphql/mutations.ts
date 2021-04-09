@@ -70,19 +70,25 @@ export const deleteSpecialistProfile = /* GraphQL */ `
 export const joinChimeMeeting = /* GraphQL */ `
   mutation JoinChimeMeeting(
     $externalAttendeeId: String
-    $name: String
+    $firstName: String
+    $lastName: String
     $phoneNumber: String
     $region: String
     $role: String
     $title: String
+    $attendeeType: String
+    $organization: String
   ) {
     joinChimeMeeting(
       externalAttendeeId: $externalAttendeeId
-      name: $name
+      firstName: $firstName
+      lastName: $lastName
       phoneNumber: $phoneNumber
       region: $region
       role: $role
       title: $title
+      attendeeType: $attendeeType
+      organization: $organization
     ) {
       Attendee {
         AttendeeId
@@ -229,9 +235,11 @@ export const createMeetingDetail = /* GraphQL */ `
         attendee_id
         attendee_join_type
         attendee_type
-        name
+        first_name
+        last_name
         phone_number
-        role
+        user_role
+        organization
       }
     }
   }
@@ -247,9 +255,11 @@ export const updateMeetingDetail = /* GraphQL */ `
         attendee_id
         attendee_join_type
         attendee_type
-        name
+        first_name
+        last_name
         phone_number
-        role
+        user_role
+        organization
       }
     }
   }
@@ -265,9 +275,11 @@ export const deleteMeetingDetail = /* GraphQL */ `
         attendee_id
         attendee_join_type
         attendee_type
-        name
+        first_name
+        last_name
         phone_number
-        role
+        user_role
+        organization
       }
     }
   }

@@ -41,12 +41,11 @@ const useStyles = makeStyles({
   errorText: {
     color: Colors.theme.error,
   },
+  header: {
+    color: Colors.theme.platinum,
+    fontFamily: "Signika Negative",
+  },
 });
-
-const headerStyle = {
-  color: Colors.theme.platinum,
-  fontFamily: "Signika Negative",
-};
 
 const DarkTextField = withStyles({
   root: {
@@ -129,7 +128,7 @@ const PhysicianSignIn = () => {
     case AuthState.ERROR:
       return "There was an error signing up: please check internet connection and try again";
     case AuthState.NOT_AUTHENTICATED:
-      return "There was an error signing up: you are not registered as a certified physician";
+      return "There was an error signing up: you are not registered as a certified specialist";
     case AuthState.INCORRECT:
       return "Incorrect One Time Password";
     default:
@@ -139,7 +138,7 @@ const PhysicianSignIn = () => {
 
   const signInForm = (
     <div className="container">
-      <h3 style={headerStyle}>Sign in with Phone Number</h3>
+      <h3 className={classes.header}>Sign in with Phone Number</h3>
       <PhoneInput
         country="ca"
         preferredCountries={["ca", "us"]}
@@ -167,7 +166,7 @@ const PhysicianSignIn = () => {
 
   const OTPForm = (
     <div className="container">
-      <h3 style={headerStyle}>Enter One Time Password</h3>
+      <h3 className={classes.header}>Enter One Time Password</h3>
       <DarkTextField
         label="One Time Password"
         type="number"

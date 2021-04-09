@@ -20,6 +20,28 @@ function uuid() {
   });
 }
 
+const doesAttendeeExistInMeeting = async (meetingId, attendeeId) => {
+  const result = await ddb
+    .getItem({
+      TableName: "meeting-detail",
+      Key: {
+        meeting_id: {
+          S: meetingId,
+        },
+      },
+    })
+    .promise();
+  if (!result.Item) return false;
+  if (!result.Item.attendees) return false;
+  const attendees = AWS.DynamoDB.Converter.output(result.Item.attendees);
+  console.log(attendees);
+  const match = attendees.find(
+    (attendee) => attendee.attendee_id === attendeeId
+  );
+  if (match) return true;
+  return false;
+};
+
 const getMeeting = async (meetingId) => {
   const result = await ddb
     .getItem({
@@ -50,18 +72,37 @@ const getMeeting = async (meetingId) => {
   return meetingData;
 };
 
-const appendAttendeeList = async (meetingInfo, phoneNumber, attendeeId) => {
+const appendAttendeeList = async (
+  meetingInfo,
+  phoneNumber,
+  attendeeId,
+  attendeeType,
+  firstName,
+  lastName,
+  role,
+  organization
+) => {
   const { Meeting } = meetingInfo;
+  const alreadyExists = await doesAttendeeExistInMeeting(
+    Meeting.MeetingId,
+    attendeeId
+  );
+  if (alreadyExists) return;
+  if (!organization) organization = "";
   const attendee = {
     M: {
       attendee_id: { S: attendeeId },
       phone_number: { S: phoneNumber },
-      attendee_type: { S: "NOT_SPECIFIED" },
+      attendee_type: { S: attendeeType },
       attendee_join_type: { S: "DATA" },
+      first_name: { S: firstName },
+      last_name: { S: lastName },
+      user_role: { S: role },
+      organization: { S: organization },
     },
   };
 
-  await ddb
+  let p1 = ddb
     .updateItem({
       TableName: "meeting-detail",
       Key: { meeting_id: { S: Meeting.MeetingId } },
@@ -77,6 +118,40 @@ const appendAttendeeList = async (meetingInfo, phoneNumber, attendeeId) => {
       },
     })
     .promise();
+
+  let p2 = ddb
+    .updateItem({
+      TableName: "meeting-detail",
+      Key: { meeting_id: { S: Meeting.MeetingId } },
+      ReturnValues: "ALL_NEW",
+      UpdateExpression:
+        "set #create_date_time = if_not_exists(#create_date_time, :now)",
+      ExpressionAttributeNames: {
+        "#create_date_time": "create_date_time",
+      },
+      ExpressionAttributeValues: {
+        ":now": { S: new Date(Date.now()).toISOString() },
+      },
+    })
+    .promise();
+
+  let p3 = ddb
+    .updateItem({
+      TableName: "meeting-detail",
+      Key: { meeting_id: { S: Meeting.MeetingId } },
+      ReturnValues: "ALL_NEW",
+      UpdateExpression:
+        "set #meeting_status = if_not_exists(#meeting_status, :active)",
+      ExpressionAttributeNames: {
+        "#meeting_status": "meeting_status",
+      },
+      ExpressionAttributeValues: {
+        ":active": { S: "ACTIVE" },
+      },
+    })
+    .promise();
+
+  await Promise.all([p1, p2, p3]);
 };
 
 const putMeeting = async (title, meetingInfo, phoneNumber, attendeeId) => {
@@ -86,7 +161,7 @@ const putMeeting = async (title, meetingInfo, phoneNumber, attendeeId) => {
     .putItem({
       TableName: meetingsTableName,
       Item: {
-        id: { S: title },
+        id: { S: Meeting.MeetingId },
         MeetingId: { S: Meeting.MeetingId },
         ExternalMeetingId: { S: title },
         MediaRegion: { S: Meeting.MediaRegion },
@@ -145,11 +220,14 @@ const putAttendee = async (title, attendeeId, name, meetingID, role) => {
 exports.handler = async (event, context, callback) => {
   const {
     title,
-    name,
+    firstName,
+    lastName,
     role,
     externalAttendeeId,
     region = "ca-central-1",
     phoneNumber,
+    attendeeType,
+    organization = "",
   } = event.arguments;
 
   console.log("Unique Meeting ID: ", title);
@@ -172,6 +250,8 @@ exports.handler = async (event, context, callback) => {
     })
     .promise();
 
+  const name = firstName + " " + lastName;
+
   await putAttendee(
     title,
     attendeeInfo.Attendee.AttendeeId,
@@ -182,7 +262,12 @@ exports.handler = async (event, context, callback) => {
   await appendAttendeeList(
     meetingInfo,
     phoneNumber,
-    attendeeInfo.Attendee.AttendeeId
+    attendeeInfo.Attendee.AttendeeId,
+    attendeeType,
+    firstName,
+    lastName,
+    role,
+    organization
   );
 
   const joinInfo = {

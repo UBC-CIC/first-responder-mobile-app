@@ -1,18 +1,17 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { Button, makeStyles } from "@material-ui/core";
-import Amplify, { Auth } from "aws-amplify";
+import Amplify, { Auth, button } from "aws-amplify";
 import { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import config from "../aws-exports";
+import { FR_NAME, SPECIALIST_NAME } from "../Constants";
 import passwordless from "../passwordless-aws-exports";
 import "../styles/Home.css";
 import { CognitoUser } from "../types";
+import Colors from "./styling/Colors";
 import { useGlobalStyles } from "./styling/GlobalMuiStyles";
 import Layout from "./ui/Layout";
-
-const useStyles = makeStyles({
-  button: {
-  },
-});
 
 const useButtonClasses = makeStyles({
   root: {
@@ -28,6 +27,10 @@ const useButtonClasses = makeStyles({
     fontWeight: "bold",
     color: "#fff",
   },
+  smallText: {
+    color: Colors.theme.platinum,
+    textDecoration: "underline",
+  },
 });
 
 Amplify.configure({
@@ -39,7 +42,6 @@ Amplify.configure({
 
 const Home = (): ReactElement => {
   const history = useHistory();
-  const classes = useStyles();
   const buttonClasses = useButtonClasses();
   const globalClasses = useGlobalStyles();
   const [user, setUser] = useState<CognitoUser | undefined>();
@@ -52,6 +54,7 @@ const Home = (): ReactElement => {
     };
     f();
   });
+
   if (
     localStorage.getItem("firstresponderphonenumber")
     || localStorage.getItem("physicianphonenumber")
@@ -70,13 +73,11 @@ const Home = (): ReactElement => {
             <Button
               classes={{ root: buttonClasses.root, label: buttonClasses.label }}
               onClick={() => {
-                Amplify.Auth.configure(
-                  { ...passwordless },
-                );
+                Amplify.Auth.configure({ ...passwordless });
                 history.push("/firstresponderLogin");
               }}
             >
-              first responder
+              {FR_NAME.full}
             </Button>
             <Button
               classes={{ root: buttonClasses.root, label: buttonClasses.label }}
@@ -85,8 +86,14 @@ const Home = (): ReactElement => {
                 history.push("/physicianLogin");
               }}
             >
-              Medical Professional
+              {SPECIALIST_NAME}
             </Button>
+            <p
+              className={buttonClasses.smallText}
+              onClick={() => history.push("/badInternet")}
+            >
+              Weak Internet Connection?
+            </p>
           </div>
         </div>
       </div>

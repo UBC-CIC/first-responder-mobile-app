@@ -26,6 +26,7 @@ import Overrides from "./physician/Overrides";
 import PhysicianLogin from "./physician/PhysicianLogin";
 import PhysicianMain from "./physician/PhysicianMain";
 import PhysicianProfile from "./physician/PhysicianProfile";
+import BadConnection from "./shared/BadConnection";
 import Call from "./shared/Call";
 import Colors from "./styling/Colors";
 import SnackBarActions from "./ui/Alert";
@@ -69,6 +70,10 @@ const Router = (): ReactElement => (
         <MeetingProvider>
           <Call />
         </MeetingProvider>
+      </Route>
+
+      <Route exact path="/badInternet">
+        <BadConnection />
       </Route>
 
       {/* Not Found */}

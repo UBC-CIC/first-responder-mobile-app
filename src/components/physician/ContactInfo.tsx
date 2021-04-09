@@ -38,12 +38,12 @@ const useStyles = makeStyles({
     backgroundColor: Colors.theme.error,
     color: Colors.theme.platinum,
   },
+  header: {
+    color: Colors.theme.platinum,
+    fontFamily: "Signika Negative",
+    textAlign: "center",
+  },
 });
-const headerStyle:CSSProperties = {
-  color: Colors.theme.platinum,
-  fontFamily: "Signika Negative",
-  textAlign: "center",
-};
 
 const ContactInfo = (): ReactElement => {
   const [phone, setPhone] = useState("");
@@ -183,7 +183,7 @@ const ContactInfo = (): ReactElement => {
         }}
       >
         <div className="ffc align">
-          <h3 style={headerStyle}>
+          <h3 className={classes.header}>
             Phone Number:
             {" "}
             {form.phone_number}

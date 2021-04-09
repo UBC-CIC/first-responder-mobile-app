@@ -7,9 +7,10 @@ export const getMeetingAttendees = /* GraphQL */ `
       attendees {
           attendee_id
           attendee_type
-          name
+          first_name
+          last_name
           phone_number
-          role
+          user_role
       }
     }
   }

@@ -1,33 +1,24 @@
-import { Button, makeStyles } from "@material-ui/core";
-import { Auth, API, graphqlOperation } from "aws-amplify";
+import { Button, Fab, makeStyles } from "@material-ui/core";
+import { Sync } from "@material-ui/icons";
+import { API, graphqlOperation } from "aws-amplify";
 import { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { v4 as uuid } from "uuid";
 import { MeetingDetail, OnCreateMeetingDetailSubscription, OnUpdateMeetingDetailSubscription } from "../../API";
+import { SPECIALIST_NAME } from "../../Constants";
 import { onCreateMeetingDetail, onUpdateMeetingDetail } from "../../graphql/subscriptions";
 import {
-  CognitoUser,
   MeetingStateType,
-  MeetingType,
   SpecialistProfileType,
   SubscriptionValue,
 } from "../../types";
 import getProfile from "../calls/fetchPhysicianProfile";
 import { getRelevantMeetings } from "../calls/getRelevantMeetings";
-import listAllMeetings from "../calls/listAllMeetings";
-import { relevantMeetingSubscription } from "../calls/relevantMeetingSubscription";
-import { subscribeGraphQL } from "../calls/subscribeGraphQL";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
 
-const useStyles = makeStyles({
-  button: {
-    margin: 10,
-  },
-});
 const useButtonClasses = makeStyles({
   root: {
     width: "100%",
@@ -42,32 +33,14 @@ const useButtonClasses = makeStyles({
     fontWeight: "bold",
     color: "#fff",
   },
+  platinum: { color: Colors.theme.platinum },
 });
-
-function mapOnUpdateMeetingDetailSubscription(
-  updateMeetingDetailSubscription: OnUpdateMeetingDetailSubscription,
-): MeetingDetail {
-  const { meeting_id } = updateMeetingDetailSubscription.onUpdateMeetingDetail || {};
-  return {
-    meeting_id,
-  } as MeetingDetail;
-}
-
-function mapOnCreateMeetingDetailSubscription(
-  updateMeetingDetailSubscription: OnCreateMeetingDetailSubscription,
-): MeetingDetail {
-  const { meeting_id } = updateMeetingDetailSubscription.onCreateMeetingDetail || {};
-  return {
-    meeting_id,
-  } as MeetingDetail;
-}
 
 const Alerts = (): ReactElement => {
   const [meetings, setMeetings] = useState<MeetingDetail[] | undefined>([]);
   const user = useAuthenticatedUser();
   const history = useHistory<MeetingStateType>();
   const globalClasses = useGlobalStyles();
-  const classes = useStyles();
   const buttonClasses = useButtonClasses();
   const phoneNumber = localStorage.getItem("physicianphonenumber");
   const sessionId = useSessionId();
@@ -76,6 +49,7 @@ const Alerts = (): ReactElement => {
     if (!phoneNumber) return;
     const relevantMeetings = await getRelevantMeetings(phoneNumber);
     setMeetings(relevantMeetings);
+    console.log(relevantMeetings);
   };
   useEffect(() => {
     const f = async () => {
@@ -84,6 +58,7 @@ const Alerts = (): ReactElement => {
       });
       setProfile(fetchedProfile);
     };
+    console.log(user);
 
     if (user) {
       f();
@@ -102,20 +77,13 @@ const Alerts = (): ReactElement => {
         response: SubscriptionValue<OnUpdateMeetingDetailSubscription>,
       ) => {
         console.log(response);
-        console.log(user);
 
         getRelevant();
-
-        // const meetingDetail = mapOnUpdateMeetingDetailSubscription(
-        //   response.value.data,
-        // );
-        // console.log(meetingDetail);
-        // setTodos([...todos, todo]);
       },
     });
 
     return () => {
-      // subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
 
@@ -131,12 +99,6 @@ const Alerts = (): ReactElement => {
         console.log(user);
 
         getRelevant();
-
-        // const meetingDetail = mapOnCreateMeetingDetailSubscription(
-        //   response.value.data,
-        // );
-        // console.log(meetingDetail);
-        // setTodos([...todos, todo]);
       },
       error: (error:any) => console.warn(error),
     });
@@ -150,13 +112,13 @@ const Alerts = (): ReactElement => {
     if (id) {
       history.push("/call", {
         meetingId: id,
-        name: profile
-          ? `${profile.first_name} ${profile.last_name}`
-          : "Professional",
-        role: profile?.user_role || "Professional",
+        firstName: profile?.first_name || SPECIALIST_NAME,
+        lastName: profile?.last_name || "",
+        role: profile?.user_role || SPECIALIST_NAME,
         attendeeId: sessionId,
         parent: "/main/alerts",
         phoneNumber: profile?.phone_number,
+        organization: profile?.organization,
       } as MeetingStateType);
     }
   };
@@ -179,7 +141,7 @@ const Alerts = (): ReactElement => {
       ));
     }
     return (
-      <p style={{ color: Colors.theme.platinum }}>
+      <p className={buttonClasses.platinum}>
         You have no alerts at this time
       </p>
     );
@@ -188,6 +150,16 @@ const Alerts = (): ReactElement => {
   return (
     <Layout title="Alerts" flexColumn parent="/main">
       <div className="ffc align">{renderMeetings()}</div>
+      <div className="flex justify">
+        <Fab
+          variant="round"
+          onClick={() => getRelevant()}
+          className={`${globalClasses.button} ${globalClasses.coral}`}
+        >
+          <Sync />
+        </Fab>
+
+      </div>
     </Layout>
   );
 };

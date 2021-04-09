@@ -1,4 +1,6 @@
-import { Button, makeStyles, Snackbar } from "@material-ui/core";
+import {
+  Button, makeStyles, Snackbar, IconButton, Drawer,
+} from "@material-ui/core";
 import {
   MicSelection,
   SpeakerSelection,
@@ -16,6 +18,7 @@ import { useHistory } from "react-router-dom";
 import "../../styles/VideoCall.css";
 import CloseIcon from "@material-ui/icons/Close";
 import PhoneIcon from "@material-ui/icons/Phone";
+import { Publish } from "@material-ui/icons";
 import {
   AttendeeInfoType,
   AttendeeType,
@@ -31,6 +34,7 @@ import RosterDisplay from "./RosterDisplay";
 import OfflineContext from "../context/OfflineContext";
 import "../../styles/Call.css";
 import fetchMeetingAttendees from "../calls/fetchMeetingAttendee";
+import Chat from "./Chat";
 
 const MAX_LOSS = 5;
 
@@ -51,6 +55,14 @@ const useStyles = makeStyles({
   scrollContainer: {
     overflowY: "auto",
   },
+  callContainer: {
+    color: "white",
+    paddingTop: "10px",
+    paddingBottom: "10px",
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  selectText: { fontFamily: "Montserrat", textAlign: "center" },
 });
 
 const OnlineCallOverData = (): ReactElement => {
@@ -74,16 +86,23 @@ const OnlineCallOverData = (): ReactElement => {
   const [packetLoss, setPacketLoss] = useState(0);
   const [lossCount, setLossCount] = useState(0);
   const [inMeeting, setInMeeting] = useState(false);
+  const attendeeType = localStorage.getItem("firstresponderphonenumber")
+    ? "FIRST_RESPONDER"
+    : "SPECIALIST";
+  const [drawerShown, setDrawerShown] = useState(false);
 
   /** On mount */
   useEffect(() => {
     const f = async () => {
       await handleCreateandJoinMeeting(
         state.meetingId,
-        state.name,
+        state.firstName,
+        state.lastName,
         state.role,
         state.attendeeId,
         phone as string,
+        attendeeType,
+        state.organization,
       );
     };
     f();
@@ -93,6 +112,7 @@ const OnlineCallOverData = (): ReactElement => {
           return Promise.resolve({ name: "Attendee" });
         }
         const res = await fetchMeetingAttendees({ meeting_id: meetingManager.meetingId });
+        console.log(res);
 
         if (res.errors) {
           console.error(res.errors);
@@ -103,13 +123,16 @@ const OnlineCallOverData = (): ReactElement => {
         if (!fetchedAttendees) { return Promise.resolve({ name: "Attendee" }); }
 
         const match = fetchedAttendees.find((attendee) => attendee?.attendee_id === chimeAttendeeId);
-
-        if (match?.name) return Promise.resolve({ name: match.name });
+        if (!match) return Promise.resolve({ name: "Attendee" });
+        if (match.first_name) {
+          const fullName = `${match.first_name} ${match.last_name}`;
+          if (match) return Promise.resolve({ name: fullName });
+        }
         return Promise.resolve({ name: "Attendee" });
       } catch (e) {
         console.error("Failed to get attendee's name: ", e);
 
-        return {};
+        return Promise.resolve({ name: "Attendee" });
       }
     };
 
@@ -125,13 +148,7 @@ const OnlineCallOverData = (): ReactElement => {
         meeting_id: meetingManager.meetingId,
       });
 
-      // const newAtt = await listMeetingAttendees({
-      //   filter: {
-      //     meetingID: {
-      //       eq: meetingManager.meetingId,
-      //     },
-      //   },
-      // });
+      console.log(newAtt);
 
       if (newAtt.data?.getMeetingDetail?.attendees) {
         const items = newAtt.data.getMeetingDetail?.attendees?.map(
@@ -192,36 +209,46 @@ const OnlineCallOverData = (): ReactElement => {
   };
 
   const handleCreateandJoinMeeting = async (
-    title: string,
-    name: string,
+    meetingId: string,
+    firstName: string,
+    lastName: string,
     role: string,
     externalAttendeeId: string,
     phoneNumber: string,
+    type: string,
+    organization?: string,
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
     try {
       const joinRes = await joinMeeting({
-        title,
-        name,
+        title: meetingId,
+        firstName,
+        lastName,
         role,
         externalAttendeeId,
         phoneNumber,
+        attendeeType: type,
+        organization,
       });
+
+      const fullName = `${firstName} ${lastName}`;
 
       const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
       const attendeeInfo = {
         ...joinRes.data?.joinChimeMeeting?.Attendee,
-        name,
+        name: fullName,
       } as AttendeeInfoType;
 
-      await meetingManager.join({ meetingInfo, attendeeInfo })
+      await meetingManager
+        .join({ meetingInfo, attendeeInfo })
         .then(() => {
           if (joinRes.data) {
             console.log("success", joinRes);
           } else {
             console.error(joinRes.errors);
           }
-        }).catch((e) => console.log(e));
+        })
+        .catch((e) => console.log(e));
     } catch (e) {
       setSuggestionShown(true);
       console.error(e);
@@ -286,10 +313,12 @@ const OnlineCallOverData = (): ReactElement => {
       parent={state.parent}
       onChangeToOffline={() => handleChangeToOffline()}
     >
-      <div style={{ color: "white" }}>
-        Connection State:
-        {" "}
-        {ConnectionState[connectionState]}
+      <div className={classes.callContainer}>
+        <div>
+          Connection State:
+          {" "}
+          {ConnectionState[connectionState]}
+        </div>
       </div>
       {!suggestionShown ? (
         <div className="video-container">
@@ -315,11 +344,11 @@ const OnlineCallOverData = (): ReactElement => {
           </Button>
           <div style={{ overflow: "auto", flex: 1 }}>
             <RosterDisplay roster={roster} attendees={attendees} />
-            <span style={{ fontFamily: "Montserrat", textAlign: "center" }}>
+            <span className={classes.selectText}>
               <MicSelection />
             </span>
 
-            <span style={{ fontFamily: "Montserrat", textAlign: "center" }}>
+            <span className={classes.selectText}>
               <SpeakerSelection />
             </span>
           </div>
@@ -356,6 +385,15 @@ const OnlineCallOverData = (): ReactElement => {
         )}
         message="Current connection cannot support video."
       />
+      {/* <Drawer
+        variant="persistent"
+        open={drawerShown}
+        onClose={() => setDrawerShown(false)}
+      >
+        <div style={{ minWidth: "200px" }}>
+          <Chat />
+        </div>
+      </Drawer> */}
     </Layout>
   );
 };

@@ -36,12 +36,11 @@ const useStyles = makeStyles({
     },
     marginTop: 20,
   },
+  header: {
+    color: Colors.theme.platinum,
+    fontFamily: "Signika Negative",
+  },
 });
-
-const headerStyle = {
-  color: Colors.theme.platinum,
-  fontFamily: "Signika Negative",
-};
 
 const DarkTextField = withStyles({
   root: {
@@ -120,7 +119,7 @@ const SignIn = () => {
 
   const signInForm = (
     <div className="container">
-      <h3 style={headerStyle}>Sign in with Phone Number</h3>
+      <h3 className={classes.header}>Sign in with Phone Number</h3>
       <PhoneInput
         country="ca"
         preferredCountries={["ca", "us"]}
@@ -143,7 +142,7 @@ const SignIn = () => {
 
   const OTPForm = (
     <div className="container">
-      <h3 style={headerStyle}>Enter One Time Password</h3>
+      <h3 className={classes.header}>Enter One Time Password</h3>
       <DarkTextField
         label="One Time Password"
         required

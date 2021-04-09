@@ -198,7 +198,7 @@ const Overrides = ({
         <div className="ffc justify" />
         <div style={{ width: "60%", flex: 0.5 }} className="flex column align">
           <div style={{ display: "grid" }} />
-          <div className="flex" style={{}}>
+          <div className="flex">
             <DatePicker
               id="startDatePicker"
               selected={currentDate}

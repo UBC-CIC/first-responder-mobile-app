@@ -299,9 +299,11 @@ export const onCreateMeetingDetail = /* GraphQL */ `
         attendee_id
         attendee_join_type
         attendee_type
-        name
+        first_name
+        last_name
         phone_number
-        role
+        user_role
+        organization
       }
     }
   }
@@ -320,17 +322,19 @@ export const onUpdateMeetingDetail = /* GraphQL */ `
       end_date_time: $end_date_time
     ) {
       meeting_id
-      # create_date_time
-      # meeting_status
-      # end_date_time
-      # attendees {
-      #   attendee_id
-      #   attendee_join_type
-      #   attendee_type
-      #   name
-      #   phone_number
-      #   role
-      # }
+      create_date_time
+      meeting_status
+      end_date_time
+      attendees {
+        attendee_id
+        attendee_join_type
+        attendee_type
+        first_name
+        last_name
+        phone_number
+        user_role
+        organization
+      }
     }
   }
 `;
@@ -355,9 +359,11 @@ export const onDeleteMeetingDetail = /* GraphQL */ `
         attendee_id
         attendee_join_type
         attendee_type
-        name
+        first_name
+        last_name
         phone_number
-        role
+        user_role
+        organization
       }
     }
   }
