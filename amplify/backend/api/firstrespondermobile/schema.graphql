@@ -142,7 +142,8 @@ type MeetingDetail {
   create_date_time: String
   meeting_status: String
   end_date_time: String
-  attendees: [AttendeeDetail]
+  external_meeting_id: String
+  attendees: [AttendeeDetail!]
 }
 
 type MeetingDetailConnection {
@@ -248,7 +249,6 @@ input ModelStringInput {
 }
 
 type Mutation {
-  confirmPhoneNumber(phoneNumber: String, secretCode: String): String
   createFirstResponderProfile(
     input: CreateFirstResponderProfileInput!
   ): FirstResponderProfile
@@ -287,6 +287,7 @@ type Mutation {
   createMeetingDetail(input: CreateMeetingDetailInput!): MeetingDetail
   updateMeetingDetail(input: UpdateMeetingDetailInput!): MeetingDetail
   deleteMeetingDetail(input: DeleteMeetingDetailInput!): MeetingDetail
+  generateMeetingId: String @function(name: "firstrespondergeneratesessionid-${env}")
 }
 
 type Override {

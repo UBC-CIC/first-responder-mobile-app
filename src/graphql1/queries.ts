@@ -181,7 +181,6 @@ export const getMeetingDetail = /* GraphQL */ `
       create_date_time
       meeting_status
       end_date_time
-      external_meeting_id
       attendees {
         attendee_id
         attendee_join_type
@@ -207,7 +206,6 @@ export const listMeetingDetails = /* GraphQL */ `
         create_date_time
         meeting_status
         end_date_time
-        external_meeting_id
       }
       nextToken
     }
@@ -229,7 +227,6 @@ export const queryMeetingDetailsByMeetingStatusGsi = /* GraphQL */ `
         create_date_time
         meeting_status
         end_date_time
-        external_meeting_id
       }
       nextToken
     }

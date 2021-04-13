@@ -111,7 +111,7 @@ const PhysicianSignIn = () => {
   const handleOTP = async () => {
     try {
       const cognitoUser = await Auth.sendCustomChallengeAnswer(user, password);
-      if (cognitoUser.username) {
+      if (!cognitoUser.Session && cognitoUser.username) {
         localStorage.setItem("physicianphonenumber", cognitoUser.username);
       }
     } catch {

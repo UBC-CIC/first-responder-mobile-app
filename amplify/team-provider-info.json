@@ -15,7 +15,11 @@
       "function": {
         "firstresponderjoinmeeting": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstresponderjoinmeeting-4931486364486133634f-build.zip"
+          "s3Key": "amplify-builds/firstresponderjoinmeeting-47732b39446e4e614c59-build.zip"
+        },
+        "firstrespondergeneratesessionid": {
+          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+          "s3Key": "amplify-builds/firstrespondergeneratesessionid-6f7a55515a644c6d484e-build.zip"
         }
       },
       "auth": {

@@ -112,7 +112,6 @@ const OnlineCallOverData = (): ReactElement => {
           return Promise.resolve({ name: "Attendee" });
         }
         const res = await fetchMeetingAttendees({ meeting_id: meetingManager.meetingId });
-        console.log(res);
 
         if (res.errors) {
           console.error(res.errors);
@@ -147,8 +146,6 @@ const OnlineCallOverData = (): ReactElement => {
       const newAtt = await fetchMeetingAttendees({
         meeting_id: meetingManager.meetingId,
       });
-
-      console.log(newAtt);
 
       if (newAtt.data?.getMeetingDetail?.attendees) {
         const items = newAtt.data.getMeetingDetail?.attendees?.map(

@@ -5,7 +5,7 @@ import { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { MeetingDetail, OnCreateMeetingDetailSubscription, OnUpdateMeetingDetailSubscription } from "../../API";
 import { SPECIALIST_NAME } from "../../Constants";
-import { onCreateMeetingDetail, onUpdateMeetingDetail } from "../../graphql/subscriptions";
+import { onCreateMeetingDetail, onUpdateMeetingDetail } from "../../graphql1/subscriptions";
 import {
   MeetingStateType,
   SpecialistProfileType,
@@ -88,27 +88,26 @@ const Alerts = (): ReactElement => {
   }, []);
 
   useEffect(() => {
-    const subscription = API.graphql(
-      graphqlOperation(onCreateMeetingDetail),
-      // @ts-ignore
-    ).subscribe({
-      next: (
-        response: SubscriptionValue<OnCreateMeetingDetailSubscription>,
-      ) => {
-        console.log(response);
-        console.log(user);
+    const subscribeUpdateMeetings = () => {
+      const subscription: any = API.graphql({
+        query: onUpdateMeetingDetail,
+      });
 
-        getRelevant();
-      },
-      error: (error:any) => console.warn(error),
-    });
-
-    return () => {
-      subscription.unsubscribe();
+      subscription.subscribe({
+        next: (data: any) => {
+          console.log(
+            "data received from create subscription:",
+            data,
+          );
+        },
+      });
+      console.log("subscription ready");
     };
+
+    subscribeUpdateMeetings();
   }, []);
 
-  const handleJoin = (id?: string) => {
+  const handleJoin = (id?: string | null) => {
     if (id) {
       history.push("/call", {
         meetingId: id,
@@ -132,7 +131,7 @@ const Alerts = (): ReactElement => {
         >
           <Button
             classes={{ root: buttonClasses.root, label: buttonClasses.label }}
-            onClick={() => handleJoin(meeting.meeting_id)}
+            onClick={() => handleJoin(meeting.external_meeting_id)}
           >
             {/* TODO Call to backend for topic of accident */}
             {index % 2 === 0 ? "Emergency A" : "Emergency B"}

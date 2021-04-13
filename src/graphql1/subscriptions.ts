@@ -295,7 +295,6 @@ export const onCreateMeetingDetail = /* GraphQL */ `
       create_date_time
       meeting_status
       end_date_time
-      external_meeting_id
       attendees {
         attendee_id
         attendee_join_type
@@ -326,7 +325,6 @@ export const onUpdateMeetingDetail = /* GraphQL */ `
       create_date_time
       meeting_status
       end_date_time
-      external_meeting_id
       attendees {
         attendee_id
         attendee_join_type
@@ -357,7 +355,6 @@ export const onDeleteMeetingDetail = /* GraphQL */ `
       create_date_time
       meeting_status
       end_date_time
-      external_meeting_id
       attendees {
         attendee_id
         attendee_join_type

@@ -48,9 +48,13 @@ const Home = (): ReactElement => {
 
   useEffect(() => {
     const f = async () => {
-      const currUser = await Auth.currentAuthenticatedUser();
-      setUser(currUser);
-      if (currUser) history.replace("/main");
+      try {
+        const currUser = await Auth.currentAuthenticatedUser();
+        setUser(currUser);
+        if (currUser) history.replace("/main");
+      } catch {
+        // console.log("Not Logged In");
+      }
     };
     f();
   });

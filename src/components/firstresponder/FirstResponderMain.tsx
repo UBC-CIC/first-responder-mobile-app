@@ -16,6 +16,7 @@ import { FR_NAME } from "../../Constants";
 import "../../styles/firstresponder/Home.css";
 import { FirstResponderProfileType, MeetingStateType } from "../../types";
 import { fetchFirstResponderProfile } from "../calls";
+import generateSessionId from "../calls/generateSessionId";
 import OfflineContext from "../context/OfflineContext";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import useSessionId from "../hooks/useSessionId";
@@ -89,6 +90,17 @@ const FirstResponderMain = (): ReactElement => {
         occupation: FR_NAME.full,
       });
     }
+
+    const g = async () => {
+      if (!sessionStorage.getItem("firstrespondersessionid")) {
+        const id: string = await generateSessionId();
+        console.log("Session ID: ", id);
+
+        sessionStorage.setItem("firstrespondersessionid", id);
+      }
+    };
+    if (!sessionStorage.getItem("firstrespondersessionid")) g();
+    console.log(sessionStorage.getItem("firstrespondersessionid"));
   }, []);
 
   useEffect(() => {
@@ -135,7 +147,7 @@ const FirstResponderMain = (): ReactElement => {
             className={`${globalClasses.button} ${globalClasses.coral}`}
             onClick={() => {
               history.push("/call", {
-                meetingId: uuid(),
+                meetingId: sessionStorage.getItem("firstrespondersessionid"),
                 firstName: profile?.first_name || FR_NAME.first,
                 lastName: profile?.last_name || FR_NAME.last,
                 role: profile?.occupation || FR_NAME.full,

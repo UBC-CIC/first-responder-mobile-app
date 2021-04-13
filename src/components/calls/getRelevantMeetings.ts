@@ -2,12 +2,15 @@ import { MeetingDetail } from "../../API";
 import listAllMeetingDetails from "./listMeetingDetails";
 
 export const getRelevantMeetings = async (phoneNumber: string): Promise<undefined | MeetingDetail[]> => {
+  console.log(phoneNumber);
+
   const res = await listAllMeetingDetails({
     filter: {
       meeting_status: {
         eq: "ACTIVE",
       },
     },
+    limit: 500,
   });
   if (!res.data?.listMeetingDetails?.items) {
     console.error(res.errors);

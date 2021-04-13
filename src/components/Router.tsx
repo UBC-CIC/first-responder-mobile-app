@@ -146,7 +146,7 @@ const PhysicianRoutes = withAuthenticator(
   {
     includeGreetings: false,
     authenticatorComponents: [
-      <Header title="Sign In" key={-1} parent="/" />,
+      <Header onBack={() => localStorage.removeItem("physicianphonenumber")} title="Sign In" key={-1} parent="/" />,
       <PhoneSignIn key={0} />,
     ],
     theme: AuthTheme,
@@ -167,7 +167,12 @@ const FirstResponderRoutes = withAuthenticator(
   {
     includeGreetings: false,
     authenticatorComponents: [
-      <Header title="Sign In" key={-1} parent="/" />,
+      <Header
+        onBack={() => localStorage.removeItem("firstresponderphonenumber")}
+        title="Sign In"
+        key={-1}
+        parent="/"
+      />,
       <PhoneSignIn key={0} />,
     ],
     theme: AuthTheme,

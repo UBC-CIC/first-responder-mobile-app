@@ -18,12 +18,14 @@ const Header = ({
   parent,
   hideBackButton,
   onChangeToOffline,
+  onBack,
 }: {
   title?: string;
   style?: CSS.Properties;
   parent?: string;
   hideBackButton?: boolean;
   onChangeToOffline?: Function;
+  onBack?: Function;
 }): ReactElement => {
   const useStyles = makeStyles({
     header: {
@@ -45,6 +47,9 @@ const Header = ({
   const { offline, setOffline } = useContext(OfflineContext);
 
   const handleBackButtonPressed = () => {
+    if (onBack) {
+      onBack();
+    }
     if (parent) {
       history.replace(parent);
     } else {
