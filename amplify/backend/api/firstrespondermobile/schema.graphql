@@ -444,12 +444,7 @@ type Subscription {
     meeting_status: String
     end_date_time: String
   ): MeetingDetail @aws_subscribe(mutations: ["createMeetingDetail"])
-  onUpdateMeetingDetail(
-    meeting_id: String
-    create_date_time: String
-    meeting_status: String
-    end_date_time: String
-  ): MeetingDetail @aws_subscribe(mutations: ["updateMeetingDetail"])
+  onUpdateMeetingDetail: MeetingDetail @aws_subscribe(mutations: ["updateMeetingDetail"])
   onDeleteMeetingDetail(
     meeting_id: String
     create_date_time: String

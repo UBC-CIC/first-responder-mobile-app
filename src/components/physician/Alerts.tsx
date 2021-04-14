@@ -5,7 +5,7 @@ import { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { MeetingDetail, OnCreateMeetingDetailSubscription, OnUpdateMeetingDetailSubscription } from "../../API";
 import { SPECIALIST_NAME } from "../../Constants";
-import { onCreateMeetingDetail, onUpdateMeetingDetail } from "../../graphql1/subscriptions";
+import { onCreateMeetingDetail, onUpdateMeetingDetail } from "../../graphql/subscriptions";
 import {
   MeetingStateType,
   SpecialistProfileType,

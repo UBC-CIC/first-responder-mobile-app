@@ -1201,13 +1201,6 @@ export type OnCreateMeetingDetailSubscription = {
   } | null,
 };
 
-export type OnUpdateMeetingDetailSubscriptionVariables = {
-  meeting_id?: string | null,
-  create_date_time?: string | null,
-  meeting_status?: string | null,
-  end_date_time?: string | null,
-};
-
 export type OnUpdateMeetingDetailSubscription = {
   onUpdateMeetingDetail?:  {
     __typename: "MeetingDetail",

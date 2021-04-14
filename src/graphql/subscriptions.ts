@@ -310,18 +310,8 @@ export const onCreateMeetingDetail = /* GraphQL */ `
   }
 `;
 export const onUpdateMeetingDetail = /* GraphQL */ `
-  subscription OnUpdateMeetingDetail(
-    $meeting_id: String
-    $create_date_time: String
-    $meeting_status: String
-    $end_date_time: String
-  ) {
-    onUpdateMeetingDetail(
-      meeting_id: $meeting_id
-      create_date_time: $create_date_time
-      meeting_status: $meeting_status
-      end_date_time: $end_date_time
-    ) {
+  subscription OnUpdateMeetingDetail {
+    onUpdateMeetingDetail {
       meeting_id
       create_date_time
       meeting_status

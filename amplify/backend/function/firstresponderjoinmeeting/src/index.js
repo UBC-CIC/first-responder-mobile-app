@@ -1,4 +1,3 @@
-// TODO put this shared code into a lambda layer
 var AWS = require("aws-sdk");
 var ddb = new AWS.DynamoDB();
 const chime = new AWS.Chime({ region: "us-east-1" });
@@ -41,8 +40,7 @@ const doesAttendeeExistInMeeting = async (meetingId, attendeeId) => {
   return false;
 };
 
-
-/* returns null if meeting with key meetingId does not exist, otherwise returns a Meeting from the meeting-data table */ 
+/* returns null if meeting with key meetingId does not exist, otherwise returns a Meeting from the meeting-data table */
 const getMeeting = async (meetingId) => {
   const result = await ddb
     .getItem({
@@ -79,10 +77,10 @@ const appendAttendeeList = async (
     attendeeId
   );
   if (alreadyExists) {
-    console.info("Attendee already exists in call. Not adding new attendee.")
+    console.info("Attendee already exists in call. Not adding new attendee.");
     return;
-    }
-    console.info("Adding new attendee");
+  }
+  console.info("Adding new attendee");
   if (!organization) organization = "";
   const attendee = {
     M: {
@@ -103,24 +101,22 @@ const appendAttendeeList = async (
     Key: { meeting_id: { S: Meeting.MeetingId } },
     ReturnValues: "ALL_NEW",
     UpdateExpression:
-        "set #attendees = list_append(if_not_exists(#attendees, :empty_list), :attendee), #create_date_time = if_not_exists(#create_date_time, :now), #meeting_status = if_not_exists(#meeting_status, :active), #external_meeting_id = if_not_exists(#external_meeting_id, :title)",
+      "set #attendees = list_append(if_not_exists(#attendees, :empty_list), :attendee), #create_date_time = if_not_exists(#create_date_time, :now), #meeting_status = if_not_exists(#meeting_status, :active), #external_meeting_id = if_not_exists(#external_meeting_id, :title)",
     ExpressionAttributeNames: {
-        "#attendees": "attendees",
-        "#create_date_time": "create_date_time",
-        "#meeting_status": "meeting_status",
-        "#external_meeting_id": "external_meeting_id",
-      },
-      ExpressionAttributeValues: {
-        ":attendee": { L: [attendee] },
-        ":empty_list": { L: [] },
-        ":now": { S: new Date(Date.now()).toISOString() },
-        ":active": { S: "ACTIVE" },
-        ":title": { S: externalMeetingId },
-      },
-  }
-  await ddb
-    .updateItem(updateParams)
-    .promise();
+      "#attendees": "attendees",
+      "#create_date_time": "create_date_time",
+      "#meeting_status": "meeting_status",
+      "#external_meeting_id": "external_meeting_id",
+    },
+    ExpressionAttributeValues: {
+      ":attendee": { L: [attendee] },
+      ":empty_list": { L: [] },
+      ":now": { S: new Date(Date.now()).toISOString() },
+      ":active": { S: "ACTIVE" },
+      ":title": { S: externalMeetingId },
+    },
+  };
+  await ddb.updateItem(updateParams).promise();
 };
 
 const putMeeting = async (externalMeetingId, meetingInfo, attendeeId) => {
@@ -149,7 +145,7 @@ exports.handler = async (event, context, callback) => {
     role, // Role for UI Display
     externalAttendeeId,
     region = "ca-central-1",
-    phoneNumber, 
+    phoneNumber,
     attendeeType, // Specialist, First Responder, Service Desk, Unknown
     organization = "", // Organization for Service Desk UI
   } = event.arguments;
@@ -159,13 +155,14 @@ exports.handler = async (event, context, callback) => {
   // If a meeting exists, join it.
   let meetingInfo;
   if (meeting) {
-     try {
-        meetingInfo = await chime.getMeeting({ MeetingId: meeting.MeetingId }).promise();
-        console.log("Joining existing, valid chime meeting.")
-     }
-     catch(e) {
-       console.log("Found meeting, but chime has expired it")
-     }
+    try {
+      meetingInfo = await chime
+        .getMeeting({ MeetingId: meeting.MeetingId })
+        .promise();
+      console.log("Joining existing, valid chime meeting.");
+    } catch (e) {
+      console.log("Found meeting, but chime has expired it");
+    }
   }
   // if it doesn't, create one.
   if (!meetingInfo) {
@@ -178,7 +175,7 @@ exports.handler = async (event, context, callback) => {
     meetingInfo = await chime.createMeeting(request).promise();
     await putMeeting(title, meetingInfo);
   }
-  
+
   console.log("Meeting Info: ", meetingInfo.Meeting);
 
   const attendeeInfo = await chime
@@ -194,7 +191,7 @@ exports.handler = async (event, context, callback) => {
     meetingInfo, // Chime API Return Value
     phoneNumber,
     attendeeInfo.Attendee.AttendeeId, // Chime API Attendee ID
-    attendeeType, // FIRST_RESPONDER, SPECIALIST, SERVICE_DESK, UNKNOWN, 
+    attendeeType, // FIRST_RESPONDER, SPECIALIST, SERVICE_DESK, UNKNOWN,
     firstName,
     lastName,
     role,

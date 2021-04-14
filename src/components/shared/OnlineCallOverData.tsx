@@ -19,6 +19,9 @@ import "../../styles/VideoCall.css";
 import CloseIcon from "@material-ui/icons/Close";
 import PhoneIcon from "@material-ui/icons/Phone";
 import { Publish } from "@material-ui/icons";
+import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
+
+import API from "@aws-amplify/api";
 import {
   AttendeeInfoType,
   AttendeeType,
@@ -35,6 +38,7 @@ import OfflineContext from "../context/OfflineContext";
 import "../../styles/Call.css";
 import fetchMeetingAttendees from "../calls/fetchMeetingAttendee";
 import Chat from "./Chat";
+import { onUpdateMeetingDetail } from "../../graphql/subscriptions";
 
 const MAX_LOSS = 5;
 
@@ -135,6 +139,19 @@ const OnlineCallOverData = (): ReactElement => {
       }
     };
 
+    const subscription:any = API.graphql({
+      query: onUpdateMeetingDetail,
+    });
+
+    subscription.subscribe({
+      next: (data: any) => {
+        console.log("data received from update subscription:", data);
+      },
+      error: (error: any) => console.warn(error),
+    });
+
+    console.log(subscription);
+
     return handleLeaveMeeting;
   }, []);
 
@@ -170,6 +187,23 @@ const OnlineCallOverData = (): ReactElement => {
         const loss = metric.getObservableMetrics()
           .audioPacketsReceivedFractionLoss;
         setPacketLoss(loss);
+      };
+      meetingManager.audioVideoDidStop = (sessionStatus) => {
+        const sessionStatusCode = sessionStatus.statusCode();
+        if (sessionStatusCode === MeetingSessionStatusCode.MeetingEnded) {
+          /*
+        - You (or someone else) have called the DeleteMeeting API action in your server application.
+        - You attempted to join a deleted meeting.
+        - No audio connections are present in the meeting for more than five minutes.
+        - Fewer than two audio connections are present in the meeting for more than 30 minutes.
+        - Screen share viewer connections are inactive for more than 30 minutes.
+        - The meeting time exceeds 24 hours.
+        See https://docs.aws.amazon.com/chime/latest/dg/mtgs-sdk-mtgs.html for details.
+      */
+          console.log("The session has ended");
+        } else {
+          console.log("Stopped with a session status code: ", sessionStatusCode, ":", MeetingSessionStatusCode[sessionStatusCode]);
+        }
       };
       await meetingManager.start().catch((e) => console.error(e));
     };
