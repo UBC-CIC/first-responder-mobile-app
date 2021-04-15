@@ -29,6 +29,10 @@ export const createSpecialistProfile = /* GraphQL */ `
       updated_date_time
       user_role
       user_status
+      location {
+        latitude
+        longitude
+      }
     }
   }
 `;
@@ -59,6 +63,10 @@ export const deleteSpecialistProfile = /* GraphQL */ `
       updated_date_time
       user_role
       user_status
+      location {
+        latitude
+        longitude
+      }
     }
   }
 `;
@@ -73,6 +81,7 @@ export const joinChimeMeeting = /* GraphQL */ `
     $title: String
     $attendeeType: String
     $organization: String
+    $location: GeolocationCoordinatesInput
   ) {
     joinChimeMeeting(
       externalAttendeeId: $externalAttendeeId
@@ -84,6 +93,7 @@ export const joinChimeMeeting = /* GraphQL */ `
       title: $title
       attendeeType: $attendeeType
       organization: $organization
+      location: $location
     ) {
       Attendee {
         AttendeeId
@@ -126,6 +136,10 @@ export const updateSpecialistProfile = /* GraphQL */ `
       updated_date_time
       user_role
       user_status
+      location {
+        latitude
+        longitude
+      }
     }
   }
 `;
@@ -227,6 +241,7 @@ export const createMeetingDetail = /* GraphQL */ `
       meeting_status
       end_date_time
       external_meeting_id
+      meeting_comments
       attendees {
         attendee_id
         attendee_join_type
@@ -248,6 +263,7 @@ export const updateMeetingDetail = /* GraphQL */ `
       meeting_status
       end_date_time
       external_meeting_id
+      meeting_comments
       attendees {
         attendee_id
         attendee_join_type
@@ -269,6 +285,7 @@ export const deleteMeetingDetail = /* GraphQL */ `
       meeting_status
       end_date_time
       external_meeting_id
+      meeting_comments
       attendees {
         attendee_id
         attendee_join_type

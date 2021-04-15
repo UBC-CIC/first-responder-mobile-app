@@ -18,8 +18,10 @@ import { FirstResponderProfileType, MeetingStateType } from "../../types";
 import { fetchFirstResponderProfile } from "../calls";
 import generateSessionId from "../calls/generateSessionId";
 import OfflineContext from "../context/OfflineContext";
+import useLocation from "../hooks/useLocation";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import useSessionId from "../hooks/useSessionId";
+import LocationStatus from "../shared/LocationStatus";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
@@ -60,6 +62,8 @@ const FirstResponderMain = (): ReactElement => {
   const phone = usePhoneNumber();
   const sessionId = useSessionId();
   const [profile, setProfile] = useState<FirstResponderProfileType>();
+  const { location, loading: locationLoading, error: locationError } = useLocation();
+
   /** Fetch Profile Info */
   useEffect(() => {
     const f = async () => {
@@ -103,23 +107,6 @@ const FirstResponderMain = (): ReactElement => {
     console.log(sessionStorage.getItem("firstrespondersessionid"));
   }, []);
 
-  useEffect(() => {
-    console.log("geolocation");
-
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (position: any) => {
-          console.log(position);
-        },
-        (error) => {
-          console.log(error);
-        },
-      );
-    } else {
-      console.log("geolocation disabled");
-    }
-  });
-
   const handleSignOut = () => {
     Auth.signOut().then(() => {
       localStorage.removeItem("firstresponderphonenumber");
@@ -154,6 +141,10 @@ const FirstResponderMain = (): ReactElement => {
                 attendeeId: sessionId,
                 parent: "/main",
                 phoneNumber: profile?.phone_number,
+                location: {
+                  latitude: location?.latitude,
+                  longitude: location?.longitude,
+                },
               } as MeetingStateType);
             }}
             disabled={!navigator.onLine || offline}
@@ -179,6 +170,11 @@ const FirstResponderMain = (): ReactElement => {
           <ProfileIcon className={classes.icon} />
           Edit Profile
         </Fab>
+        <LocationStatus
+          location={location}
+          locationLoading={locationLoading}
+          locationError={locationError}
+        />
         <Fab
           variant="extended"
           className={`${globalClasses.button} ${classes.skobeloff}`}

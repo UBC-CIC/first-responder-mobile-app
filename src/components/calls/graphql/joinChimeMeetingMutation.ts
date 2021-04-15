@@ -9,6 +9,7 @@ export const joinChimeMeeting = /* GraphQL */ `
     $title: String
     $attendeeType: String
     $organization: String
+    $location: GeolocationCoordinatesInput
   ) {
     joinChimeMeeting(
       externalAttendeeId: $externalAttendeeId
@@ -20,6 +21,7 @@ export const joinChimeMeeting = /* GraphQL */ `
       title: $title
       attendeeType: $attendeeType
       organization: $organization
+      location: $location
     ) {
       Meeting {
       MediaPlacement {

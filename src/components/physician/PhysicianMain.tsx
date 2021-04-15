@@ -1,25 +1,25 @@
 import {
-  Badge, Button, IconButton, makeStyles,
+  Badge, Button, CircularProgress, IconButton, makeStyles,
 } from "@material-ui/core";
+import { Language, LocationCity, LocationSearchingOutlined } from "@material-ui/icons";
 import BellIcon from "@material-ui/icons/Notifications";
-import Amplify from "aws-amplify";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { v4 as uuid } from "uuid";
+import reverse from "reverse-geocode";
+import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
+import { API, graphqlOperation } from "aws-amplify";
 import { MeetingDetail } from "../../API";
 import bg from "../../assets/physician-home-bg.svg";
-import config from "../../aws-exports";
 import { SPECIALIST_NAME } from "../../Constants";
-import passwordless from "../../passwordless-aws-exports";
-import { MeetingType } from "../../types";
 import { getRelevantMeetings } from "../calls/getRelevantMeetings";
-import listAllMeetings from "../calls/listAllMeetings";
-import listAllMeetingDetails from "../calls/listMeetingDetails";
+import { updateSpecialistProfile } from "../calls/graphql/specialistProfile";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
-import useSessionId from "../hooks/useSessionId";
+import useLocation from "../hooks/useLocation";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
+import { UpdateSpecialistProfileMutation } from "../calls/graphql/specialistAvailability";
+import LocationStatus from "../shared/LocationStatus";
 
 // Amplify.configure({
 //   ...config,
@@ -74,7 +74,21 @@ const PhysicianMain = (): ReactElement => {
   const buttonClasses = useButtonClasses();
   const globalClasses = useGlobalStyles();
   const [meetings, setMeetings] = useState<MeetingDetail[] | undefined | null>();
-  const sessionId = useSessionId();
+  const { location, loading: locationLoading, error: locationError } = useLocation();
+
+  useEffect(() => {
+    const f = async () => {
+      if (!location?.latitude || !location.longitude) return;
+      const { latitude, longitude } = location;
+      const input = { location: JSON.stringify({ latitude, longitude }), phone_number: user.attributes.phone_number };
+      const response = await API.graphql({ query: updateSpecialistProfile, variables: { input } });
+      console.log(response);
+    };
+
+    if (!locationLoading && user?.attributes.phone_number) {
+      f();
+    }
+  }, [locationLoading, user]);
 
   useEffect(() => {
     const f = async () => {
@@ -120,6 +134,11 @@ const PhysicianMain = (): ReactElement => {
             Edit Profile
           </Button>
         </div>
+        <LocationStatus
+          location={location}
+          locationLoading={locationLoading}
+          locationError={locationError}
+        />
       </div>
     </Layout>
   );

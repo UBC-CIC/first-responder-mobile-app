@@ -9,6 +9,7 @@ export const listMeetingDetails = /* GraphQL */ `
         meeting_id
         meeting_status
         external_meeting_id
+        meeting_comments
         attendees {
           attendee_id
           attendee_join_type

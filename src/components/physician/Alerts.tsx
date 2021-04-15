@@ -7,6 +7,7 @@ import { MeetingDetail, OnCreateMeetingDetailSubscription, OnUpdateMeetingDetail
 import { SPECIALIST_NAME } from "../../Constants";
 import { onCreateMeetingDetail, onUpdateMeetingDetail } from "../../graphql/subscriptions";
 import {
+  GeolocationCoordinates,
   MeetingStateType,
   SpecialistProfileType,
   SubscriptionValue,
@@ -14,6 +15,7 @@ import {
 import getProfile from "../calls/fetchPhysicianProfile";
 import { getRelevantMeetings } from "../calls/getRelevantMeetings";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import useLocation from "../hooks/useLocation";
 import useSessionId from "../hooks/useSessionId";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
@@ -24,8 +26,9 @@ const useButtonClasses = makeStyles({
     width: "100%",
     backgroundColor: "#FF8552",
     borderRadius: 20,
-    height: "50px",
+    minHeight: "50px",
     margin: "20px",
+    // overflowWrap: "break-word",
   },
   label: {
     fontFamily: "Montserrat",
@@ -34,6 +37,11 @@ const useButtonClasses = makeStyles({
     color: "#fff",
   },
   platinum: { color: Colors.theme.platinum },
+  emergencyTitle: {
+    overflowWrap: "break-word",
+    width: "inherit",
+    hyphens: "auto",
+  },
 });
 
 const Alerts = (): ReactElement => {
@@ -41,10 +49,12 @@ const Alerts = (): ReactElement => {
   const user = useAuthenticatedUser();
   const history = useHistory<MeetingStateType>();
   const globalClasses = useGlobalStyles();
-  const buttonClasses = useButtonClasses();
+  const classes = useButtonClasses();
   const phoneNumber = localStorage.getItem("physicianphonenumber");
   const sessionId = useSessionId();
   const [profile, setProfile] = useState<SpecialistProfileType>();
+  const { location, loading: locationLoading, error: locationError } = useLocation();
+
   const getRelevant = async () => {
     if (!phoneNumber) return;
     const relevantMeetings = await getRelevantMeetings(phoneNumber);
@@ -67,12 +77,29 @@ const Alerts = (): ReactElement => {
   }, [user]);
 
   useEffect(() => {
-    const subscription = API.graphql(
+    const updateSubscription:any = API.graphql(
       {
         query: onUpdateMeetingDetail,
       },
-      // @ts-ignore
-    ).subscribe({
+    );
+
+    updateSubscription.subscribe({
+      next: (
+        response: SubscriptionValue<OnUpdateMeetingDetailSubscription>,
+      ) => {
+        console.log(response);
+
+        getRelevant();
+      },
+    });
+
+    const createSubscription:any = API.graphql(
+      {
+        query: onCreateMeetingDetail,
+      },
+    );
+
+    createSubscription.subscribe({
       next: (
         response: SubscriptionValue<OnUpdateMeetingDetailSubscription>,
       ) => {
@@ -83,7 +110,12 @@ const Alerts = (): ReactElement => {
     });
 
     return () => {
-      subscription.unsubscribe();
+      try {
+        createSubscription?.unsubscribe();
+        updateSubscription?.unsubscribe();
+      } catch (e) {
+        console.log(e);
+      }
     };
   }, []);
 
@@ -118,6 +150,10 @@ const Alerts = (): ReactElement => {
         parent: "/main/alerts",
         phoneNumber: profile?.phone_number,
         organization: profile?.organization,
+        location: {
+          latitude: location?.latitude,
+          longitude: location?.longitude,
+        },
       } as MeetingStateType);
     }
   };
@@ -130,17 +166,19 @@ const Alerts = (): ReactElement => {
           key={meeting.meeting_id}
         >
           <Button
-            classes={{ root: buttonClasses.root, label: buttonClasses.label }}
+            classes={{ root: classes.root, label: classes.label }}
             onClick={() => handleJoin(meeting.external_meeting_id)}
           >
             {/* TODO Call to backend for topic of accident */}
-            {index % 2 === 0 ? "Emergency A" : "Emergency B"}
+            <p className={classes.emergencyTitle}>
+              {meeting.meeting_comments || "Emergency"}
+            </p>
           </Button>
         </div>
       ));
     }
     return (
-      <p className={buttonClasses.platinum}>
+      <p className={classes.platinum}>
         You have no alerts at this time
       </p>
     );

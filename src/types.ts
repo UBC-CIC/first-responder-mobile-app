@@ -41,7 +41,13 @@ export type MeetingStateType = {
   offline?: boolean;
   phoneNumber?: string;
   organization?: string;
+  location?: LatLong
 };
+
+export type LatLong = {
+  latitude: number | null
+  longitude: number | null
+}
 
 export type AlertsStateType= {
   meetings?: MeetingType[];
@@ -107,4 +113,19 @@ export type AVAILABILITY_TYPE =
 
 export interface SubscriptionValue<T> {
   value: { data: T };
+}
+
+export type GeolocationPosition = {
+  coords: GeolocationCoordinates
+  timestamp: number
+}
+
+export type GeolocationCoordinates = {
+  accuracy: number | null
+  altitude: number | null
+  altitudeAccuracy: number | null
+  heading: any
+  latitude: number | null
+  longitude: number | null
+  speed: number | null
 }

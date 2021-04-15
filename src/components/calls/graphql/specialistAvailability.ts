@@ -76,6 +76,7 @@ export type UpdateSpecialistProfileMutation = {
     updated_date_time?: string | null,
     user_role?: string | null,
     user_status?: string | null,
+    location?: string | null;
   } | null,
 };
 

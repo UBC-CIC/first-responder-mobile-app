@@ -26,6 +26,8 @@ import {
   AttendeeInfoType,
   AttendeeType,
   ConnectionState,
+  GeolocationCoordinates,
+  LatLong,
   MeetingStateType,
 } from "../../types";
 import { fetchAttendee, joinMeeting, listMeetingAttendees } from "../calls";
@@ -98,6 +100,8 @@ const OnlineCallOverData = (): ReactElement => {
   /** On mount */
   useEffect(() => {
     const f = async () => {
+      console.log(state.location);
+
       await handleCreateandJoinMeeting(
         state.meetingId,
         state.firstName,
@@ -107,6 +111,7 @@ const OnlineCallOverData = (): ReactElement => {
         phone as string,
         attendeeType,
         state.organization,
+        state.location,
       );
     };
     f();
@@ -138,19 +143,6 @@ const OnlineCallOverData = (): ReactElement => {
         return Promise.resolve({ name: "Attendee" });
       }
     };
-
-    const subscription:any = API.graphql({
-      query: onUpdateMeetingDetail,
-    });
-
-    subscription.subscribe({
-      next: (data: any) => {
-        console.log("data received from update subscription:", data);
-      },
-      error: (error: any) => console.warn(error),
-    });
-
-    console.log(subscription);
 
     return handleLeaveMeeting;
   }, []);
@@ -188,6 +180,8 @@ const OnlineCallOverData = (): ReactElement => {
           .audioPacketsReceivedFractionLoss;
         setPacketLoss(loss);
       };
+
+      /* Handle End of Meeting / Kicked from Meeting */
       meetingManager.audioVideoDidStop = (sessionStatus) => {
         const sessionStatusCode = sessionStatus.statusCode();
         if (sessionStatusCode === MeetingSessionStatusCode.MeetingEnded) {
@@ -248,9 +242,12 @@ const OnlineCallOverData = (): ReactElement => {
     phoneNumber: string,
     type: string,
     organization?: string,
+    location?: LatLong,
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
     try {
+      console.log(location);
+
       const joinRes = await joinMeeting({
         title: meetingId,
         firstName,
@@ -260,6 +257,7 @@ const OnlineCallOverData = (): ReactElement => {
         phoneNumber,
         attendeeType: type,
         organization,
+        location,
       });
 
       const fullName = `${firstName} ${lastName}`;

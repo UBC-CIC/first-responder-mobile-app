@@ -48,6 +48,7 @@ export type SpecialistProfile = {
   updated_date_time?: string | null,
   user_role?: string | null,
   user_status?: string | null,
+  location?: GeolocationCoordinates,
 };
 
 export type Availability = {
@@ -72,12 +73,23 @@ export type Schedule = {
   timezone?: string | null,
 };
 
+export type GeolocationCoordinates = {
+  __typename: "GeolocationCoordinates",
+  latitude?: number | null,
+  longitude?: number | null,
+};
+
 export type DeleteFirstResponderProfileInput = {
   phone_number: string,
 };
 
 export type DeleteSpecialistProfileInput = {
   phone_number: string,
+};
+
+export type GeolocationCoordinatesInput = {
+  latitude?: number | null,
+  longitude?: number | null,
 };
 
 export type MeetingInfo = {
@@ -134,6 +146,7 @@ export type UpdateSpecialistProfileInput = {
   updated_date_time?: string | null,
   user_role?: string | null,
   user_status?: string | null,
+  location?: string | null,
 };
 
 export type CreateMeetingInput = {
@@ -200,6 +213,7 @@ export type MeetingDetail = {
   meeting_status?: string | null,
   end_date_time?: string | null,
   external_meeting_id?: string | null,
+  meeting_comments?: string | null,
   attendees?:  Array<AttendeeDetail > | null,
 };
 
@@ -349,6 +363,11 @@ export type CreateSpecialistProfileMutation = {
     updated_date_time?: string | null,
     user_role?: string | null,
     user_status?: string | null,
+    location?:  {
+      __typename: "GeolocationCoordinates",
+      latitude?: number | null,
+      longitude?: number | null,
+    } | null,
   } | null,
 };
 
@@ -385,6 +404,11 @@ export type DeleteSpecialistProfileMutation = {
     updated_date_time?: string | null,
     user_role?: string | null,
     user_status?: string | null,
+    location?:  {
+      __typename: "GeolocationCoordinates",
+      latitude?: number | null,
+      longitude?: number | null,
+    } | null,
   } | null,
 };
 
@@ -398,6 +422,7 @@ export type JoinChimeMeetingMutationVariables = {
   title?: string | null,
   attendeeType?: string | null,
   organization?: string | null,
+  location?: GeolocationCoordinatesInput | null,
 };
 
 export type JoinChimeMeetingMutation = {
@@ -452,6 +477,11 @@ export type UpdateSpecialistProfileMutation = {
     updated_date_time?: string | null,
     user_role?: string | null,
     user_status?: string | null,
+    location?:  {
+      __typename: "GeolocationCoordinates",
+      latitude?: number | null,
+      longitude?: number | null,
+    } | null,
   } | null,
 };
 
@@ -584,6 +614,7 @@ export type CreateMeetingDetailMutation = {
     meeting_status?: string | null,
     end_date_time?: string | null,
     external_meeting_id?: string | null,
+    meeting_comments?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -610,6 +641,7 @@ export type UpdateMeetingDetailMutation = {
     meeting_status?: string | null,
     end_date_time?: string | null,
     external_meeting_id?: string | null,
+    meeting_comments?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -636,6 +668,7 @@ export type DeleteMeetingDetailMutation = {
     meeting_status?: string | null,
     end_date_time?: string | null,
     external_meeting_id?: string | null,
+    meeting_comments?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -687,6 +720,11 @@ export type GetSpecialistProfileQuery = {
     updated_date_time?: string | null,
     user_role?: string | null,
     user_status?: string | null,
+    location?:  {
+      __typename: "GeolocationCoordinates",
+      latitude?: number | null,
+      longitude?: number | null,
+    } | null,
   } | null,
 };
 
@@ -858,6 +896,7 @@ export type GetMeetingDetailQuery = {
     meeting_status?: string | null,
     end_date_time?: string | null,
     external_meeting_id?: string | null,
+    meeting_comments?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -888,6 +927,7 @@ export type ListMeetingDetailsQuery = {
       meeting_status?: string | null,
       end_date_time?: string | null,
       external_meeting_id?: string | null,
+      meeting_comments?: string | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -909,6 +949,7 @@ export type QueryMeetingDetailsByMeetingStatusGsiQuery = {
       meeting_status?: string | null,
       end_date_time?: string | null,
       external_meeting_id?: string | null,
+      meeting_comments?: string | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -954,6 +995,11 @@ export type OnCreateSpecialistProfileSubscription = {
     updated_date_time?: string | null,
     user_role?: string | null,
     user_status?: string | null,
+    location?:  {
+      __typename: "GeolocationCoordinates",
+      latitude?: number | null,
+      longitude?: number | null,
+    } | null,
   } | null,
 };
 
@@ -997,6 +1043,11 @@ export type OnDeleteSpecialistProfileSubscription = {
     updated_date_time?: string | null,
     user_role?: string | null,
     user_status?: string | null,
+    location?:  {
+      __typename: "GeolocationCoordinates",
+      latitude?: number | null,
+      longitude?: number | null,
+    } | null,
   } | null,
 };
 
@@ -1040,6 +1091,11 @@ export type OnUpdateSpecialistProfileSubscription = {
     updated_date_time?: string | null,
     user_role?: string | null,
     user_status?: string | null,
+    location?:  {
+      __typename: "GeolocationCoordinates",
+      latitude?: number | null,
+      longitude?: number | null,
+    } | null,
   } | null,
 };
 
@@ -1187,6 +1243,7 @@ export type OnCreateMeetingDetailSubscription = {
     meeting_status?: string | null,
     end_date_time?: string | null,
     external_meeting_id?: string | null,
+    meeting_comments?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -1209,6 +1266,7 @@ export type OnUpdateMeetingDetailSubscription = {
     meeting_status?: string | null,
     end_date_time?: string | null,
     external_meeting_id?: string | null,
+    meeting_comments?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -1238,6 +1296,7 @@ export type OnDeleteMeetingDetailSubscription = {
     meeting_status?: string | null,
     end_date_time?: string | null,
     external_meeting_id?: string | null,
+    meeting_comments?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,

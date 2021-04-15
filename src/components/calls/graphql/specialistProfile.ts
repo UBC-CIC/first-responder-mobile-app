@@ -13,6 +13,10 @@ export const getSpecialistProfile = /* GraphQL */ `
     updated_date_time
     user_role
     user_status
+    location {
+        latitude
+        longitude
+      }
   }
   }
 `;
@@ -32,6 +36,10 @@ export const updateSpecialistProfile = /* GraphQL */ `
       updated_date_time
       user_role
       user_status
+      location {
+        latitude
+        longitude
+      }
     }
   }
 `;

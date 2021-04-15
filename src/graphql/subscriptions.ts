@@ -49,6 +49,10 @@ export const onCreateSpecialistProfile = /* GraphQL */ `
       updated_date_time
       user_role
       user_status
+      location {
+        latitude
+        longitude
+      }
     }
   }
 `;
@@ -99,6 +103,10 @@ export const onDeleteSpecialistProfile = /* GraphQL */ `
       updated_date_time
       user_role
       user_status
+      location {
+        latitude
+        longitude
+      }
     }
   }
 `;
@@ -149,6 +157,10 @@ export const onUpdateSpecialistProfile = /* GraphQL */ `
       updated_date_time
       user_role
       user_status
+      location {
+        latitude
+        longitude
+      }
     }
   }
 `;
@@ -296,6 +308,7 @@ export const onCreateMeetingDetail = /* GraphQL */ `
       meeting_status
       end_date_time
       external_meeting_id
+      meeting_comments
       attendees {
         attendee_id
         attendee_join_type
@@ -317,6 +330,7 @@ export const onUpdateMeetingDetail = /* GraphQL */ `
       meeting_status
       end_date_time
       external_meeting_id
+      meeting_comments
       attendees {
         attendee_id
         attendee_join_type
@@ -348,6 +362,7 @@ export const onDeleteMeetingDetail = /* GraphQL */ `
       meeting_status
       end_date_time
       external_meeting_id
+      meeting_comments
       attendees {
         attendee_id
         attendee_join_type

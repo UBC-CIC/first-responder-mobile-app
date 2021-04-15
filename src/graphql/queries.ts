@@ -27,6 +27,10 @@ export const getSpecialistProfile = /* GraphQL */ `
       updated_date_time
       user_role
       user_status
+      location {
+        latitude
+        longitude
+      }
     }
   }
 `;
@@ -182,6 +186,7 @@ export const getMeetingDetail = /* GraphQL */ `
       meeting_status
       end_date_time
       external_meeting_id
+      meeting_comments
       attendees {
         attendee_id
         attendee_join_type
@@ -208,6 +213,7 @@ export const listMeetingDetails = /* GraphQL */ `
         meeting_status
         end_date_time
         external_meeting_id
+        meeting_comments
       }
       nextToken
     }
@@ -230,6 +236,7 @@ export const queryMeetingDetailsByMeetingStatusGsi = /* GraphQL */ `
         meeting_status
         end_date_time
         external_meeting_id
+        meeting_comments
       }
       nextToken
     }

@@ -143,6 +143,7 @@ type MeetingDetail {
   meeting_status: String
   end_date_time: String
   external_meeting_id: String
+  meeting_comments: String
   attendees: [AttendeeDetail!]
 }
 
@@ -270,7 +271,8 @@ type Mutation {
     role: String
     title: String
     attendeeType: String
-    organization: String
+    organization: String,
+    location: GeolocationCoordinatesInput
   ): MeetingInfo @function(name: "firstresponderjoinmeeting-${env}")
   updateFirstResponderProfile(
     input: UpdateFirstResponderProfileInput!
@@ -361,6 +363,17 @@ type SpecialistProfile {
   updated_date_time: String
   user_role: String
   user_status: String
+  location: GeolocationCoordinates
+}
+
+type GeolocationCoordinates {
+  latitude: Float
+  longitude: Float
+}
+
+input GeolocationCoordinatesInput {
+  latitude: Float
+  longitude: Float
 }
 
 type SpecialistProfileConnection {
@@ -590,4 +603,5 @@ input UpdateSpecialistProfileInput {
   updated_date_time: String
   user_role: String
   user_status: String
+  location: AWSJSON
 }
