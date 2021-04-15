@@ -69,7 +69,8 @@ const appendAttendeeList = async (
   lastName,
   role,
   organization,
-  externalMeetingId
+  externalMeetingId,
+  location
 ) => {
   const { Meeting } = meetingInfo;
   const alreadyExists = await doesAttendeeExistInMeeting(
@@ -82,6 +83,7 @@ const appendAttendeeList = async (
   }
   console.info("Adding new attendee");
   if (!organization) organization = "";
+  const formattedLocation = AWS.DynamoDB.Converter.marshall(location);
   const attendee = {
     M: {
       attendee_id: { S: attendeeId },
@@ -93,6 +95,7 @@ const appendAttendeeList = async (
       last_name: { S: lastName },
       user_role: { S: role },
       organization: { S: organization },
+      location: { M: formattedLocation },
     },
   };
 
@@ -148,6 +151,7 @@ exports.handler = async (event, context, callback) => {
     phoneNumber,
     attendeeType, // Specialist, First Responder, Service Desk, Unknown
     organization = "", // Organization for Service Desk UI
+    location
   } = event.arguments;
 
   console.log("External Meeting ID: ", title);
@@ -196,7 +200,8 @@ exports.handler = async (event, context, callback) => {
     lastName,
     role,
     organization,
-    title
+    title,
+    location
   );
 
   const joinInfo = {

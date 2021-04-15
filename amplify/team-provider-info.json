@@ -15,7 +15,7 @@
       "function": {
         "firstresponderjoinmeeting": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstresponderjoinmeeting-37692b324c72796f3348-build.zip"
+          "s3Key": "amplify-builds/firstresponderjoinmeeting-415638594d68462b6c4e-build.zip"
         },
         "firstrespondergeneratesessionid": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",

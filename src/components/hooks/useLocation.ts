@@ -1,3 +1,5 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 import { useEffect, useState } from "react";
 import { GeolocationPosition } from "../../types";
 
@@ -21,12 +23,33 @@ const useLocation = () => {
       try {
         const gotLocation = await getLocation();
         setLocation(() => gotLocation);
+        const coords: any = {};
+        for (const key in gotLocation.coords) {
+          console.log(key);
+          coords[key] = (gotLocation.coords as any)[key];
+        }
+        const stringableGeolocation = {
+          coords,
+          timestamp: gotLocation.timestamp,
+        };
+
+        sessionStorage.setItem("geolocation", JSON.stringify(stringableGeolocation));
         setLoading(() => false);
       } catch (e) {
         setError(e);
       }
     };
-    f();
+    if (!sessionStorage.getItem("geolocation")) {
+      f();
+      console.log("navigation getlocation");
+    } else {
+      const fullPosition = JSON.parse(sessionStorage.getItem("geolocation") as string)as GeolocationPosition;
+      console.log(fullPosition.coords);
+
+      setError(() => null);
+      setLocation(() => fullPosition);
+      setLoading(() => false);
+    }
   }, []);
 
   return { location: location?.coords, loading, error };
