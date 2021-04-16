@@ -1,6 +1,8 @@
 import {
-  Button, makeStyles, Snackbar, IconButton, Drawer,
+  Button, makeStyles, Snackbar,
 } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import PhoneIcon from "@material-ui/icons/Phone";
 import {
   MicSelection,
   SpeakerSelection,
@@ -11,36 +13,28 @@ import {
   useRosterState,
   VideoTileGrid,
 } from "amazon-chime-sdk-component-library-react";
+import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
 import React, {
   ReactElement, useContext, useEffect, useState,
 } from "react";
 import { useHistory } from "react-router-dom";
+import "../../styles/Call.css";
 import "../../styles/VideoCall.css";
-import CloseIcon from "@material-ui/icons/Close";
-import PhoneIcon from "@material-ui/icons/Phone";
-import { Publish } from "@material-ui/icons";
-import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
-
-import API from "@aws-amplify/api";
 import {
   AttendeeInfoType,
   AttendeeType,
   ConnectionState,
-  GeolocationCoordinates,
   LatLong,
   MeetingStateType,
 } from "../../types";
-import { fetchAttendee, joinMeeting, listMeetingAttendees } from "../calls";
+import { joinMeeting } from "../calls";
+import fetchMeetingAttendees from "../calls/fetchMeetingAttendee";
+import OfflineContext from "../context/OfflineContext";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import Colors from "../styling/Colors";
-import Layout from "../ui/Layout";
 import SnackBarActions from "../ui/Alert";
+import Layout from "../ui/Layout";
 import RosterDisplay from "./RosterDisplay";
-import OfflineContext from "../context/OfflineContext";
-import "../../styles/Call.css";
-import fetchMeetingAttendees from "../calls/fetchMeetingAttendee";
-import Chat from "./Chat";
-import { onUpdateMeetingDetail } from "../../graphql/subscriptions";
 
 const MAX_LOSS = 5;
 
@@ -246,7 +240,11 @@ const OnlineCallOverData = (): ReactElement => {
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
     try {
-      console.log(location);
+      const submitLocation = location || {
+        latitude: null,
+        longitude: null,
+      };
+      console.log(submitLocation);
 
       const joinRes = await joinMeeting({
         title: meetingId,
@@ -257,7 +255,7 @@ const OnlineCallOverData = (): ReactElement => {
         phoneNumber,
         attendeeType: type,
         organization,
-        location,
+        location: submitLocation,
       });
 
       const fullName = `${firstName} ${lastName}`;

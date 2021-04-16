@@ -7,7 +7,7 @@ const getLocation = async (): Promise<NonNullable<GeolocationPosition>> => new P
   if ("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition((position) => {
       res(position);
-    });
+    }, rej);
   } else {
     rej(new Error("No geolocation in navigator"));
   }
@@ -22,6 +22,8 @@ const useLocation = () => {
     const f = async () => {
       try {
         const gotLocation = await getLocation();
+        console.log("gotLocation", gotLocation);
+
         setLocation(() => gotLocation);
         const coords: any = {};
         for (const key in gotLocation.coords) {
@@ -34,9 +36,10 @@ const useLocation = () => {
         };
 
         sessionStorage.setItem("geolocation", JSON.stringify(stringableGeolocation));
-        setLoading(() => false);
       } catch (e) {
         setError(e);
+      } finally {
+        setLoading(false);
       }
     };
     if (!sessionStorage.getItem("geolocation")) {
