@@ -1,0 +1,40 @@
+.chatContainer {
+    align-self: center;
+    justify-self: center;
+    background-color: #E6E6E6;
+    color: rgb(230, 230, 230);
+    border-radius: 10px;
+    margin: 1em;
+    height: 400px;
+}
+
+.chatTitle {
+    width: 80%;
+    text-align: center;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1em;
+    background-color: #3F3D56;
+    border-radius: 100px;
+}
+
+.outgoing {
+    align-self: flex-end;
+    background-color: #297373;
+}
+
+.message {
+    color: #E6E6E6;
+    margin-top: .25em;
+    margin-bottom: .25em;
+}
+
+.messageContainer {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    max-height: 300px;
+    overflow: auto;
+}

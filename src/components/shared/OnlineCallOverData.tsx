@@ -1,5 +1,5 @@
 import {
-  Button, makeStyles, Snackbar,
+  Button, Drawer, makeStyles, Snackbar,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import PhoneIcon from "@material-ui/icons/Phone";
@@ -34,6 +34,7 @@ import usePhoneNumber from "../hooks/usePhoneNumber";
 import Colors from "../styling/Colors";
 import SnackBarActions from "../ui/Alert";
 import Layout from "../ui/Layout";
+import Chat from "./Chat";
 import RosterDisplay from "./RosterDisplay";
 
 const MAX_LOSS = 5;
@@ -91,7 +92,7 @@ const OnlineCallOverData = (): ReactElement => {
     : "SPECIALIST";
   const [drawerShown, setDrawerShown] = useState(false);
 
-  /** On mount */
+  /** On mount join meeting */
   useEffect(() => {
     const f = async () => {
       console.log(state.location);
@@ -141,7 +142,7 @@ const OnlineCallOverData = (): ReactElement => {
     return handleLeaveMeeting;
   }, []);
 
-  /** On change of roster */
+  /** On change of roster, update roster with name and role */
   useEffect(() => {
     const f = async () => {
       /** Get attendees from DB in order to tell their role */
@@ -198,7 +199,7 @@ const OnlineCallOverData = (): ReactElement => {
 
     f();
   }, [audioVideo]);
-  /** On change of Bandwidth upload speed */
+  /** On change of Bandwidth upload speed, handle if connection is weak */
   useEffect(() => {
     if (packetLoss > 0) {
       if (lossCount + 1 > MAX_LOSS) {
@@ -340,15 +341,10 @@ const OnlineCallOverData = (): ReactElement => {
       parent={state.parent}
       onChangeToOffline={() => handleChangeToOffline()}
     >
-      <div className={classes.callContainer}>
-        <div>
-          Connection State:
-          {" "}
-          {ConnectionState[connectionState]}
-        </div>
-      </div>
       {!suggestionShown ? (
         <div className="video-container">
+          <RosterDisplay roster={roster} attendees={attendees} />
+
           <VideoTileGrid
             className={classes.videoGrid}
             layout="standard"
@@ -370,14 +366,7 @@ const OnlineCallOverData = (): ReactElement => {
             Toggle Video
           </Button>
           <div style={{ overflow: "auto", flex: 1 }}>
-            <RosterDisplay roster={roster} attendees={attendees} />
-            <span className={classes.selectText}>
-              <MicSelection />
-            </span>
-
-            <span className={classes.selectText}>
-              <SpeakerSelection />
-            </span>
+            <Chat attendeeId={state.attendeeId} attendees={roster} />
           </div>
         </div>
       ) : (
@@ -412,15 +401,6 @@ const OnlineCallOverData = (): ReactElement => {
         )}
         message="Current connection cannot support video."
       />
-      {/* <Drawer
-        variant="persistent"
-        open={drawerShown}
-        onClose={() => setDrawerShown(false)}
-      >
-        <div style={{ minWidth: "200px" }}>
-          <Chat />
-        </div>
-      </Drawer> */}
     </Layout>
   );
 };

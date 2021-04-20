@@ -129,3 +129,8 @@ export type GeolocationCoordinates = {
   longitude: number | null
   speed: number | null
 }
+
+export type Message = {
+  senderId: string,
+  body: string,
+}
