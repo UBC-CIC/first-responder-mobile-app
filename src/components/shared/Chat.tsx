@@ -68,18 +68,28 @@ const useStyles = makeStyles({
   },
 });
 
-const Chat = ({ attendeeId, attendees }: {attendeeId?: string, attendees?:any}): ReactElement => {
+type ChatProps = {attendeeId?: string,
+  attendees?:any,
+  meetingId: string}
+
+const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => {
   const audioVideo = useAudioVideo();
   const { messages, dispatch } = useMessageSubscription(audioVideo as AudioVideoFacade);
   const [currMessage, setCurrMessage] = useState("");
   const classes = useStyles();
   const [currFile, setCurrFile] = useState<PickerType | undefined>();
-  const handleSendMessage = (body: string) => {
+  const handleSendMessage = async (body: string) => {
     const message:Message = {
       body,
       senderId: attendeeId as string,
       attachment: currFile,
     };
+    const attachment = message?.attachment;
+    if (attachment) {
+      const url = await Storage.get(`${meetingId}/${attachment.size}${attachment.name}`, { level: "public" }) as string;
+      console.log(url);
+      attachment.url = url;
+    }
 
     setCurrFile(undefined);
     audioVideo?.realtimeSendDataMessage("chat", body);
@@ -101,10 +111,9 @@ const Chat = ({ attendeeId, attendees }: {attendeeId?: string, attendees?:any}):
 
   const handleUpload = async (e: PickerType) => {
     setCurrFile(() => e);
-    const res = await Storage.put("file", e, { level: "public" });
+    // naive way of making unique file names per file
+    const res = await Storage.put(`${meetingId}/${e.size}${e.name}`, e.file, { level: "public" });
     console.log(res);
-
-    console.log(e);
   };
   return (
     <div className="flex column align chatContainer">
@@ -135,7 +144,7 @@ const Chat = ({ attendeeId, attendees }: {attendeeId?: string, attendees?:any}):
                 <MessageAttachment
                   name={attachment.name}
                   size={`${byteSize(attachment.size)}`}
-                  downloadUrl=""
+                  downloadUrl={attachment.url as string}
                 />
               ) }
             </ChatBubble>

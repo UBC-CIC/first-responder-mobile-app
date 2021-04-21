@@ -366,7 +366,7 @@ const OnlineCallOverData = (): ReactElement => {
             Toggle Video
           </Button>
           <div style={{ overflow: "auto", flex: 1 }}>
-            <Chat attendeeId={state.attendeeId} attendees={roster} />
+            <Chat meetingId={state.meetingId} attendeeId={state.attendeeId} attendees={roster} />
           </div>
         </div>
       ) : (
