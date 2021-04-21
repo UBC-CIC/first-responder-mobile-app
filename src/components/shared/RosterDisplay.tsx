@@ -4,10 +4,9 @@ import {
   RosterGroup,
   RosterHeader,
 } from "amazon-chime-sdk-component-library-react";
-import { RosterType } from "amazon-chime-sdk-component-library-react/lib/types";
 import { ReactElement } from "react";
 import { FR_NAME } from "../../Constants";
-import { AttendeeType } from "../../types";
+import { AttendeeType, RosterType } from "../../types";
 
 const RosterDisplay = ({
   attendees,

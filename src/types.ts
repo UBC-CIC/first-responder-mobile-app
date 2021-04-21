@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { RosterAttendeeType } from "amazon-chime-sdk-component-library-react/lib/types";
 import { AttendeeInfo, CreateFirstResponderProfileInput, CreateSpecialistProfileInput } from "./API";
 
 export type CognitoUser = {
@@ -133,4 +132,22 @@ export type GeolocationCoordinates = {
 export type Message = {
   senderId: string,
   body: string,
+  attachment?: PickerType
+}
+
+type RosterAttendeeType = {
+  chimeAttendeeId: string;
+  externalUserId?: string | undefined;
+  name?: string | undefined;
+}
+
+export type RosterType = {
+  [attendeeId: string]: RosterAttendeeType;
+}
+
+export type PickerType = {
+  file: File,
+  name: string,
+  size: number,
+  type: string,
 }

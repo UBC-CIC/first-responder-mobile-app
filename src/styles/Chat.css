@@ -38,3 +38,26 @@
     max-height: 300px;
     overflow: auto;
 }
+
+.x {
+    align-items: flex-end;
+    margin-bottom: 10px;
+    margin-left: 5px;
+}
+
+
+
+button.Button__button___vS7Mv {
+    background-color: #0000;
+    min-width: 32px;
+    max-width: 32px;
+    height: 32px;
+    margin-top: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("../assets/attachment.svg");
+}
+button.Button__button___vS7Mv:active {
+    background-color: rgba(0, 0, 0, 0.5);
+
+}
