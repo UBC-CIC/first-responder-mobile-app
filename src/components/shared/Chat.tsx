@@ -1,17 +1,17 @@
-import { IconButton, makeStyles, TextField } from "@material-ui/core";
+import Storage from "@aws-amplify/storage";
+import { makeStyles, TextField } from "@material-ui/core";
+import { RemoveCircleOutline } from "@material-ui/icons";
 import {
   ChatBubble, MessageAttachment, useAudioVideo,
 } from "amazon-chime-sdk-component-library-react";
 import { AudioVideoFacade } from "amazon-chime-sdk-js";
 import { Picker } from "aws-amplify-react";
+import byteSize from "byte-size";
 import React, {
   ReactElement, useEffect, useReducer, useState,
 } from "react";
 import ScrollableFeed from "react-scrollable-feed";
 import "../../styles/Chat.css";
-import byteSize from "byte-size";
-import { RemoveCircleOutline } from "@material-ui/icons";
-import Storage from "@aws-amplify/storage";
 import { Message, PickerType } from "../../types";
 import Colors from "../styling/Colors";
 
@@ -36,12 +36,10 @@ function useMessageSubscription(audioVideo: AudioVideoFacade) {
 
   useEffect(() => {
     if (audioVideo) {
-      audioVideo?.realtimeSubscribeToReceiveDataMessage("chat", (message) => {
-        const body = Buffer.from(message.data).toString();
-        const formattedMessage: Message = {
-          body, senderId: message.senderAttendeeId,
-        };
-        dispatch({ type: "add", payload: formattedMessage });
+      audioVideo?.realtimeSubscribeToReceiveDataMessage("chat", async (message) => {
+        const messageData = JSON.parse(Buffer.from(message.data).toString()) as Message;
+        messageData.url = await getS3URL(messageData, messageData.meetingId as string);
+        dispatch({ type: "add", payload: messageData });
       });
     }
     return () => audioVideo?.realtimeUnsubscribeFromReceiveDataMessage("chat");
@@ -68,39 +66,25 @@ const useStyles = makeStyles({
   },
 });
 
+const getS3URL = async (message: Message, meetingId:string) => {
+  if (message.name && message.size) {
+    return await Storage.get(`${meetingId}/${message.size}${message.name}`, { level: "public" }) as string;
+  }
+};
+
 type ChatProps = {attendeeId?: string,
   attendees?:any,
   meetingId: string}
 
 const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => {
   const audioVideo = useAudioVideo();
+
   const { messages, dispatch } = useMessageSubscription(audioVideo as AudioVideoFacade);
   const [currMessage, setCurrMessage] = useState("");
   const classes = useStyles();
-  const [currFile, setCurrFile] = useState<PickerType | undefined>();
-  const handleSendMessage = async (body: string) => {
-    const message:Message = {
-      body,
-      senderId: attendeeId as string,
-      attachment: currFile,
-    };
-    const attachment = message?.attachment;
-    if (attachment) {
-      const url = await Storage.get(`${meetingId}/${attachment.size}${attachment.name}`, { level: "public" }) as string;
-      console.log(url);
-      attachment.url = url;
-    }
+  const [currFile, setCurrFile] = useState<PickerType>();
 
-    setCurrFile(undefined);
-    audioVideo?.realtimeSendDataMessage("chat", body);
-    dispatch({ type: "add", payload: message });
-    setCurrMessage("");
-  };
-  const handleSubmit = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!currMessage) return;
-    if (e.key !== "Enter") return;
-    handleSendMessage(currMessage);
-  };
+  // handler for before meeting is finished creation
   if (!audioVideo) {
     return (
       <div className="flex column align" style={{ width: "100%", color: Colors.theme.platinum }}>
@@ -109,10 +93,32 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
     );
   }
 
+  const handleSendMessage = async (body: string) => {
+    const message:Message = {
+      body,
+      senderId: attendeeId as string,
+      meetingId,
+      size: currFile?.size,
+      name: currFile?.name,
+    };
+
+    setCurrFile(undefined);
+    audioVideo?.realtimeSendDataMessage("chat", message);
+    message.url = await getS3URL(message, meetingId);
+    dispatch({ type: "add", payload: message });
+    setCurrMessage("");
+  };
+
+  const handleSubmit = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!currMessage && !currFile) return;
+    if (e.key !== "Enter") return;
+    handleSendMessage(currMessage);
+  };
+
   const handleUpload = async (e: PickerType) => {
-    setCurrFile(() => e);
     // naive way of making unique file names per file
-    const res = await Storage.put(`${meetingId}/${e.size}${e.name}`, e.file, { level: "public" });
+    setCurrFile(() => e);
+    const res:any = await Storage.put(`${meetingId}/${e.size}${e.name}`, e.file, { level: "public" });
     console.log(res);
   };
   return (
@@ -131,7 +137,8 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
             name = sender.name;
           }
           if (type === "outgoing") name = "Me";
-          const { attachment } = message;
+          const { name: fileName, size, url } = message;
+
           return (
             <ChatBubble
               key={index}
@@ -140,12 +147,14 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
               className={`${type} message`}
             >
               {message?.body}
-              {attachment && (
-                <MessageAttachment
-                  name={attachment.name}
-                  size={`${byteSize(attachment.size)}`}
-                  downloadUrl={attachment.url as string}
-                />
+              {url && (
+                <div className="attachment">
+                  <MessageAttachment
+                    name={fileName || "Attachment"}
+                    size={`${byteSize(size)}`}
+                    downloadUrl={url as string}
+                  />
+                </div>
               ) }
             </ChatBubble>
           );
@@ -155,7 +164,10 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
         <div className="flex row" style={{ width: "100%", color: "#000" }}>
           {currFile && (
             <div className="flex x">
-              <RemoveCircleOutline onClick={() => setCurrFile(undefined)} />
+              <RemoveCircleOutline onClick={() => {
+                setCurrFile(undefined);
+              }}
+              />
             </div>
           )}
           <TextField

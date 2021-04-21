@@ -132,7 +132,10 @@ export type GeolocationCoordinates = {
 export type Message = {
   senderId: string,
   body: string,
-  attachment?: PickerType
+  url?: string,
+  meetingId?: string,
+  size?: number,
+  name?: string
 }
 
 type RosterAttendeeType = {
@@ -151,4 +154,11 @@ export type PickerType = {
   size: number,
   type: string,
   url?: string,
+}
+
+export type FileInfo = {
+  name: string,
+  size: number,
+  url: string,
+  key: string,
 }
