@@ -23,7 +23,8 @@
         }
       },
       "auth": {
-        "starspwaphysicians": {}
+        "starspwaphysicians": {},
+        "firstrespondermobile": {}
       },
       "storage": {
         "userprofile": {

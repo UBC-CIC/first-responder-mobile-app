@@ -1,5 +1,12 @@
 {
-  "auth": {},
+  "auth": {
+    "firstrespondermobile": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
+  },
   "api": {
     "firstrespondermobile": {
       "service": "AppSync",

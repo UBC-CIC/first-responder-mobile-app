@@ -1,8 +1,6 @@
 import Auth from "@aws-amplify/auth";
 import { useEffect, useState } from "react";
 import { CognitoUser } from "../../types";
-import config from "../../aws-exports";
-import passwordless from "../../passwordless-aws-exports";
 
 const useAuthenticatedUser = () => {
   const [user, setUser] = useState<CognitoUser | undefined>();

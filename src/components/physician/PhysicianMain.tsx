@@ -1,13 +1,10 @@
 import {
-  Badge, Button, CircularProgress, IconButton, makeStyles,
+  Badge, Button, IconButton, makeStyles,
 } from "@material-ui/core";
-import { Language, LocationCity, LocationSearchingOutlined } from "@material-ui/icons";
 import BellIcon from "@material-ui/icons/Notifications";
+import { API } from "aws-amplify";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import reverse from "reverse-geocode";
-import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
-import { API, graphqlOperation } from "aws-amplify";
 import { MeetingDetail } from "../../API";
 import bg from "../../assets/physician-home-bg.svg";
 import { SPECIALIST_NAME } from "../../Constants";
@@ -15,18 +12,11 @@ import { getRelevantMeetings } from "../calls/getRelevantMeetings";
 import { updateSpecialistProfile } from "../calls/graphql/specialistProfile";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useLocation from "../hooks/useLocation";
+import LocationStatus from "../shared/LocationStatus";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
-import { UpdateSpecialistProfileMutation } from "../calls/graphql/specialistAvailability";
-import LocationStatus from "../shared/LocationStatus";
 
-// Amplify.configure({
-//   ...config,
-//   Auth: {
-//     ...passwordless,
-//   },
-// });
 const useStyles = makeStyles({
   bellIcon: {
     width: "100px",

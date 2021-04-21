@@ -6,7 +6,6 @@ import { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import config from "../aws-exports";
 import { FR_NAME, SPECIALIST_NAME } from "../Constants";
-import passwordless from "../passwordless-aws-exports";
 import "../styles/Home.css";
 import { CognitoUser } from "../types";
 import Colors from "./styling/Colors";
@@ -34,9 +33,11 @@ const useButtonClasses = makeStyles({
 });
 
 Amplify.configure({
-  ...config,
+  config,
   Auth: {
-    ...passwordless,
+    region: config.aws_cognito_region,
+    userPoolId: config.aws_user_pools_id,
+    userPoolWebClientId: config.aws_user_pools_web_client_id,
   },
 });
 
@@ -77,7 +78,6 @@ const Home = (): ReactElement => {
             <Button
               classes={{ root: buttonClasses.root, label: buttonClasses.label }}
               onClick={() => {
-                Amplify.Auth.configure({ ...passwordless });
                 history.push("/firstresponderLogin");
               }}
             >
@@ -86,7 +86,7 @@ const Home = (): ReactElement => {
             <Button
               classes={{ root: buttonClasses.root, label: buttonClasses.label }}
               onClick={() => {
-                Amplify.Auth.configure(config);
+                // Amplify.Auth.configure(config);
                 history.push("/physicianLogin");
               }}
             >
