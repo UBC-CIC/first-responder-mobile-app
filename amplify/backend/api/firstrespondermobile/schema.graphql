@@ -249,7 +249,7 @@ input ModelStringInput {
   size: ModelSizeInput
 }
 
-type Mutation {
+type Mutation @aws_api_key {
   createFirstResponderProfile(
     input: CreateFirstResponderProfileInput!
   ): FirstResponderProfile

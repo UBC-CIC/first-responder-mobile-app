@@ -11,6 +11,7 @@ import ScrollableFeed from "react-scrollable-feed";
 import "../../styles/Chat.css";
 import byteSize from "byte-size";
 import { RemoveCircleOutline } from "@material-ui/icons";
+import Storage from "@aws-amplify/storage";
 import { Message, PickerType } from "../../types";
 import Colors from "../styling/Colors";
 
@@ -98,8 +99,11 @@ const Chat = ({ attendeeId, attendees }: {attendeeId?: string, attendees?:any}):
     );
   }
 
-  const handleUpload = (e: PickerType) => {
+  const handleUpload = async (e: PickerType) => {
     setCurrFile(() => e);
+    const res = await Storage.put("file", e, { level: "public" });
+    console.log(res);
+
     console.log(e);
   };
   return (
@@ -162,9 +166,6 @@ const Chat = ({ attendeeId, attendees }: {attendeeId?: string, attendees?:any}):
         </div>
         <Picker title=" " onPick={(e) => handleUpload(e)} />
       </div>
-      {/* <Button onClick={() => handleSendMessage("reallyreallyreallyreallyreallyreallyreallyreallylongmessage")}>
-        Send a message
-      </Button> */}
     </div>
   );
 };

@@ -98,6 +98,7 @@ const FirstResponderMain = (): ReactElement => {
     const g = async () => {
       if (!sessionStorage.getItem("firstrespondersessionid")) {
         const id: string = await generateSessionId();
+        // const id: string = "test";
         console.log("Session ID: ", id);
 
         sessionStorage.setItem("firstrespondersessionid", id);

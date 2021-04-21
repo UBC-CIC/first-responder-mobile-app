@@ -1,6 +1,6 @@
 {
     "identityPoolName": "testAuthIdentityPool",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "firstr0aaacedb",
     "userPoolName": "firstrespondermobile",
     "autoVerifiedAttributes": [

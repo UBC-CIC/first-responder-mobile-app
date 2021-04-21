@@ -42,5 +42,11 @@
       "service": "S3AndCloudFront",
       "providerPlugin": "awscloudformation"
     }
+  },
+  "storage": {
+    "uploadedFiles": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

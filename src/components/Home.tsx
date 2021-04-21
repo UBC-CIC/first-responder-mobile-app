@@ -33,11 +33,18 @@ const useButtonClasses = makeStyles({
 });
 
 Amplify.configure({
-  config,
+  ...config,
   Auth: {
     region: config.aws_cognito_region,
     userPoolId: config.aws_user_pools_id,
     userPoolWebClientId: config.aws_user_pools_web_client_id,
+  },
+  API: {
+    // ...config,
+    apiKey: config.aws_appsync_apiKey,
+  },
+  Analytics: {
+    disabled: true,
   },
 });
 
