@@ -185,7 +185,7 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
             onKeyUp={(e) => handleSubmit(e)}
           />
         </div>
-        <Picker title=" " onPick={(e) => handleUpload(e)} />
+        <Picker title=" " onPick={(e) => handleUpload(e)} accept="image/*" />
       </div>
     </div>
   );

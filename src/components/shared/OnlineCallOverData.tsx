@@ -90,7 +90,6 @@ const OnlineCallOverData = (): ReactElement => {
   const attendeeType = localStorage.getItem("firstresponderphonenumber")
     ? "FIRST_RESPONDER"
     : "SPECIALIST";
-  const [drawerShown, setDrawerShown] = useState(false);
 
   /** On mount join meeting */
   useEffect(() => {
@@ -389,7 +388,7 @@ const OnlineCallOverData = (): ReactElement => {
         />
       )}
       <Snackbar
-        open={warningShown && !suggestionShown}
+        open={warningShown && !suggestionShown && inMeeting}
         autoHideDuration={6000}
         onClose={handleClose}
         ContentProps={{ className: classes.snackBar }}
