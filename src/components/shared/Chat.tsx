@@ -119,7 +119,6 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
     // naive way of making unique file names per file
     setCurrFile(() => e);
     const res:any = await Storage.put(`${meetingId}/${e.size}${e.name}`, e.file, { level: "public" });
-    console.log(res);
   };
   return (
     <div className="flex column align chatContainer">
@@ -128,9 +127,6 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
       </h4>
       <ScrollableFeed className="messageContainer">
         {messages.map((message, index) => {
-          // console.log(attendees);
-          console.log(message);
-
           const type = message.senderId === attendeeId ? "outgoing" : "incoming";
           let name: string;
           if (!attendees || !attendees[message.senderId]) {
