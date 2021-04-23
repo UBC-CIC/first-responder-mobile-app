@@ -45,7 +45,7 @@
     margin-left: 5px;
 }
 
-button.Button__button___vS7Mv {
+.picker {
     background-color: #0000;
     min-width: 32px;
     max-width: 32px;
@@ -55,8 +55,12 @@ button.Button__button___vS7Mv {
     background-position: center;
     background-image: url("../assets/attachment.svg");
 }
-button.Button__button___vS7Mv:active {
+.picker:active {
     background-color: rgba(0, 0, 0, 0.5);
+}
+
+.picker-input {
+    opacity: 0;
 }
 
 .attachment {

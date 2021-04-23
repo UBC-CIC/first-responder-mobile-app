@@ -185,7 +185,29 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
             onKeyUp={(e) => handleSubmit(e)}
           />
         </div>
-        <Picker title=" " onPick={(e) => handleUpload(e)} accept="image/*" />
+        <div className="picker">
+          <input
+            className="picker-input"
+            type="file"
+            accept={"*/*"}
+            onClick={(e) => {
+              const element = e.target as HTMLInputElement;
+              element.value = "";
+            }}
+            onChange={(e) => {
+              if (e.target?.files && e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const fileMetaData: PickerType = {
+                  name: file.name,
+                  type: file.type,
+                  size: file.size,
+                  file,
+                };
+                handleUpload(fileMetaData);
+              }
+            }}
+          />
+        </div>
       </div>
     </div>
   );
