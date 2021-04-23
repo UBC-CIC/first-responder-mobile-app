@@ -336,7 +336,7 @@ const OnlineCallOverData = (): ReactElement => {
 
   return (
     <Layout
-      title="Online Call"
+      title="Online Conference"
       parent={state.parent}
       onChangeToOffline={() => handleChangeToOffline()}
     >

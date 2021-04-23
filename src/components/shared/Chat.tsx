@@ -188,7 +188,8 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
           <input
             className="picker-input"
             type="file"
-            accept={"*/*"}
+            capture="camera"
+            accept="image/*"
             onClick={(e) => {
               const element = e.target as HTMLInputElement;
               element.value = "";
