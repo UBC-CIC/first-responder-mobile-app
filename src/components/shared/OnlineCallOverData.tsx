@@ -90,7 +90,7 @@ const OnlineCallOverData = (): ReactElement => {
   const attendeeType = localStorage.getItem("firstresponderphonenumber")
     ? "FIRST_RESPONDER"
     : "SPECIALIST";
-
+  const [myAttendeeId, setMyAttendeeId] = useState("");
   /** On mount join meeting */
   useEffect(() => {
     const f = async () => {
@@ -265,7 +265,7 @@ const OnlineCallOverData = (): ReactElement => {
         ...joinRes.data?.joinChimeMeeting?.Attendee,
         name: fullName,
       } as AttendeeInfoType;
-
+      setMyAttendeeId(attendeeInfo.AttendeeId as string);
       await meetingManager
         .join({ meetingInfo, attendeeInfo })
         .then(() => {
@@ -365,7 +365,7 @@ const OnlineCallOverData = (): ReactElement => {
             Toggle Video
           </Button>
           <div style={{ overflow: "auto", flex: 1 }}>
-            <Chat meetingId={state.meetingId} attendeeId={state.attendeeId} attendees={roster} />
+            <Chat meetingId={state.meetingId} attendeeId={myAttendeeId} attendees={roster} />
           </div>
         </div>
       ) : (

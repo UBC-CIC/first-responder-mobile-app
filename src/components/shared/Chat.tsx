@@ -128,6 +128,9 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
       </h4>
       <ScrollableFeed className="messageContainer">
         {messages.map((message, index) => {
+          // console.log(attendees);
+          console.log(message);
+
           const type = message.senderId === attendeeId ? "outgoing" : "incoming";
           let name: string;
           if (!attendees || !attendees[message.senderId]) {
