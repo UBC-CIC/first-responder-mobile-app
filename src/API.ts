@@ -214,6 +214,7 @@ export type MeetingDetail = {
   end_date_time?: string | null,
   external_meeting_id?: string | null,
   meeting_comments?: string | null,
+  meeting_title?: string | null,
   attendees?:  Array<AttendeeDetail > | null,
 };
 
@@ -615,6 +616,7 @@ export type CreateMeetingDetailMutation = {
     end_date_time?: string | null,
     external_meeting_id?: string | null,
     meeting_comments?: string | null,
+    meeting_title?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -642,6 +644,7 @@ export type UpdateMeetingDetailMutation = {
     end_date_time?: string | null,
     external_meeting_id?: string | null,
     meeting_comments?: string | null,
+    meeting_title?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -669,6 +672,7 @@ export type DeleteMeetingDetailMutation = {
     end_date_time?: string | null,
     external_meeting_id?: string | null,
     meeting_comments?: string | null,
+    meeting_title?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -897,6 +901,7 @@ export type GetMeetingDetailQuery = {
     end_date_time?: string | null,
     external_meeting_id?: string | null,
     meeting_comments?: string | null,
+    meeting_title?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -928,6 +933,7 @@ export type ListMeetingDetailsQuery = {
       end_date_time?: string | null,
       external_meeting_id?: string | null,
       meeting_comments?: string | null,
+      meeting_title?: string | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -950,6 +956,7 @@ export type QueryMeetingDetailsByMeetingStatusGsiQuery = {
       end_date_time?: string | null,
       external_meeting_id?: string | null,
       meeting_comments?: string | null,
+      meeting_title?: string | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -1244,6 +1251,7 @@ export type OnCreateMeetingDetailSubscription = {
     end_date_time?: string | null,
     external_meeting_id?: string | null,
     meeting_comments?: string | null,
+    meeting_title?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -1267,6 +1275,7 @@ export type OnUpdateMeetingDetailSubscription = {
     end_date_time?: string | null,
     external_meeting_id?: string | null,
     meeting_comments?: string | null,
+    meeting_title?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,
@@ -1297,6 +1306,7 @@ export type OnDeleteMeetingDetailSubscription = {
     end_date_time?: string | null,
     external_meeting_id?: string | null,
     meeting_comments?: string | null,
+    meeting_title?: string | null,
     attendees?:  Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,

@@ -242,6 +242,7 @@ export const createMeetingDetail = /* GraphQL */ `
       end_date_time
       external_meeting_id
       meeting_comments
+      meeting_title
       attendees {
         attendee_id
         attendee_join_type
@@ -264,6 +265,7 @@ export const updateMeetingDetail = /* GraphQL */ `
       end_date_time
       external_meeting_id
       meeting_comments
+      meeting_title
       attendees {
         attendee_id
         attendee_join_type
@@ -286,6 +288,7 @@ export const deleteMeetingDetail = /* GraphQL */ `
       end_date_time
       external_meeting_id
       meeting_comments
+      meeting_title
       attendees {
         attendee_id
         attendee_join_type

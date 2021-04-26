@@ -10,6 +10,7 @@ export const listMeetingDetails = /* GraphQL */ `
         meeting_status
         external_meeting_id
         meeting_comments
+        meeting_title
         attendees {
           attendee_id
           attendee_join_type
@@ -35,6 +36,8 @@ export type ListMeetingDetailsQuery = {
       meeting_status?: string | null,
       external_meeting_id?: string | null,
       end_date_time?: string | null,
+      meeting_title?: string | null,
+      meeting_comments?: string | null,
       attendees?: Array< {
       __typename: "AttendeeDetail",
       attendee_id: string,

@@ -187,6 +187,7 @@ export const getMeetingDetail = /* GraphQL */ `
       end_date_time
       external_meeting_id
       meeting_comments
+      meeting_title
       attendees {
         attendee_id
         attendee_join_type
@@ -214,6 +215,7 @@ export const listMeetingDetails = /* GraphQL */ `
         end_date_time
         external_meeting_id
         meeting_comments
+        meeting_title
       }
       nextToken
     }
@@ -237,6 +239,7 @@ export const queryMeetingDetailsByMeetingStatusGsi = /* GraphQL */ `
         end_date_time
         external_meeting_id
         meeting_comments
+        meeting_title
       }
       nextToken
     }

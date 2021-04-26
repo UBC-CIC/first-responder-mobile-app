@@ -61,6 +61,7 @@ const Alerts = (): ReactElement => {
     setMeetings(relevantMeetings);
     console.log(relevantMeetings);
   };
+
   useEffect(() => {
     const f = async () => {
       const fetchedProfile = await getProfile({
@@ -171,7 +172,7 @@ const Alerts = (): ReactElement => {
           >
             {/* TODO Call to backend for topic of accident */}
             <p className={classes.emergencyTitle}>
-              {meeting.meeting_comments || "Emergency"}
+              {meeting.meeting_title || "Emergency"}
             </p>
           </Button>
         </div>
