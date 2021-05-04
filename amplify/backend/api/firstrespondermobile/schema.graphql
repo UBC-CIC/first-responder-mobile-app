@@ -153,10 +153,13 @@ type MeetingDetailConnection {
   nextToken: String
 }
 
-type MeetingInfo {
-  Attendee: AttendeeInfo
-  Meeting: MeetingData!
-  id: String!
+type JoinDataType {
+    meeting_id: String
+    attendee_id: String
+    external_user_id: String
+    join_token: String
+    media_placement: MediaPlacement
+    media_region: String
 }
 
 enum ModelAttributeTypes {
@@ -250,6 +253,14 @@ input ModelStringInput {
   size: ModelSizeInput
 }
 
+input JoinChimeMeetingInput {
+    phone_number: String!
+    meeting_id: String
+    external_meeting_id: String
+    external_attendee_id: String
+    location: GeolocationCoordinatesInput
+}
+
 type Mutation @aws_api_key {
   createFirstResponderProfile(
     input: CreateFirstResponderProfileInput!
@@ -264,17 +275,8 @@ type Mutation @aws_api_key {
     input: DeleteSpecialistProfileInput!
   ): SpecialistProfile
   joinChimeMeeting(
-    externalAttendeeId: String
-    firstName: String
-    lastName: String
-    phoneNumber: String
-    region: String
-    role: String
-    title: String
-    attendeeType: String
-    organization: String,
-    location: GeolocationCoordinatesInput
-  ): MeetingInfo @function(name: "firstresponderjoinmeeting-${env}")
+    input: JoinChimeMeetingInput!
+  ): JoinDataType @function(name: "FirstResponder-Data-ChimeMeeting")
   updateFirstResponderProfile(
     input: UpdateFirstResponderProfileInput!
   ): FirstResponderProfile
@@ -290,7 +292,7 @@ type Mutation @aws_api_key {
   createMeetingDetail(input: CreateMeetingDetailInput!): MeetingDetail
   updateMeetingDetail(input: UpdateMeetingDetailInput!): MeetingDetail
   deleteMeetingDetail(input: DeleteMeetingDetailInput!): MeetingDetail
-  generateMeetingId: String @function(name: "firstrespondergeneratesessionid-${env}")
+  generateMeetingId: String @function(name: "FirstResponder-Generate-Meeting-Id")
 }
 
 type Override {

@@ -97,24 +97,24 @@ const OnlineCallOverData = (): ReactElement => {
       console.log(state.location);
 
       await handleCreateandJoinMeeting(
+        phone as string,
         state.meetingId,
+        state.attendeeId,
         state.firstName,
         state.lastName,
-        state.role,
-        state.attendeeId,
-        phone as string,
-        attendeeType,
-        state.organization,
         state.location,
       );
     };
     f();
-    meetingManager.getAttendee = async (chimeAttendeeId) => {
+    meetingManager.getAttendee = async (chimeAttendeeId, externalUserId) => {
       try {
         if (!meetingManager.meetingId) {
+          console.error("Failed to get meeting Id");
+
           return Promise.resolve({ name: "Attendee" });
         }
         const res = await fetchMeetingAttendees({ meeting_id: meetingManager.meetingId });
+        console.log(res.data?.getMeetingDetail?.attendees);
 
         if (res.errors) {
           console.error(res.errors);
@@ -122,13 +122,29 @@ const OnlineCallOverData = (): ReactElement => {
         }
         const fetchedAttendees = res.data?.getMeetingDetail?.attendees;
 
-        if (!fetchedAttendees) { return Promise.resolve({ name: "Attendee" }); }
+        if (!fetchedAttendees) {
+          console.error("No fetched attendees");
 
-        const match = fetchedAttendees.find((attendee) => attendee?.attendee_id === chimeAttendeeId);
-        if (!match) return Promise.resolve({ name: "Attendee" });
+          return Promise.resolve({ name: "Attendee" });
+        }
+
+        console.log(chimeAttendeeId);
+
+        let match = fetchedAttendees.find((attendee) => attendee?.attendee_id === chimeAttendeeId);
+        console.log("Match: ", match);
+
+        if (!match) { match = attendees.find((attendee) => attendee.chimeAttendeeId === chimeAttendeeId) as any; }
+        if (!match) {
+          console.error("No match found");
+
+          return Promise.resolve({ name: "Attendee" });
+        }
         if (match.first_name) {
+          console.log("FIRSTNAME: ", match.first_name);
+
           const fullName = `${match.first_name} ${match.last_name}`;
-          if (match) return Promise.resolve({ name: fullName });
+
+          return Promise.resolve({ name: fullName });
         }
         return Promise.resolve({ name: "Attendee" });
       } catch (e) {
@@ -158,11 +174,10 @@ const OnlineCallOverData = (): ReactElement => {
           } as AttendeeType),
         );
         setAttendees(items);
-        setInMeeting(true);
       }
     };
     if (meetingManager.meetingId) f();
-  }, [roster]);
+  }, [meetingManager.meetingId, roster]);
 
   /** On change of audio/video when call starts */
   useEffect(() => {
@@ -228,14 +243,11 @@ const OnlineCallOverData = (): ReactElement => {
   };
 
   const handleCreateandJoinMeeting = async (
+    phoneNumber: string,
     meetingId: string,
+    externalAttendeeId: string,
     firstName: string,
     lastName: string,
-    role: string,
-    externalAttendeeId: string,
-    phoneNumber: string,
-    type: string,
-    organization?: string,
     location?: LatLong,
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
@@ -244,33 +256,39 @@ const OnlineCallOverData = (): ReactElement => {
         latitude: null,
         longitude: null,
       };
-      console.log(submitLocation);
 
       const joinRes = await joinMeeting({
-        title: meetingId,
-        firstName,
-        lastName,
-        role,
-        externalAttendeeId,
-        phoneNumber,
-        attendeeType: type,
-        organization,
-        location: submitLocation,
+        input: {
+          phone_number: phoneNumber,
+          external_attendee_id: externalAttendeeId,
+          external_meeting_id: meetingId,
+          location: submitLocation,
+        },
       });
 
       const fullName = `${firstName} ${lastName}`;
 
-      const meetingInfo = joinRes.data?.joinChimeMeeting?.Meeting;
+      const joinInfo = joinRes.data?.joinChimeMeeting;
+
+      const meetingInfo = {
+        MeetingId: joinInfo?.meeting_id,
+        MediaPlacement: joinInfo?.media_placement,
+        MediaRegion: joinInfo?.media_region,
+      };
+
       const attendeeInfo = {
-        ...joinRes.data?.joinChimeMeeting?.Attendee,
+        AttendeeId: joinInfo?.attendee_id,
+        ExternalUserId: joinInfo?.external_user_id,
+        JoinToken: joinInfo?.join_token,
         name: fullName,
-      } as AttendeeInfoType;
-      setMyAttendeeId(attendeeInfo.AttendeeId as string);
+      } as any;
+
+      setMyAttendeeId(joinInfo?.attendee_id as string);
       await meetingManager
         .join({ meetingInfo, attendeeInfo })
         .then(() => {
-          if (joinRes.data) {
-            console.log("success", joinRes);
+          if (joinInfo) {
+            console.log("success", joinInfo);
           } else {
             console.error(joinRes.errors);
           }
@@ -300,7 +318,6 @@ const OnlineCallOverData = (): ReactElement => {
   };
 
   const handleDisableVideo = () => {
-    console.log("disable video");
     toggleVideo(false);
     audioVideo
       ?.getAllRemoteVideoTiles()
@@ -311,17 +328,13 @@ const OnlineCallOverData = (): ReactElement => {
 
   const handleSwitch = () => {
     if (inMeeting) {
-      console.log("calling +1 888 599 8558");
       document.location.href = "tel:+18885998558";
     } else {
-      console.log("Creating New Meeting at +1 888 349 3697");
       document.location.href = "tel:+18883493697";
     }
   };
 
   const handleChangeToOffline = () => {
-    console.log(inMeeting);
-    // setOffline(true);
     setSuggestionShown(true);
     audioVideo?.stop();
   };

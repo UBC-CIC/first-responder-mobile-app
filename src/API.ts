@@ -87,31 +87,27 @@ export type DeleteSpecialistProfileInput = {
   phone_number: string,
 };
 
+export type JoinChimeMeetingInput = {
+  phone_number: string,
+  meeting_id?: string | null,
+  external_meeting_id?: string | null,
+  external_attendee_id?: string | null,
+  location?: GeolocationCoordinatesInput | null,
+};
+
 export type GeolocationCoordinatesInput = {
   latitude?: number | null,
   longitude?: number | null,
 };
 
-export type MeetingInfo = {
-  __typename: "MeetingInfo",
-  Attendee?: AttendeeInfo,
-  Meeting?: MeetingData,
-  id?: string,
-};
-
-export type AttendeeInfo = {
-  __typename: "AttendeeInfo",
-  AttendeeId?: string | null,
-  ExternalUserId?: string | null,
-  JoinToken?: string | null,
-};
-
-export type MeetingData = {
-  __typename: "MeetingData",
-  MeetingId?: string,
-  ExternalMeetingId?: string | null,
-  MediaPlacement?: MediaPlacement,
-  MediaRegion?: string,
+export type JoinDataType = {
+  __typename: "JoinDataType",
+  meeting_id?: string | null,
+  attendee_id?: string | null,
+  external_user_id?: string | null,
+  join_token?: string | null,
+  media_placement?: MediaPlacement,
+  media_region?: string | null,
 };
 
 export type MediaPlacement = {
@@ -414,34 +410,27 @@ export type DeleteSpecialistProfileMutation = {
 };
 
 export type JoinChimeMeetingMutationVariables = {
-  externalAttendeeId?: string | null,
-  firstName?: string | null,
-  lastName?: string | null,
-  phoneNumber?: string | null,
-  region?: string | null,
-  role?: string | null,
-  title?: string | null,
-  attendeeType?: string | null,
-  organization?: string | null,
-  location?: GeolocationCoordinatesInput | null,
+  input?: JoinChimeMeetingInput,
 };
 
 export type JoinChimeMeetingMutation = {
   joinChimeMeeting?:  {
-    __typename: "MeetingInfo",
-    Attendee?:  {
-      __typename: "AttendeeInfo",
-      AttendeeId?: string | null,
-      ExternalUserId?: string | null,
-      JoinToken?: string | null,
+    __typename: "JoinDataType",
+    meeting_id?: string | null,
+    attendee_id?: string | null,
+    external_user_id?: string | null,
+    join_token?: string | null,
+    media_placement?:  {
+      __typename: "MediaPlacement",
+      AudioFallbackUrl?: string | null,
+      AudioHostUrl?: string | null,
+      ScreenDataUrl?: string | null,
+      ScreenSharingUrl?: string | null,
+      ScreenViewingUrl?: string | null,
+      SignalingUrl?: string | null,
+      TurnControlUrl?: string | null,
     } | null,
-    Meeting:  {
-      __typename: "MeetingData",
-      MeetingId: string,
-      ExternalMeetingId?: string | null,
-      MediaRegion: string,
-    },
-    id: string,
+    media_region?: string | null,
   } | null,
 };
 

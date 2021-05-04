@@ -4,7 +4,7 @@ import {
   JoinChimeMeetingMutation,
   JoinChimeMeetingMutationVariables,
 } from "../../API";
-import { joinChimeMeeting } from "./graphql/joinChimeMeetingMutation";
+import { joinChimeMeeting } from "../../graphql/mutations";
 
 const joinMeeting = async (
   options: JoinChimeMeetingMutationVariables,

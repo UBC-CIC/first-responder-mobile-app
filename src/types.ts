@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { AttendeeInfo, CreateFirstResponderProfileInput, CreateSpecialistProfileInput } from "./API";
+import { CreateFirstResponderProfileInput, CreateSpecialistProfileInput } from "./API";
 
 export type CognitoUser = {
   Session: any;
@@ -51,7 +51,6 @@ export type LatLong = {
 export type AlertsStateType= {
   meetings?: MeetingType[];
 }
-export type AttendeeInfoType = AttendeeInfo & {name: string};
 
 export type AttendeeType = RosterAttendeeType & { user_role: string };
 
@@ -161,4 +160,11 @@ export type FileInfo = {
   size: number,
   url: string,
   key: string,
+}
+
+export type AttendeeInfoType = {
+  attendee_id: string,
+  external_user_id: string,
+  join_token: string,
+  name: string,
 }

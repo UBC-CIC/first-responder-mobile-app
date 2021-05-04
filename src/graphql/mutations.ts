@@ -71,41 +71,22 @@ export const deleteSpecialistProfile = /* GraphQL */ `
   }
 `;
 export const joinChimeMeeting = /* GraphQL */ `
-  mutation JoinChimeMeeting(
-    $externalAttendeeId: String
-    $firstName: String
-    $lastName: String
-    $phoneNumber: String
-    $region: String
-    $role: String
-    $title: String
-    $attendeeType: String
-    $organization: String
-    $location: GeolocationCoordinatesInput
-  ) {
-    joinChimeMeeting(
-      externalAttendeeId: $externalAttendeeId
-      firstName: $firstName
-      lastName: $lastName
-      phoneNumber: $phoneNumber
-      region: $region
-      role: $role
-      title: $title
-      attendeeType: $attendeeType
-      organization: $organization
-      location: $location
-    ) {
-      Attendee {
-        AttendeeId
-        ExternalUserId
-        JoinToken
+  mutation JoinChimeMeeting($input: JoinChimeMeetingInput!) {
+    joinChimeMeeting(input: $input) {
+      meeting_id
+      attendee_id
+      external_user_id
+      join_token
+      media_placement {
+        AudioFallbackUrl
+        AudioHostUrl
+        ScreenDataUrl
+        ScreenSharingUrl
+        ScreenViewingUrl
+        SignalingUrl
+        TurnControlUrl
       }
-      Meeting {
-        MeetingId
-        ExternalMeetingId
-        MediaRegion
-      }
-      id
+      media_region
     }
   }
 `;
