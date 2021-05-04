@@ -19,8 +19,6 @@ const RosterDisplay = ({
 }): ReactElement => {
   const [rerender, setRerender] = useState(false);
   useEffect(() => {
-    console.log(attendees);
-    console.log(Object.values(roster));
     setRerender(!rerender);
   }, [roster, attendees]);
   const attendeeItems = attendees.map((attendee) => {

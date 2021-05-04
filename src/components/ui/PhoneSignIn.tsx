@@ -74,7 +74,6 @@ const SignIn = () => {
   const [numFails, setNumFails] = useState(0);
   const handleStartAuth = async () => {
     const formattedNumber = `+${phoneNumber}`;
-    console.log(formattedNumber);
 
     try {
       setAuthState(AuthState.STARTED);
@@ -103,7 +102,6 @@ const SignIn = () => {
   const handleOTP = async () => {
     try {
       const cognitoUser = await Auth.sendCustomChallengeAnswer(user, password);
-      console.log(cognitoUser);
       if (cognitoUser.username) {
         localStorage.setItem("firstresponderphonenumber", cognitoUser.username);
       }

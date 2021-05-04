@@ -22,12 +22,10 @@ const useLocation = () => {
     const f = async () => {
       try {
         const gotLocation = await getLocation();
-        console.log("gotLocation", gotLocation);
 
         setLocation(() => gotLocation);
         const coords: any = {};
         for (const key in gotLocation.coords) {
-          console.log(key);
           coords[key] = (gotLocation.coords as any)[key];
         }
         const stringableGeolocation = {
@@ -44,10 +42,8 @@ const useLocation = () => {
     };
     if (!sessionStorage.getItem("geolocation")) {
       f();
-      console.log("navigation getlocation");
     } else {
       const fullPosition = JSON.parse(sessionStorage.getItem("geolocation") as string)as GeolocationPosition;
-      console.log(fullPosition.coords);
 
       setError(() => null);
       setLocation(() => fullPosition);

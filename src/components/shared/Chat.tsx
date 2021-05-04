@@ -37,7 +37,6 @@ function useMessageSubscription(audioVideo: AudioVideoFacade) {
   useEffect(() => {
     if (audioVideo) {
       audioVideo?.realtimeSubscribeToReceiveDataMessage("chat", async (message) => {
-        console.log(message);
         const messageData = JSON.parse(Buffer.from(message.data).toString()) as Message;
         messageData.url = await getS3URL(messageData, messageData.meetingId as string);
         dispatch({ type: "add", payload: messageData });

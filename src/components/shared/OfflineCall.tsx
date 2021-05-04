@@ -7,7 +7,6 @@ const OfflineCall = (): ReactElement => {
   const globalClasses = useGlobalStyles();
 
   useEffect(() => {
-    console.log("calling +1 888 651 1946");
     document.location.href = "tel:1-888-651-1946";
   }, []);
   return (

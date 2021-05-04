@@ -59,7 +59,6 @@ const Alerts = (): ReactElement => {
     if (!phoneNumber) return;
     const relevantMeetings = await getRelevantMeetings(phoneNumber);
     setMeetings(relevantMeetings);
-    console.log(relevantMeetings);
   };
 
   useEffect(() => {
@@ -69,7 +68,6 @@ const Alerts = (): ReactElement => {
       });
       setProfile(fetchedProfile);
     };
-    console.log(user);
 
     if (user) {
       f();
@@ -88,8 +86,6 @@ const Alerts = (): ReactElement => {
       next: (
         response: SubscriptionValue<OnUpdateMeetingDetailSubscription>,
       ) => {
-        console.log(response);
-
         getRelevant();
       },
     });
@@ -104,8 +100,6 @@ const Alerts = (): ReactElement => {
       next: (
         response: SubscriptionValue<OnUpdateMeetingDetailSubscription>,
       ) => {
-        console.log(response);
-
         getRelevant();
       },
     });
@@ -134,7 +128,6 @@ const Alerts = (): ReactElement => {
           );
         },
       });
-      console.log("subscription ready");
     };
 
     subscribeUpdateMeetings();
@@ -144,8 +137,6 @@ const Alerts = (): ReactElement => {
     if (id) {
       history.push("/call", {
         meetingId: id,
-        firstName: profile?.first_name || SPECIALIST_NAME,
-        lastName: profile?.last_name || "",
         role: profile?.user_role || SPECIALIST_NAME,
         attendeeId: sessionId,
         parent: "/main/alerts",

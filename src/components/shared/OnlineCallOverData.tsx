@@ -1,11 +1,9 @@
 import {
-  Button, Drawer, makeStyles, Snackbar,
+  Button, makeStyles, Snackbar,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import PhoneIcon from "@material-ui/icons/Phone";
 import {
-  MicSelection,
-  SpeakerSelection,
   useAudioVideo,
   useBandwidthMetrics,
   useLocalVideo,
@@ -15,13 +13,12 @@ import {
 } from "amazon-chime-sdk-component-library-react";
 import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
 import React, {
-  ReactElement, useContext, useEffect, useState,
+  ReactElement, useEffect, useState,
 } from "react";
 import { useHistory } from "react-router-dom";
 import "../../styles/Call.css";
 import "../../styles/VideoCall.css";
 import {
-  AttendeeInfoType,
   AttendeeType,
   ConnectionState,
   LatLong,
@@ -29,7 +26,6 @@ import {
 } from "../../types";
 import { joinMeeting } from "../calls";
 import fetchMeetingAttendees from "../calls/fetchMeetingAttendee";
-import OfflineContext from "../context/OfflineContext";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import Colors from "../styling/Colors";
 import SnackBarActions from "../ui/Alert";
@@ -67,7 +63,6 @@ const useStyles = makeStyles({
 });
 
 const OnlineCallOverData = (): ReactElement => {
-  const { offline, setOffline } = useContext(OfflineContext);
   const { toggleVideo: toggleLocalVideo } = useLocalVideo();
   const classes = useStyles();
   const audioVideo = useAudioVideo();
@@ -94,14 +89,10 @@ const OnlineCallOverData = (): ReactElement => {
   /** On mount join meeting */
   useEffect(() => {
     const f = async () => {
-      console.log(state.location);
-
       await handleCreateandJoinMeeting(
         phone as string,
         state.meetingId,
         state.attendeeId,
-        state.firstName,
-        state.lastName,
         state.location,
       );
     };
@@ -114,7 +105,6 @@ const OnlineCallOverData = (): ReactElement => {
           return Promise.resolve({ name: "Attendee" });
         }
         const res = await fetchMeetingAttendees({ meeting_id: meetingManager.meetingId });
-        console.log(res.data?.getMeetingDetail?.attendees);
 
         if (res.errors) {
           console.error(res.errors);
@@ -128,10 +118,7 @@ const OnlineCallOverData = (): ReactElement => {
           return Promise.resolve({ name: "Attendee" });
         }
 
-        console.log(chimeAttendeeId);
-
         let match = fetchedAttendees.find((attendee) => attendee?.attendee_id === chimeAttendeeId);
-        console.log("Match: ", match);
 
         if (!match) { match = attendees.find((attendee) => attendee.chimeAttendeeId === chimeAttendeeId) as any; }
         if (!match) {
@@ -140,8 +127,6 @@ const OnlineCallOverData = (): ReactElement => {
           return Promise.resolve({ name: "Attendee" });
         }
         if (match.first_name) {
-          console.log("FIRSTNAME: ", match.first_name);
-
           const fullName = `${match.first_name} ${match.last_name}`;
 
           return Promise.resolve({ name: fullName });
@@ -246,8 +231,6 @@ const OnlineCallOverData = (): ReactElement => {
     phoneNumber: string,
     meetingId: string,
     externalAttendeeId: string,
-    firstName: string,
-    lastName: string,
     location?: LatLong,
   ) => {
     /** Get Meeting data from Lambda call to DynamoDB */
@@ -266,8 +249,6 @@ const OnlineCallOverData = (): ReactElement => {
         },
       });
 
-      const fullName = `${firstName} ${lastName}`;
-
       const joinInfo = joinRes.data?.joinChimeMeeting;
 
       const meetingInfo = {
@@ -280,7 +261,6 @@ const OnlineCallOverData = (): ReactElement => {
         AttendeeId: joinInfo?.attendee_id,
         ExternalUserId: joinInfo?.external_user_id,
         JoinToken: joinInfo?.join_token,
-        name: fullName,
       } as any;
 
       setMyAttendeeId(joinInfo?.attendee_id as string);
@@ -289,6 +269,7 @@ const OnlineCallOverData = (): ReactElement => {
         .then(() => {
           if (joinInfo) {
             console.log("success", joinInfo);
+            setInMeeting(true);
           } else {
             console.error(joinRes.errors);
           }

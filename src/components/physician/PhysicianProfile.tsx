@@ -79,7 +79,6 @@ const PhysicianProfile = (): ReactElement => {
   useEffect(() => {
     const f = async () => {
       const profile = await fetchPhysicianProfile({ phone_number: user.attributes.phone_number });
-      console.log(profile?.user_status);
       if (profile?.user_status === "OFFLINE") {
         setAvailable(false);
       } else {

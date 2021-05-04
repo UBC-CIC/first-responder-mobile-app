@@ -98,14 +98,11 @@ const FirstResponderMain = (): ReactElement => {
     const g = async () => {
       if (!sessionStorage.getItem("firstrespondersessionid")) {
         const id: string = await generateSessionId();
-        // const id: string = "test";
-        console.log("Session ID: ", id);
 
         sessionStorage.setItem("firstrespondersessionid", id);
       }
     };
     if (!sessionStorage.getItem("firstrespondersessionid")) g();
-    console.log(sessionStorage.getItem("firstrespondersessionid"));
   }, []);
 
   const handleSignOut = () => {
@@ -136,8 +133,6 @@ const FirstResponderMain = (): ReactElement => {
             onClick={() => {
               history.push("/call", {
                 meetingId: sessionStorage.getItem("firstrespondersessionid"),
-                firstName: profile?.first_name || FR_NAME.first,
-                lastName: profile?.last_name || FR_NAME.last,
                 role: profile?.occupation || FR_NAME.full,
                 attendeeId: sessionId,
                 parent: "/main",
