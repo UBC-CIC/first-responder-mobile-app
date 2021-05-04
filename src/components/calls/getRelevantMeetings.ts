@@ -2,8 +2,6 @@ import { MeetingDetail } from "../../API";
 import listAllMeetingDetails from "./listMeetingDetails";
 
 export const getRelevantMeetings = async (phoneNumber: string): Promise<undefined | MeetingDetail[]> => {
-  console.log(phoneNumber);
-
   const res = await listAllMeetingDetails({
     filter: {
       meeting_status: {

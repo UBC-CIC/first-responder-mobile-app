@@ -1,12 +1,13 @@
 import {
+  MicrophoneActivity,
   Roster,
   RosterAttendee,
   RosterGroup,
   RosterHeader,
 } from "amazon-chime-sdk-component-library-react";
-import { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { FR_NAME } from "../../Constants";
-import { AttendeeType, RosterType } from "../../types";
+import { AttendeeDetails, AttendeeType, RosterType } from "../../types";
 
 const RosterDisplay = ({
   attendees,
@@ -24,35 +25,44 @@ const RosterDisplay = ({
   const attendeeItems = attendees.map((attendee) => {
     const { chimeAttendeeId, user_role } = attendee;
 
-    const matchedAttendee = Object.values(roster).find((currAttendee) => currAttendee.chimeAttendeeId === chimeAttendeeId);
-    const matchedChimeID = matchedAttendee?.chimeAttendeeId;
+    if (!roster[chimeAttendeeId] || !chimeAttendeeId) return null;
 
-    if (noMicIcon && user_role === FR_NAME.full) {
-      return (
-        <RosterAttendee
-          subtitle={user_role}
-          key={matchedChimeID}
-          attendeeId={matchedChimeID as string}
-          microphone={<div />}
-        />
-      );
-    }
     return (
       <RosterAttendee
-        subtitle={user_role}
-        key={matchedChimeID}
-        attendeeId={matchedChimeID as string}
+        subtitle={user_role || ""}
+        key={chimeAttendeeId}
+        attendeeId={chimeAttendeeId}
+        microphone={<MicrophoneActivity attendeeId={chimeAttendeeId} />}
       />
     );
   });
 
+  const attendeeItemsLeft = attendees.map((attendee) => {
+    const {
+      chimeAttendeeId, user_role, first_name, last_name,
+    } = attendee as any;
+    console.log(attendees);
+
+    if (!roster[chimeAttendeeId]) {
+      return (
+        <RosterAttendee
+          subtitle={first_name ? `${first_name} ${last_name}` : user_role || ""}
+          key={chimeAttendeeId}
+          attendeeId={chimeAttendeeId}
+          microphone={<div />}
+        />
+      );
+    } return null;
+  });
+
   const rosterJSON = JSON.parse(JSON.stringify(roster));
-  // console.log("ROSTER GOT ATTENDEES: ", attendees);
 
   return (
     <Roster>
       <RosterHeader title="Present" badge={Object.values(rosterJSON).length} />
       <RosterGroup>{attendeeItems}</RosterGroup>
+      <RosterHeader title="Left" />
+      <RosterGroup>{attendeeItemsLeft}</RosterGroup>
     </Roster>
   );
 };

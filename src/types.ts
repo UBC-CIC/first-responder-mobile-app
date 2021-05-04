@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CreateFirstResponderProfileInput, CreateSpecialistProfileInput } from "./API";
 
@@ -167,4 +168,13 @@ export type AttendeeInfoType = {
   external_user_id: string,
   join_token: string,
   name: string,
+}
+
+export type AttendeeDetails = RosterAttendeeType & { user_role: string; attendee_type: AttendeeVariant; };
+
+export enum AttendeeVariant {
+  FIRST_RESPONDER = "FIRST_RESPONDER",
+  SPECIALIST = "SPECIALIST",
+  SERVICE_DESK = "SERVICE_DESK",
+  NOT_SPECIFIED = "NOT_SPECIFIED",
 }
