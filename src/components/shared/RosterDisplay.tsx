@@ -41,7 +41,6 @@ const RosterDisplay = ({
     const {
       chimeAttendeeId, user_role, first_name, last_name,
     } = attendee as any;
-    console.log(attendees);
 
     if (!roster[chimeAttendeeId]) {
       return (

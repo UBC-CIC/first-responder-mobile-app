@@ -16,6 +16,7 @@ import React, {
   ReactElement, useEffect, useState,
 } from "react";
 import { useHistory } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 import "../../styles/Call.css";
 import "../../styles/VideoCall.css";
 import {
@@ -30,6 +31,7 @@ import usePhoneNumber from "../hooks/usePhoneNumber";
 import Colors from "../styling/Colors";
 import SnackBarActions from "../ui/Alert";
 import Layout from "../ui/Layout";
+import { useQuery } from "./Call";
 import Chat from "./Chat";
 import RosterDisplay from "./RosterDisplay";
 
@@ -70,7 +72,22 @@ const OnlineCallOverData = (): ReactElement => {
   const { roster } = useRosterState();
   const history = useHistory<MeetingStateType>();
   const state = history.location?.state;
-  const phone = state?.phoneNumber || usePhoneNumber();
+  const params = useQuery();
+
+  const phoneBase64 = params.get("p");
+  let phoneFromParams;
+  if (phoneBase64) {
+    phoneFromParams = `+${Buffer.from(phoneBase64, "base64").toString("ascii")}`;
+  }
+
+  const meetingIdBase64 = params.get("m");
+  let meetingIdFromParams;
+  if (meetingIdBase64) {
+    meetingIdFromParams = `${Buffer.from(meetingIdBase64, "base64").toString("ascii")}`;
+  }
+  const phone = phoneFromParams || state?.phoneNumber || usePhoneNumber();
+  const meetingId = meetingIdFromParams || state?.meetingId;
+  const attendeeId = params.get("a") || state?.attendeeId || uuid();
   const metrics = useBandwidthMetrics();
   const [localVideoShown, setLocalVideoShown] = useState(false);
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
@@ -82,18 +99,15 @@ const OnlineCallOverData = (): ReactElement => {
   const [packetLoss, setPacketLoss] = useState(0);
   const [lossCount, setLossCount] = useState(0);
   const [inMeeting, setInMeeting] = useState(false);
-  const attendeeType = localStorage.getItem("firstresponderphonenumber")
-    ? "FIRST_RESPONDER"
-    : "SPECIALIST";
   const [myAttendeeId, setMyAttendeeId] = useState("");
   /** On mount join meeting */
   useEffect(() => {
     const f = async () => {
       await handleCreateandJoinMeeting(
         phone as string,
-        state.meetingId,
-        state.attendeeId,
-        state.location,
+        meetingId,
+        attendeeId,
+        state?.location,
       );
     };
     f();
@@ -229,7 +243,7 @@ const OnlineCallOverData = (): ReactElement => {
 
   const handleCreateandJoinMeeting = async (
     phoneNumber: string,
-    meetingId: string,
+    externalMeetingId: string,
     externalAttendeeId: string,
     location?: LatLong,
   ) => {
@@ -244,7 +258,7 @@ const OnlineCallOverData = (): ReactElement => {
         input: {
           phone_number: phoneNumber,
           external_attendee_id: externalAttendeeId,
-          external_meeting_id: meetingId,
+          external_meeting_id: externalMeetingId,
           location: submitLocation,
         },
       });
@@ -331,7 +345,7 @@ const OnlineCallOverData = (): ReactElement => {
   return (
     <Layout
       title="Online Conference"
-      parent={state.parent}
+      parent="/main"
       onChangeToOffline={() => handleChangeToOffline()}
     >
       {!suggestionShown ? (
@@ -359,7 +373,7 @@ const OnlineCallOverData = (): ReactElement => {
             Toggle Video
           </Button>
           <div style={{ overflow: "auto", flex: 1 }}>
-            <Chat meetingId={state.meetingId} attendeeId={myAttendeeId} attendees={roster} />
+            <Chat meetingId={meetingId} attendeeId={myAttendeeId} attendees={roster} />
           </div>
         </div>
       ) : (
