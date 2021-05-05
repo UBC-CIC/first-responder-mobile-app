@@ -13,14 +13,6 @@
     },
     "categories": {
       "function": {
-        "firstresponderjoinmeeting": {
-          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstresponderjoinmeeting-496369684e345151455a-build.zip"
-        },
-        "firstrespondergeneratesessionid": {
-          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstrespondergeneratesessionid-694a73775862352b4152-build.zip"
-        },
         "firstrespondermobileCreateAuthChallenge": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
           "s3Key": "amplify-builds/firstrespondermobileCreateAuthChallenge-4352514c7678726d3469-build.zip"

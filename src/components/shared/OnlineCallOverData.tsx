@@ -27,6 +27,7 @@ import {
 } from "../../types";
 import { joinMeeting } from "../calls";
 import fetchMeetingAttendees from "../calls/fetchMeetingAttendee";
+import { useMeetingInfo } from "../hooks/useMeetingInfo";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import Colors from "../styling/Colors";
 import SnackBarActions from "../ui/Alert";
@@ -70,24 +71,9 @@ const OnlineCallOverData = (): ReactElement => {
   const audioVideo = useAudioVideo();
   const meetingManager = useMeetingManager();
   const { roster } = useRosterState();
-  const history = useHistory<MeetingStateType>();
-  const state = history.location?.state;
-  const params = useQuery();
-
-  const phoneBase64 = params.get("p");
-  let phoneFromParams;
-  if (phoneBase64) {
-    phoneFromParams = `${Buffer.from(phoneBase64, "base64").toString("ascii")}`;
-  }
-
-  const meetingIdBase64 = params.get("m");
-  let meetingIdFromParams;
-  if (meetingIdBase64) {
-    meetingIdFromParams = `${Buffer.from(meetingIdBase64, "base64").toString("ascii")}`;
-  }
-  const phone = phoneFromParams || state?.phoneNumber || usePhoneNumber();
-  const meetingId = meetingIdFromParams || state?.meetingId;
-  const attendeeId = params.get("a") || state?.attendeeId || uuid();
+  const {
+    phone, meetingId, attendeeId, location: locationInfo,
+  } = useMeetingInfo();
   const metrics = useBandwidthMetrics();
   const [localVideoShown, setLocalVideoShown] = useState(false);
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
@@ -107,7 +93,7 @@ const OnlineCallOverData = (): ReactElement => {
         phone as string,
         meetingId,
         attendeeId,
-        state?.location,
+        locationInfo,
       );
     };
     f();

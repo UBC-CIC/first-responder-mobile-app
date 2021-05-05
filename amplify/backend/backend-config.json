@@ -63,16 +63,6 @@
     }
   },
   "function": {
-    "firstresponderjoinmeeting": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
-    "firstrespondergeneratesessionid": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "firstrespondermobileCreateAuthChallenge": {
       "build": true,
       "providerPlugin": "awscloudformation",
