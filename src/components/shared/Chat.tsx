@@ -30,7 +30,7 @@ function reducer(state:ChatReducerState, action:any) {
   default: return state;
   }
 }
-
+/** Helper Hook for connecting to GraphQL Subscriptions and updating the context */
 function useMessageSubscription(audioVideo: AudioVideoFacade) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -78,7 +78,7 @@ type ChatProps = {attendeeId?: string,
 
 const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => {
   const audioVideo = useAudioVideo();
-
+  const [error, setError] = useState("");
   const { messages, dispatch } = useMessageSubscription(audioVideo as AudioVideoFacade);
   const [currMessage, setCurrMessage] = useState("");
   const classes = useStyles();
@@ -93,6 +93,7 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
     );
   }
 
+  /** Sends a JSON of the message, including a body, senderId, name and size of an optional file */
   const handleSendMessage = async (body: string) => {
     const message:Message = {
       body,
@@ -103,6 +104,13 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
     };
 
     setCurrFile(undefined);
+    const size = Buffer.from(JSON.stringify(message)).byteLength;
+    console.log(size);
+    if (size > 2048) {
+      setError("Your message is too big to send");
+      return;
+    }
+
     audioVideo?.realtimeSendDataMessage("chat", message);
     message.url = await getS3URL(message, meetingId);
     dispatch({ type: "add", payload: message });
@@ -169,20 +177,26 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
               />
             </div>
           )}
-          <TextField
-            value={currMessage}
-            label="Send a message"
-            onChange={(e) => setCurrMessage(e.target.value)}
-            InputLabelProps={{
-              className: classes.inputLabel,
-            }}
-            InputProps={{
-              className: classes.inputLabel,
-            }}
-            helperText={currFile ? `Current File: ${currFile.name}` : ""}
-            className={classes.textField}
-            onKeyUp={(e) => handleSubmit(e)}
-          />
+          <div className="flex column">
+            <TextField
+              value={currMessage}
+              label="Send a message"
+              onChange={(e) => {
+                setError("");
+                setCurrMessage(e.target.value);
+              }}
+              InputLabelProps={{
+                className: classes.inputLabel,
+              }}
+              InputProps={{
+                className: classes.inputLabel,
+              }}
+              helperText={currFile ? `Current File: ${currFile.name}` : ""}
+              className={classes.textField}
+              onKeyUp={(e) => handleSubmit(e)}
+            />
+            <p>{error}</p>
+          </div>
         </div>
         <div className="picker">
           <input

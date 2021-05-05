@@ -10,6 +10,7 @@ export const useQuery = () => {
   return params;
 };
 
+/** Shows user a call screen according to their internet connection */
 const Call = (): ReactElement => {
   const history = useHistory<MeetingStateType>();
   const params = useQuery();

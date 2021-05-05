@@ -1,3 +1,4 @@
+/** Meeting Logic and Handler */
 import {
   Button, makeStyles, Snackbar,
 } from "@material-ui/core";

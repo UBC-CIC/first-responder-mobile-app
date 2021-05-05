@@ -1,3 +1,4 @@
+/** Screen for unauthenticated view, points user to either PSTN Join or PSTN Create */
 import { Button, makeStyles } from "@material-ui/core";
 import React from "react";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";

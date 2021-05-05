@@ -1,3 +1,4 @@
+/** Navbar at top of app */
 import {
   AppBar,
   IconButton,

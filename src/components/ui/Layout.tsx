@@ -1,3 +1,4 @@
+/** Main container for every screen in app */
 import CSS from "csstype";
 import { ReactElement, ReactNode } from "react";
 import { useHistory } from "react-router-dom";

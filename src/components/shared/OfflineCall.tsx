@@ -1,3 +1,4 @@
+/** Sends the yser to the create pstn phone number, to be called on their cell phone. */
 import { Button } from "@material-ui/core";
 import { ReactElement, useEffect } from "react";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";

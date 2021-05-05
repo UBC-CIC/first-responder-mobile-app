@@ -1,3 +1,4 @@
+/** Displays the region and country in text form */
 import { CircularProgress, makeStyles } from "@material-ui/core";
 import { Language, LocationCity } from "@material-ui/icons";
 import React from "react";

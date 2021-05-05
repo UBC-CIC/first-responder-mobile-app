@@ -1,3 +1,4 @@
+/** One-Time Password Login with Phone Number */
 import Auth from "@aws-amplify/auth";
 import {
   Button,

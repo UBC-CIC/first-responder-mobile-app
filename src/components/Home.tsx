@@ -40,7 +40,6 @@ Amplify.configure({
     userPoolWebClientId: config.aws_user_pools_web_client_id,
   },
   API: {
-    // ...config,
     apiKey: config.aws_appsync_apiKey,
   },
   Analytics: {
