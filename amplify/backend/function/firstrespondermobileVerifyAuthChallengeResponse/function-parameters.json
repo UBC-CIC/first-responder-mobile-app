@@ -1,0 +1,17 @@
+{
+  "trigger": true,
+  "modules": [
+    "custom"
+  ],
+  "parentResource": "firstrespondermobile",
+  "functionName": "firstrespondermobileVerifyAuthChallengeResponse",
+  "resourceName": "firstrespondermobileVerifyAuthChallengeResponse",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "/Users/trevorflanigan/.local/share/nvm/v15.10.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/triggers/VerifyAuthChallengeResponse",
+  "triggerTemplate": "VerifyAuthChallengeResponse.json.ejs",
+  "triggerEventPath": "VerifyAuthChallengeResponse.event.json",
+  "roleName": "firstrespondermobileVerifyAuthChallengeResponse",
+  "skipEdit": true,
+  "enableCors": false
+}

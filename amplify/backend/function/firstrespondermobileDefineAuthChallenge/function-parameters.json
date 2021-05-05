@@ -1,0 +1,17 @@
+{
+  "trigger": true,
+  "modules": [
+    "custom"
+  ],
+  "parentResource": "firstrespondermobile",
+  "functionName": "firstrespondermobileDefineAuthChallenge",
+  "resourceName": "firstrespondermobileDefineAuthChallenge",
+  "parentStack": "auth",
+  "triggerEnvs": [],
+  "triggerDir": "/Users/trevorflanigan/.local/share/nvm/v15.10.0/lib/node_modules/@aws-amplify/cli/node_modules/amplify-category-auth/provider-utils/awscloudformation/triggers/DefineAuthChallenge",
+  "triggerTemplate": "DefineAuthChallenge.json.ejs",
+  "triggerEventPath": "DefineAuthChallenge.event.json",
+  "roleName": "firstrespondermobileDefineAuthChallenge",
+  "skipEdit": true,
+  "enableCors": false
+}

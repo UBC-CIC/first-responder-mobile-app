@@ -20,6 +20,22 @@
         "firstrespondergeneratesessionid": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
           "s3Key": "amplify-builds/firstrespondergeneratesessionid-694a73775862352b4152-build.zip"
+        },
+        "firstrespondermobileCreateAuthChallenge": {
+          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+          "s3Key": "amplify-builds/firstrespondermobileCreateAuthChallenge-4352514c7678726d3469-build.zip"
+        },
+        "firstrespondermobileDefineAuthChallenge": {
+          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+          "s3Key": "amplify-builds/firstrespondermobileDefineAuthChallenge-6e79575a4d5062706243-build.zip"
+        },
+        "firstrespondermobilePreSignup": {
+          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+          "s3Key": "amplify-builds/firstrespondermobilePreSignup-554b6a3171686f496a56-build.zip"
+        },
+        "firstrespondermobileVerifyAuthChallengeResponse": {
+          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+          "s3Key": "amplify-builds/firstrespondermobileVerifyAuthChallengeResponse-587747764b6c52472f74-build.zip"
         }
       },
       "auth": {

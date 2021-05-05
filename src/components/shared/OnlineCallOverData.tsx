@@ -77,7 +77,7 @@ const OnlineCallOverData = (): ReactElement => {
   const phoneBase64 = params.get("p");
   let phoneFromParams;
   if (phoneBase64) {
-    phoneFromParams = `+${Buffer.from(phoneBase64, "base64").toString("ascii")}`;
+    phoneFromParams = `${Buffer.from(phoneBase64, "base64").toString("ascii")}`;
   }
 
   const meetingIdBase64 = params.get("m");
