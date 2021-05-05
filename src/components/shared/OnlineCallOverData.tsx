@@ -15,24 +15,19 @@ import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
 import React, {
   ReactElement, useEffect, useState,
 } from "react";
-import { useHistory } from "react-router-dom";
-import { v4 as uuid } from "uuid";
 import "../../styles/Call.css";
 import "../../styles/VideoCall.css";
 import {
   AttendeeType,
   ConnectionState,
   LatLong,
-  MeetingStateType,
 } from "../../types";
 import { joinMeeting } from "../calls";
 import fetchMeetingAttendees from "../calls/fetchMeetingAttendee";
 import { useMeetingInfo } from "../hooks/useMeetingInfo";
-import usePhoneNumber from "../hooks/usePhoneNumber";
 import Colors from "../styling/Colors";
 import SnackBarActions from "../ui/Alert";
 import Layout from "../ui/Layout";
-import { useQuery } from "./Call";
 import Chat from "./Chat";
 import RosterDisplay from "./RosterDisplay";
 
@@ -221,12 +216,14 @@ const OnlineCallOverData = (): ReactElement => {
     }
   }, [metrics.availableOutgoingBandwidth, packetLoss]);
 
+  /** Switches the view to an alert that links to  */
   const handleSuggestPSTN = () => {
     setSuggestionShown(true);
     handleDisableVideo();
     setConnectionState(ConnectionState.POOR);
   };
 
+  /** Calls to lambda to join or create a meeting  */
   const handleCreateandJoinMeeting = async (
     phoneNumber: string,
     externalMeetingId: string,
@@ -281,10 +278,12 @@ const OnlineCallOverData = (): ReactElement => {
     }
   };
 
+  /** Handler for the useEffect  */
   const handleLeaveMeeting = () => {
     meetingManager.leave();
   };
 
+  /** Wrapper for the Chime SDK toggle function. Does not enable camera if connection is poor */
   const handleToggleCamera = () => {
     if (connectionState === ConnectionState.POOR) {
       setWarningShown(true);
@@ -293,11 +292,13 @@ const OnlineCallOverData = (): ReactElement => {
     }
   };
 
+  /** Toggle Camera Button event handler */
   const toggleVideo = (toSet?: boolean) => {
     if (toSet === undefined || toSet !== localVideoShown) toggleLocalVideo();
     setLocalVideoShown(toSet !== undefined ? toSet : !localVideoShown);
   };
 
+  /** Disbles camera and warns user that connection cannot support video  */
   const handleDisableVideo = () => {
     toggleVideo(false);
     audioVideo
@@ -307,6 +308,7 @@ const OnlineCallOverData = (): ReactElement => {
     setWarningShown(true);
   };
 
+  /** On click of warning, points user to either PSTNCreate or PSTNJoin depending on if the meeting was already created or not. */
   const handleSwitch = () => {
     if (inMeeting) {
       document.location.href = "tel:+18885998558";
@@ -314,12 +316,13 @@ const OnlineCallOverData = (): ReactElement => {
       document.location.href = "tel:+18883493697";
     }
   };
-
+  /** If connection drops, show user a PSTN Suggestion */
   const handleChangeToOffline = () => {
     setSuggestionShown(true);
     audioVideo?.stop();
   };
 
+  /** Handler for Snackbar UI */
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
       return;
