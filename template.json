@@ -196,16 +196,6 @@
         }
       }
     },
-    "hostingS3AndCloudFront": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-starspwa-dev-152341-deployment/amplify-cfn-templates/hosting/template.json",
-        "Parameters": {
-          "bucketName": "starspwa-20210222135808-hostingbucket",
-          "env": "dev"
-        }
-      }
-    },
     "UpdateRolesWithIDPFunction": {
       "DependsOn": [
         "AuthRole",

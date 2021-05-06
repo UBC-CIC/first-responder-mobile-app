@@ -84,7 +84,6 @@
       "service": "Lambda"
     }
   },
-  "hosting": {},
   "storage": {
     "uploadedFiles": {
       "service": "S3",
