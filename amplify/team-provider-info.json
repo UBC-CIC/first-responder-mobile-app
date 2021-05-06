@@ -15,19 +15,19 @@
       "function": {
         "firstrespondermobileCreateAuthChallenge": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstrespondermobileCreateAuthChallenge-4352514c7678726d3469-build.zip"
+          "s3Key": "amplify-builds/firstrespondermobileCreateAuthChallenge-4231737179653070314f-build.zip"
         },
         "firstrespondermobileDefineAuthChallenge": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstrespondermobileDefineAuthChallenge-6e79575a4d5062706243-build.zip"
+          "s3Key": "amplify-builds/firstrespondermobileDefineAuthChallenge-32762b7354764b504e76-build.zip"
         },
         "firstrespondermobilePreSignup": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstrespondermobilePreSignup-554b6a3171686f496a56-build.zip"
+          "s3Key": "amplify-builds/firstrespondermobilePreSignup-7a495753634e5a696674-build.zip"
         },
         "firstrespondermobileVerifyAuthChallengeResponse": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstrespondermobileVerifyAuthChallengeResponse-587747764b6c52472f74-build.zip"
+          "s3Key": "amplify-builds/firstrespondermobileVerifyAuthChallengeResponse-4837515734432b384264-build.zip"
         }
       },
       "auth": {
