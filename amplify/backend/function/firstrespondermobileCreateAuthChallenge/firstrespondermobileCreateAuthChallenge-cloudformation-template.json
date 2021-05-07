@@ -193,6 +193,13 @@
                   }
                 ]
               }
+            },
+            {
+              "Action": [
+                "sns:*"
+              ],
+              "Effect": "Allow",
+              "Resource": "*"
             }
           ]
         }

@@ -15,7 +15,7 @@
       "function": {
         "firstrespondermobileCreateAuthChallenge": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstrespondermobileCreateAuthChallenge-4231737179653070314f-build.zip"
+          "s3Key": "amplify-builds/firstrespondermobileCreateAuthChallenge-4352514c7678726d3469-build.zip"
         },
         "firstrespondermobileDefineAuthChallenge": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
