@@ -10,22 +10,32 @@ The First Responder Mobile app serves to assist emergency responders in connecti
 - [Support](#support)
 - [Contributing](#contributing)
 
-## Documentation and Deployment
+## One-Click Deployment
 [![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/UBC-CIC/first-responder-mobile-app)
 
 ## Development
 
-- Import the certs in the certs/ directory to your machine. (You can also create your own Self Signed Certs if you do not want to trust these ones.)
+### HTTPS
+- Import the certificates in the certs/ directory to your machine. (You can also create your own Self Signed Certificates if you do not want to trust these ones.)
   - On Mac, open the RootCA.crt in finder, and double click to open with Keychain Access. Open localhost.crt and double click.
   - This should have added 2 untrusted certs to the system keychain. For both: Right Click -> Get Info -> Trust -> When using this certificate: Always Trust
 
-- yarn
-- yarn start
+> `npm install`
 
+> `npm start`
+
+### HTTP
+- If you do not want to run the app with HTTPS, you can simply run the following command
+> `npm run start-http`
 ## Installation
+### iOS
+- Open The app in Safari and press this button.![a2hs1](./assets/a2hs1.png)
+- Then add to your home screen by pressing this button![a2hs2](./assets/a2hs2.png)
 
-[Add to home screen](#) from your browser TODO
-
+### Android
+- Open the app on Chrome and press this button![a2hs2](./assets/a2hs3.png)
+- A prompt will ask you to install the app.
+- Open the app from your phone's home screen.
 ## Usage
 
 ### Medical Professionals
@@ -33,22 +43,10 @@ The First Responder Mobile app serves to assist emergency responders in connecti
 - [Install](#installation) App
 - [Request A Physician Account](#) TODO
   - Provide information like name, organization, field of expertise and availability.
-  - Once approved, allow push notifications and/or SMS notifications to be alerted when your assistance is required
+  - Once approved, you will be able to log in with your phone number, join calls, and view alerts.
 
 ### First Responders
 
 - [Install](#installation) App
-- Optionally create a first responder profile
-- Call into the [STARS Help Desk](#) TODO when medical expertise is required
-
-## Support
-
-Please [open an issue](#) for support, or contact the [UBC CIC](#) or [STARS](#) TODO
-
-## Contributing
-
-Create a branch, add commits, and [open a pull request](#). TODO
-
-## Important Things TODO
-
-- Pass name of DynamoDB to Lambda via CloudFormation
+- Log in with phone number
+- Call into the [STARS Help Desk](https://github.com/UBC-CIC/first-responder-admin) when medical expertise is required
