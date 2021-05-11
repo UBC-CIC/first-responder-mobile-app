@@ -26,9 +26,9 @@ detachAllPolicies(){
 }
 
 error(){
-    echo "Error Ocurred, Deleting Created Resources"
-    detachAllPolicies $1
-    deleteRole $1
+    echo "Error Ocurred, please retry. This operation may have created AWS resourses that should be deleted"
+    # detachAllPolicies $1
+    # deleteRole $1
     exit 1
 }
 
@@ -57,15 +57,12 @@ roleName=$tableName-ddb-access-data-source
 # Get the user's accountNumber for defining ARNS
 accountNumber=$(aws sts get-caller-identity --query Account --output text) || echo "Error getting AWS Account Number" exit 1
 
-echo "Got AWS Account Number: $accountNumber"
-
 trustPolicyDocument=""{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"appsync.amazonaws.com\"},\"Action\":\"sts:AssumeRole\"}]}""
 ddbPolicyDocument=""{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Action\":[\"dynamodb:DeleteItem\",\"dynamodb:GetItem\",\"dynamodb:PutItem\",\"dynamodb:Query\",\"dynamodb:Scan\",\"dynamodb:UpdateItem\"],\"Resource\":[\"arn:aws:dynamodb:ca-central-1:$accountNumber:table\/$tableName\",\"arn:aws:dynamodb:ca-central-1:$accountNumber:table\/$tableName\/*\"]}]}""
 
 # get the role that will define DataSource permissions
+echo "Creating or Getting IAM Role: $roleName"
 serviceRoleArn=$(aws iam create-role --role-name $roleName --assume-role-policy-document $trustPolicyDocument --query Role.Arn --output text || aws iam get-role --role-name $roleName --query Role.Arn --output text)
-
-echo "ROLE ARN: $serviceRoleArn"
 
 aws iam put-role-policy --role-name $roleName --policy-name $roleName-policy --policy-document $ddbPolicyDocument | echo "Attaching DDB Policy to Role $roleName" || error "$roleName"
 
@@ -73,6 +70,4 @@ aws iam put-role-policy --role-name $roleName --policy-name $roleName-policy --p
 
 dataSourceName=$(sed -E 's/-([a-z])/\1/g' <<< $tableName)
 
-echo $dataSourceName
-
-aws appsync create-data-source --api-id $ApiId --name "$dataSourceName" --type AMAZON_DYNAMODB --dynamodb-config tableName=$tableName,awsRegion=$region --service-role-arn $serviceRoleArn || error "$roleName"
+aws appsync create-data-source --api-id $ApiId --name "$dataSourceName" --type AMAZON_DYNAMODB --dynamodb-config tableName=$tableName,awsRegion=$region --service-role-arn $serviceRoleArn && echo "" || error "$roleName"
