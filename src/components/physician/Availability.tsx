@@ -20,7 +20,9 @@ type GroupedTimeBlocks = {
 type AvailabilityPropsType = {
   onUnmount?: (success:boolean) => void;
 }
-
+/** Displays the Schedule component. Handles logic with storing
+ * availability data into DDB
+ */
 const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): ReactElement => {
   const user = useAuthenticatedUser();
   const [formattedAvailability, setFormattedAvailability] = useState<FullAvailabilityType | undefined>();

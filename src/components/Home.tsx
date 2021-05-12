@@ -47,6 +47,10 @@ Amplify.configure({
   },
 });
 
+/** Component rendered at root of app. Handles session state using localStorage of phone numbers
+ * Contains links to both specialist and responder flows. If the user cannot log in due to bad connection,
+ * there are links to create or join a call over PSTN, as well.
+ */
 const Home = (): ReactElement => {
   const history = useHistory();
   const buttonClasses = useButtonClasses();
@@ -92,7 +96,6 @@ const Home = (): ReactElement => {
             <Button
               classes={{ root: buttonClasses.root, label: buttonClasses.label }}
               onClick={() => {
-                // Amplify.Auth.configure(config);
                 history.push("/physicianLogin");
               }}
             >

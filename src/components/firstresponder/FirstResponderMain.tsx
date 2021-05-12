@@ -52,6 +52,7 @@ const useStyles = makeStyles({
   center: { textAlign: "center" },
 });
 
+/** Main screen for responders. Links to profile, creating a call, signing out. */
 const FirstResponderMain = (): ReactElement => {
   const history = useHistory();
   const classes = useStyles();
@@ -130,6 +131,7 @@ const FirstResponderMain = (): ReactElement => {
           <Fab
             variant="extended"
             className={`${globalClasses.button} ${globalClasses.coral}`}
+            /** Uses history.state to send data to call component.  */
             onClick={() => {
               history.push("/call", {
                 meetingId: sessionStorage.getItem("firstrespondersessionid"),

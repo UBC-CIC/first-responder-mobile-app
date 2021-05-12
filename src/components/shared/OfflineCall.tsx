@@ -4,6 +4,7 @@ import { ReactElement, useEffect } from "react";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
 
+/** Prompts user to join/create a call over PSTN. */
 const OfflineCall = (): ReactElement => {
   const globalClasses = useGlobalStyles();
 

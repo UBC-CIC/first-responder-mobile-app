@@ -57,6 +57,9 @@ const useButtonClasses = makeStyles({
   },
 });
 
+/** Main screen for specialists. Shows number of pending alerts on a bell icon.
+ * Contains a link to Edit Profile, and shows user's location if it is available.
+ */
 const PhysicianMain = (): ReactElement => {
   const history = useHistory();
   const user = useAuthenticatedUser();

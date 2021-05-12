@@ -46,6 +46,9 @@ const useStyles = makeStyles({
   },
 });
 
+/** Screen for updating profile information. Currently collects super basic info.
+ * This schema should be make more concrete in a production-ready app.
+ */
 const FirstResponderProfile = (): ReactElement => {
   const phone = usePhoneNumber();
   if (!phone) return <Redirect to="/" />;
@@ -143,6 +146,7 @@ const FirstResponderProfile = (): ReactElement => {
     }, 500);
   };
 
+  /** Quick TextField Component */
   const renderTextField = (field: keyof FirstResponderProfileType, label?: string) => (
     <DarkModeTextField
       label={label}

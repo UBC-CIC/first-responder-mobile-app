@@ -19,7 +19,10 @@ const useButtonClasses = makeStyles({
     color: "#fff",
   },
 });
-
+/** Component that is used when a user has no internet
+ * and cannot login to the app. Allows anybody to create a
+ * meeting or join an existing one via PSTN.
+ * */
 const BadConnection = () => {
   const buttonClasses = useButtonClasses();
   const globalClasses = useGlobalStyles();

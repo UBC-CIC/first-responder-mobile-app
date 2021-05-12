@@ -45,6 +45,9 @@ const useStyles = makeStyles({
   },
 });
 
+/** Component for editing a physician's profile.
+ * Updates the specialist-profile table.
+ */
 const ContactInfo = (): ReactElement => {
   const [phone, setPhone] = useState("");
   const [success, setSuccess] = useState(false);

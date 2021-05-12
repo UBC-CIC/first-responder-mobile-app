@@ -44,6 +44,12 @@ const useButtonClasses = makeStyles({
   },
 });
 
+/** Fetches and displays meetings that are relevant to the
+ * user. i.e. Meetings which contain this user's phone number as
+ * an attendee. BUGFIX: Subscription does not work all the time.
+ * Should add a lambda trigger to DDB table that sends an UpdateMeetingDetail
+ * event to this app's AppSync API. Currently worked around with refresh button.
+ */
 const Alerts = (): ReactElement => {
   const [meetings, setMeetings] = useState<MeetingDetail[] | undefined>([]);
   const user = useAuthenticatedUser();

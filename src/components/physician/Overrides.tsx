@@ -64,6 +64,11 @@ const useStyles = makeStyles({
   },
 });
 
+/** Unfinished in interest of time and complications with
+ * existing availability-selection options. This functionality of
+ * clocking-in and -out should be handled using an existing infrastructure
+ * that is already commonly used by specialists.
+ */
 const Overrides = ({
   onUnmount = () => undefined,
 }: AvailabilityPropsType): ReactElement => {

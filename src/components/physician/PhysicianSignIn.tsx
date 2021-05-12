@@ -69,6 +69,13 @@ const DarkTextField = withStyles({
     },
   },
 })(TextField);
+
+/** Component for login logic for specialists. Currently prevents users from signing up
+ *  if the specialist-profile table does not contain their phone number.
+ *  This was a naive approach, but it was done because we are unsure which party will be doing
+ *  specialist verification. So as long as they have been accepted into the table, they will
+ *  have been verified. This verification step should be added concretely in a production-ready app.
+ * */
 const PhysicianSignIn = () => {
   const classes = useStyles();
 

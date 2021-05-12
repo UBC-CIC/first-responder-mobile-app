@@ -5,6 +5,7 @@ import AuthTheme from "../ui/AuthTheme";
 import Header from "../ui/Header";
 import PhysicianSignIn from "./PhysicianSignIn";
 
+/** Physician Login Component */
 const PhysicianLogin = () => {
   if (localStorage.getItem("physicianphonenumber")) {
     return <Redirect to="/main" />;

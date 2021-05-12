@@ -21,6 +21,10 @@ type ChatReducerState = {
 
 const initialState = { messages: [] as Message[] };
 
+/** Reducer is used to handle the state of the current messages.
+ * This was required due to details with GraphQL Subscriptions
+ * and UseEffect.
+ */
 function reducer(state:ChatReducerState, action:any) {
   switch (action.type) {
   case "set":
@@ -75,6 +79,8 @@ const getS3URL = async (message: Message, meetingId:string) => {
 type ChatProps = {attendeeId?: string,
   attendees?:any,
   meetingId: string}
+
+/** Component for text chat during meeting. Allows for sending files using S3.  */
 
 const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => {
   const audioVideo = useAudioVideo();

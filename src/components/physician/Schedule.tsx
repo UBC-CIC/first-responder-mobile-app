@@ -51,6 +51,10 @@ type ScheduleProps = {
   initialSchedule?: boolean[][];
 };
 
+/** Component that works like a selectable grid. Specialists can
+ * choose their availability week-by-week here. If a specialist
+ * needs to take time off, they should use the unfinished overrides component,
+ */
 const Schedule = ({ initialSchedule, onChange = (arr: boolean[][]) => undefined }: ScheduleProps): ReactElement => {
   const [highlighted, setHighlighted] = useState(_.cloneDeep(FALSE_BOOLEAN_ARRAY));
   const [selected, setSelected] = useState(initialSchedule || _.cloneDeep(FALSE_BOOLEAN_ARRAY));

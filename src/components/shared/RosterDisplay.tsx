@@ -10,6 +10,8 @@ import React, { ReactElement, useEffect, useState } from "react";
 import { FR_NAME } from "../../Constants";
 import { AttendeeDetails, AttendeeType, RosterType } from "../../types";
 
+/** Displays attendees in UI, with name and role
+ * if available in the meeting-detail.attendees column in DDB  */
 const RosterDisplay = ({
   attendees,
   roster,

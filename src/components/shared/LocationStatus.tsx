@@ -28,6 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
+/** Dumb Component for showing the user's location in UI */
 const LocationStatus = ({ location, locationLoading, locationError }: {location?: GeolocationCoordinates, locationLoading: boolean, locationError?: Error | null}) => {
   const classes = useStyles();
   if (locationLoading) {

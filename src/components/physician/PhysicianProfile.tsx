@@ -69,6 +69,9 @@ const useStyles = makeStyles({
   },
 });
 
+/** Links to editing contact info, sign-out, and
+ * availability component.
+ */
 const PhysicianProfile = (): ReactElement => {
   const history = useHistory();
   const globalClasses = useGlobalStyles();

@@ -5,6 +5,9 @@ import AuthTheme from "../ui/AuthTheme";
 import Header from "../ui/Header";
 import PhoneSignIn from "../ui/PhoneSignIn";
 
+/** Phone OTP login for first responders. Creates a cognito user automatically
+ * if this is a new phone number. Used to prove ownership of a phone number.
+ */
 const FirstResponderLogin = () => {
   if (localStorage.getItem("firstresponderphonenumber")) {
     return (

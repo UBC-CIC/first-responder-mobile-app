@@ -61,6 +61,12 @@ const useStyles = makeStyles({
   selectText: { fontFamily: "Montserrat", textAlign: "center" },
 });
 
+/** Controller and UI for Online Video Call. Renders Chat, Roster, Video,
+ * and Input/Output selection. If a call has been started, and internet drops,
+ * suggests the user to join a phone call over PSTN. If the call has not been started
+ * and the internet drops, prompts the user to create a meeting over PSTN. Tracks the
+ * quality of the call using audio packets. TODO: Add UI for being removed / call ending.
+ */
 const OnlineCallOverData = (): ReactElement => {
   const { toggleVideo: toggleLocalVideo } = useLocalVideo();
   const classes = useStyles();
