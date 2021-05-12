@@ -32,7 +32,7 @@ const BadConnection = () => {
         <div className={`${globalClasses.wideButtonContainer} `}>
           <Button
             component="a"
-            href="tel:1-888-651-1946"
+            href={`tel:${process.env.REACT_APP_CREATE_PHONE_NUMBER}`}
             classes={{
               root: buttonClasses.root,
               label: buttonClasses.label,
@@ -43,7 +43,7 @@ const BadConnection = () => {
           </Button>
           <Button
             component="a"
-            href="tel:+18885998558"
+            href={`tel:${process.env.REACT_APP_JOIN_PHONE_NUMBER}`}
             classes={{
               root: buttonClasses.root,
               label: buttonClasses.label,

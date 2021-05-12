@@ -1,7 +1,7 @@
 /** Displays the region and country in text form */
-import { CircularProgress, makeStyles } from "@material-ui/core";
+import { Button, CircularProgress, makeStyles } from "@material-ui/core";
 import { Language, LocationCity } from "@material-ui/icons";
-import React from "react";
+import React, { useState } from "react";
 import reverse from "reverse-geocode";
 import { GeolocationCoordinates } from "../../types";
 import Colors from "../styling/Colors";
@@ -28,14 +28,62 @@ const useStyles = makeStyles({
   },
 });
 
+const LocationError = ({
+  onClick,
+  errorMessage,
+}: {
+  onClick: Function;
+  errorMessage?: string;
+}) => (
+  <div className="flex column align justify">
+    <p style={{ color: "white", textAlign: "center" }}>{errorMessage || "Error Getting Location"}</p>
+    <Button
+      variant="contained"
+      onClick={() => {
+        onClick();
+      }}
+    >
+      Retry
+    </Button>
+  </div>
+);
+
 /** Dumb Component for showing the user's location in UI */
-const LocationStatus = ({ location, locationLoading, locationError }: {location?: GeolocationCoordinates, locationLoading: boolean, locationError?: Error | null}) => {
+const LocationStatus = ({
+  location,
+  locationLoading,
+  locationError,
+  retry,
+}: {
+  location?: GeolocationCoordinates;
+  locationLoading: boolean;
+  locationError?: Error | null;
+  retry: Function;
+}) => {
+  const [error, setError] = useState("");
   const classes = useStyles();
   if (locationLoading) {
     return <CircularProgress />;
   }
   if (locationError) {
-    return <p>Error Getting Location</p>;
+    return (
+      <LocationError
+        errorMessage={error}
+        onClick={() => {
+          navigator.permissions.query({ name: "geolocation" }).then((e) => {
+            e.onchange = () => retry();
+            console.log(e.state);
+            if (e.state === "denied") {
+              setError("Location Access Denied. Please allow the app to use location in your device's settings");
+            } else if (e.state === "prompt") {
+              setError("Location Access Denied. Please allow the app to use location in your device's settings");
+            }
+          });
+          retry();
+          console.log("Retry");
+        }}
+      />
+    );
   }
   if (location) {
     const { latitude, longitude } = location;
@@ -59,7 +107,15 @@ const LocationStatus = ({ location, locationLoading, locationError }: {location?
       );
     }
   }
-  return <p>Error Getting Location</p>;
+  return (
+    <LocationError
+      errorMessage="Error"
+      onClick={() => navigator.geolocation.getCurrentPosition(
+        (p) => console.log(p),
+        (e) => console.log(e),
+      )}
+    />
+  );
 };
 
 export default LocationStatus;

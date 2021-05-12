@@ -9,7 +9,7 @@ const OfflineCall = (): ReactElement => {
   const globalClasses = useGlobalStyles();
 
   useEffect(() => {
-    document.location.href = "tel:1-888-651-1946";
+    document.location.href = process.env.REACT_APP_CREATE_PHONE_NUMBER!;
   }, []);
   return (
     <Layout
@@ -21,7 +21,7 @@ const OfflineCall = (): ReactElement => {
         <Button
           className={globalClasses.wideButton}
           component="a"
-          href="tel:1-888-651-1946"
+          href={`tel:${process.env.REACT_APP_CREATE_PHONE_NUMBER}`}
           type="phone"
         >
           Phone Call

@@ -67,7 +67,9 @@ const PhysicianMain = (): ReactElement => {
   const buttonClasses = useButtonClasses();
   const globalClasses = useGlobalStyles();
   const [meetings, setMeetings] = useState<MeetingDetail[] | undefined | null>();
-  const { location, loading: locationLoading, error: locationError } = useLocation();
+  const {
+    location, loading: locationLoading, error: locationError, retry,
+  } = useLocation();
 
   useEffect(() => {
     const f = async () => {
@@ -130,6 +132,7 @@ const PhysicianMain = (): ReactElement => {
           location={location}
           locationLoading={locationLoading}
           locationError={locationError}
+          retry={retry}
         />
       </div>
     </Layout>

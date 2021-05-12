@@ -4,7 +4,17 @@ backend:
     build:
       commands:
         - '# Execute Amplify CLI with the helper script'
+        - REACT_APP_CREATE_PHONE_NUMBER=+18883493697
+        - REACT_APP_JOIN_PHONE_NUMBER=+18885998558
         - amplifyPush --simple
+    postBuild:
+      commands: 
+        - export AWS_REGION=$(aws configure get region)
+        - export ACCOUNTID=$(aws sts get-caller-identity --query Account --output text)
+        - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
+        - export ENV_NAME=$(cat ./amplify/.config/local-env-info.json | jq -r '.envName')
+        - export API_ID=$(./deployment/getApiIdByName.bat ${PROJECT_NAME}-${ENV_NAME})
+        - echo $API_ID
 frontend:
   phases:
     preBuild:

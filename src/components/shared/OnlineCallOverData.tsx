@@ -11,6 +11,10 @@ import {
   useMeetingManager,
   useRosterState,
   VideoTileGrid,
+  useToggleLocalMute,
+  IconButton,
+  Microphone,
+  Camera,
 } from "amazon-chime-sdk-component-library-react";
 import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
 import React, {
@@ -71,6 +75,7 @@ const OnlineCallOverData = (): ReactElement => {
   const { toggleVideo: toggleLocalVideo } = useLocalVideo();
   const classes = useStyles();
   const audioVideo = useAudioVideo();
+  const { muted, toggleMute } = useToggleLocalMute();
   const meetingManager = useMeetingManager();
   const { roster } = useRosterState();
   const {
@@ -318,9 +323,9 @@ const OnlineCallOverData = (): ReactElement => {
   /** On click of warning, points user to either PSTNCreate or PSTNJoin depending on if the meeting was already created or not. */
   const handleSwitch = () => {
     if (inMeeting) {
-      document.location.href = "tel:+18885998558";
+      document.location.href = `tel:${process.env.REACT_APP_JOIN_PHONE_NUMBER}`;
     } else {
-      document.location.href = "tel:+18883493697";
+      document.location.href = `tel:${process.env.REACT_APP_CREATE_PHONE_NUMBER}`;
     }
   };
   /** If connection drops, show user a PSTN Suggestion */
@@ -361,13 +366,20 @@ const OnlineCallOverData = (): ReactElement => {
             )}
           />
 
-          <Button
-            variant="contained"
-            disabled={connectionState === ConnectionState.POOR}
-            onClick={() => handleToggleCamera()}
+          <div
+            className="flex row"
+            style={{
+              justifyContent: "space-evenly",
+              backgroundColor: "white",
+              borderRadius: 5,
+              padding: 5,
+            }}
           >
-            Toggle Video
-          </Button>
+            <IconButton label="Video" variant="icon" unselectable="on" selected icon={<Camera disabled={!localVideoShown} />} onClick={handleToggleCamera} />
+
+            <IconButton label="Mute" variant="icon" unselectable="on" selected icon={<Microphone muted={muted} />} onClick={toggleMute} />
+          </div>
+
           <div style={{ overflow: "auto", flex: 1 }}>
             <Chat meetingId={meetingId} attendeeId={myAttendeeId} attendees={roster} />
           </div>

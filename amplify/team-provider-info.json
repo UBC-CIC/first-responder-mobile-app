@@ -27,7 +27,7 @@
         },
         "firstrespondermobileVerifyAuthChallengeResponse": {
           "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
-          "s3Key": "amplify-builds/firstrespondermobileVerifyAuthChallengeResponse-4837515734432b384264-build.zip"
+          "s3Key": "amplify-builds/firstrespondermobileVerifyAuthChallengeResponse-4a5374716d476d346b43-build.zip"
         }
       },
       "auth": {

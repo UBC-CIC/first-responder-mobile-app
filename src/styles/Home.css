@@ -19,9 +19,11 @@
 
 .header-text {
   margin-top: 20%;
-  color: #fff;
-  font-family: "Signika Negative", sans-serif;
-  font-size: 36px;
+  color: #E1011B;
+  font-weight: bold;
+  font-style: italic;
+  font-family: "Montserrat", sans-serif;
+  font-size: 48px;
   width: 90%;
   text-align: center;
 }

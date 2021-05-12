@@ -63,7 +63,9 @@ const FirstResponderMain = (): ReactElement => {
   const phone = usePhoneNumber();
   const sessionId = useSessionId();
   const [profile, setProfile] = useState<FirstResponderProfileType>();
-  const { location, loading: locationLoading, error: locationError } = useLocation();
+  const {
+    location, loading: locationLoading, error: locationError, retry,
+  } = useLocation();
 
   /** Fetch Profile Info */
   useEffect(() => {
@@ -154,7 +156,7 @@ const FirstResponderMain = (): ReactElement => {
             variant="extended"
             component="a"
             className={`${globalClasses.button} ${globalClasses.coral}`}
-            href="tel:1-888-651-1946"
+            href={`tel:${process.env.REACT_APP_CREATE_PHONE_NUMBER}`}
           >
             <PhoneIcon className={classes.icon} />
             Call STARS over PHONE LINE
@@ -172,6 +174,7 @@ const FirstResponderMain = (): ReactElement => {
           location={location}
           locationLoading={locationLoading}
           locationError={locationError}
+          retry={retry}
         />
         <Fab
           variant="extended"

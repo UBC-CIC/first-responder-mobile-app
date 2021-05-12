@@ -17,6 +17,14 @@ const useLocation = () => {
   const [location, setLocation] = useState<GeolocationPosition>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null | Error>();
+  const [rerender, setRerender] = useState(false);
+
+  const retry = () => {
+    setLoading(true);
+    setLocation(undefined);
+    setError(null);
+    setRerender(!rerender);
+  };
 
   useEffect(() => {
     const f = async () => {
@@ -49,9 +57,11 @@ const useLocation = () => {
       setLocation(() => fullPosition);
       setLoading(() => false);
     }
-  }, []);
+  }, [rerender]);
 
-  return { location: location?.coords, loading, error };
+  return {
+    location: location?.coords, loading, error, retry,
+  };
 };
 
 export default useLocation;

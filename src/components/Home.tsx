@@ -11,6 +11,7 @@ import { CognitoUser } from "../types";
 import Colors from "./styling/Colors";
 import { useGlobalStyles } from "./styling/GlobalMuiStyles";
 import Layout from "./ui/Layout";
+import stars from "../assets/stars.svg";
 
 const useButtonClasses = makeStyles({
   root: {
@@ -81,7 +82,11 @@ const Home = (): ReactElement => {
     <Layout noHeader>
       <div className="home-root">
         <div className="header-container">
-          <div className="header-text">STARS Emergency Support</div>
+          <div className="header-text">
+            <img alt="STARS Logo" src={stars} />
+            {" "}
+            Emergency Response
+          </div>
         </div>
         <div className="body-container">
           <div className={`${globalClasses.wideButtonContainer} `}>
