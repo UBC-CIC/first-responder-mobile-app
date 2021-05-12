@@ -50,6 +50,10 @@
     }
   },
   "Outputs": {
+    "AppSyncApiId": {
+      "Description": "The id of the AppSync API associated with this project.",
+      "Value": {"Ref": "AppSyncApiId" }
+    },
     "EmptyOutput": {
       "Description": "An empty output. You may delete this if you have at least one resource above.",
       "Value": ""
