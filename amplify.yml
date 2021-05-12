@@ -5,6 +5,7 @@ backend:
       commands:
         - '# Execute Amplify CLI with the helper script'
         - amplifyPush --simple
+        - !GetAtt firstrespondermobile.ApiId
 frontend:
   phases:
     preBuild:
