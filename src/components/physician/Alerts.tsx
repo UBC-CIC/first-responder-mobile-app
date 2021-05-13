@@ -163,7 +163,6 @@ const Alerts = (): ReactElement => {
             classes={{ root: classes.root, label: classes.label }}
             onClick={() => handleJoin(meeting.external_meeting_id)}
           >
-            {/* TODO Call to backend for topic of accident */}
             <p className={classes.emergencyTitle}>
               {meeting.meeting_title || "Emergency"}
             </p>

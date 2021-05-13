@@ -79,7 +79,7 @@ const OnlineCallOverData = (): ReactElement => {
   const meetingManager = useMeetingManager();
   const { roster } = useRosterState();
   const {
-    phone, meetingId, attendeeId, location: locationInfo,
+    phone, meetingId: externalMeetingId, attendeeId, location: locationInfo,
   } = useMeetingInfo();
   const metrics = useBandwidthMetrics();
   const [localVideoShown, setLocalVideoShown] = useState(false);
@@ -96,7 +96,7 @@ const OnlineCallOverData = (): ReactElement => {
     const f = async () => {
       await handleCreateandJoinMeeting(
         phone as string,
-        meetingId,
+        externalMeetingId,
         attendeeId,
         locationInfo,
       );
@@ -176,7 +176,6 @@ const OnlineCallOverData = (): ReactElement => {
       meetingManager.audioVideoObservers.metricsDidReceive = (metric) => {
         const loss = metric.getObservableMetrics()
           .audioPacketsReceivedFractionLoss;
-        console.log(loss);
 
         setPacketLoss(loss);
       };
@@ -202,8 +201,6 @@ const OnlineCallOverData = (): ReactElement => {
   useEffect(() => {
     if (packetLoss > 0) {
       if (lossCount + 1 > MAX_LOSS) {
-        console.log("Lost too many packets");
-
         handleSuggestPSTN();
       } else {
         setLossCount(lossCount + 1);
@@ -226,7 +223,7 @@ const OnlineCallOverData = (): ReactElement => {
   /** Calls to lambda to join or create a meeting  */
   const handleCreateandJoinMeeting = async (
     phoneNumber: string,
-    externalMeetingId: string,
+    emid: string,
     externalAttendeeId: string,
     location?: LatLong,
   ) => {
@@ -241,7 +238,7 @@ const OnlineCallOverData = (): ReactElement => {
         input: {
           phone_number: phoneNumber,
           external_attendee_id: externalAttendeeId,
-          external_meeting_id: externalMeetingId,
+          external_meeting_id: emid,
           location: submitLocation,
         },
       });
@@ -323,6 +320,7 @@ const OnlineCallOverData = (): ReactElement => {
     setWarningShown(false);
   };
 
+  /** State Machine for Rendering correct components */
   const renderMeetingFromState = () => {
     if (!navigator.onLine) {
       setMeetingState(() => MeetingState.POOR);
@@ -337,14 +335,15 @@ const OnlineCallOverData = (): ReactElement => {
         />
       );
     case MeetingState.ENDED:
-      return <MeetingEnded />; // todo
+      return <MeetingEnded />;
     case MeetingState.STARTING:
     case MeetingState.CONNECTED:
       return (
         <ConnectedMeetingView
           roster={roster}
+          meetingId={meetingManager.meetingId || ""}
           myAttendeeId={myAttendeeId}
-          meetingId={meetingId}
+          externalMeetingId={externalMeetingId}
           attendees={attendees}
         />
       );

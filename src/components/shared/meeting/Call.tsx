@@ -1,14 +1,10 @@
 import React, { ReactElement, useContext } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { MeetingStateType } from "../../../types";
 import OfflineContext from "../../context/OfflineContext";
+import { useQuery } from "../../hooks/useQuery";
 import OfflineCall from "./OfflineCall";
 import OnlineCallOverData from "./OnlineCallOverData";
-
-export const useQuery = () => {
-  const params = new URLSearchParams(useLocation().search);
-  return params;
-};
 
 /** Shows user a call screen according to their internet connection */
 const Call = (): ReactElement => {

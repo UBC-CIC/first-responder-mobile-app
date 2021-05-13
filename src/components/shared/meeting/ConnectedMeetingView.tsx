@@ -1,18 +1,20 @@
 import { makeStyles } from "@material-ui/core";
 import { VideoTileGrid } from "amazon-chime-sdk-component-library-react";
-import React from "react";
+import React, { useState } from "react";
 import Chat from "./Chat";
 import MeetingControls from "./MeetingControls";
 import NoVideoView from "./NoVideoView";
 import RosterDisplay from "./RosterDisplay";
 import "../../../styles/VideoCall.css";
 import { AttendeeType, RosterType } from "../../../types";
+import Notes from "./Notes";
 
 type ConnectedMeetingViewProps = {
     roster: RosterType;
     attendees: AttendeeType[];
-    meetingId: string;
+    externalMeetingId: string;
     myAttendeeId: string;
+    meetingId: string;
 };
 
 const useStyles = makeStyles({
@@ -26,11 +28,12 @@ const useStyles = makeStyles({
 const ConnectedMeetingView = ({
   roster,
   attendees,
-  meetingId,
+  externalMeetingId,
   myAttendeeId,
+  meetingId,
 }:ConnectedMeetingViewProps) => {
   const classes = useStyles();
-
+  const [notes, setNotes] = useState(false);
   return (
     <div className="video-container">
       <RosterDisplay roster={roster} attendees={attendees} />
@@ -43,13 +46,16 @@ const ConnectedMeetingView = ({
         )}
       />
 
+      <Notes meetingId={meetingId} externalMeetingId={externalMeetingId} show={notes} setShow={setNotes} />
+
       <MeetingControls
-        meetingId={meetingId}
+        handleToggle={() => setNotes(true)}
+        meetingId={externalMeetingId}
         handleEndMeeting={() => {}}
       />
 
       <div style={{ overflow: "auto", flex: 1 }}>
-        <Chat meetingId={meetingId} attendeeId={myAttendeeId} attendees={roster} />
+        <Chat meetingId={externalMeetingId} attendeeId={myAttendeeId} attendees={roster} />
       </div>
     </div>
   );
