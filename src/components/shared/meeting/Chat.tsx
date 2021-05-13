@@ -5,15 +5,14 @@ import {
   ChatBubble, MessageAttachment, useAudioVideo,
 } from "amazon-chime-sdk-component-library-react";
 import { AudioVideoFacade } from "amazon-chime-sdk-js";
-import { Picker } from "aws-amplify-react";
 import byteSize from "byte-size";
 import React, {
   ReactElement, useEffect, useReducer, useState,
 } from "react";
 import ScrollableFeed from "react-scrollable-feed";
-import "../../styles/Chat.css";
-import { Message, PickerType } from "../../types";
-import Colors from "../styling/Colors";
+import "../../../styles/Chat.css";
+import { Message, PickerType } from "../../../types";
+import Colors from "../../styling/Colors";
 
 type ChatReducerState = {
   messages:Message[]
@@ -111,7 +110,6 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
 
     setCurrFile(undefined);
     const size = Buffer.from(JSON.stringify(message)).byteLength;
-    console.log(size);
     if (size > 2048) {
       setError("Your message is too big to send");
       return;
@@ -132,7 +130,7 @@ const Chat = ({ attendeeId, attendees, meetingId }: ChatProps): ReactElement => 
   const handleUpload = async (e: PickerType) => {
     // naive way of making unique file names per file
     setCurrFile(() => e);
-    const res:any = await Storage.put(`${meetingId}/${e.size}${e.name}`, e.file, { level: "public" });
+    await Storage.put(`${meetingId}/${e.size}${e.name}`, e.file, { level: "public" });
   };
   return (
     <div className="flex column align chatContainer">

@@ -10,6 +10,7 @@ import "react-phone-input-2/lib/style.css";
 import "../../styles/firstresponder/SignIn.css";
 import { fetchPhysicianProfile } from "../calls";
 import Colors from "../styling/Colors";
+import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
 
 // eslint-disable-next-line no-shadow
@@ -40,6 +41,8 @@ const useStyles = makeStyles({
   },
   errorText: {
     color: Colors.theme.error,
+    textAlign: "center",
+    marginTop: "1em",
   },
   header: {
     color: Colors.theme.platinum,
@@ -78,7 +81,7 @@ const DarkTextField = withStyles({
  * */
 const PhysicianSignIn = () => {
   const classes = useStyles();
-
+  const globalClasses = useGlobalStyles();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState<any>();
@@ -135,7 +138,7 @@ const PhysicianSignIn = () => {
     case AuthState.ERROR:
       return "There was an error signing up: please check internet connection and try again";
     case AuthState.NOT_AUTHENTICATED:
-      return "There was an error signing up: you are not registered as a certified specialist";
+      return "You are not registered as a certified specialist";
     case AuthState.INCORRECT:
       return "Incorrect One Time Password";
     default:
@@ -154,20 +157,23 @@ const PhysicianSignIn = () => {
         value={phoneNumber}
         onChange={(phone) => {
           setPhoneNumber(phone);
+          setAuthState(AuthState.NOT_STARTED);
         }}
-        disabled={authState === AuthState.NOT_AUTHENTICATED}
+        disabled={authState === AuthState.STARTED}
       />
       <Button
         variant="contained"
         className={classes.button}
         onClick={() => handleStartAuth()}
-        disabled={authState === AuthState.NOT_AUTHENTICATED}
+        disabled={authState === AuthState.NOT_AUTHENTICATED || authState === AuthState.STARTED}
       >
         Sign In
       </Button>
       <FormHelperText className={classes.errorText}>
         {renderErrorMessage()}
       </FormHelperText>
+      {authState === AuthState.NOT_AUTHENTICATED
+      && <Button onClick={() => alert("Take user to specialist registration")} className={`${globalClasses.coral} ${globalClasses.button}`}>Register as a Specialist</Button>}
     </div>
   );
 

@@ -1,6 +1,8 @@
 import { GraphQLResult, GRAPHQL_AUTH_MODE } from "@aws-amplify/api";
-import { CircularProgress, Fab, makeStyles } from "@material-ui/core";
-import { Save } from "@material-ui/icons";
+import {
+  CircularProgress, Fab, makeStyles, Snackbar,
+} from "@material-ui/core";
+import { Check, Close, Save } from "@material-ui/icons";
 import { API, Auth, graphqlOperation } from "aws-amplify";
 import React, {
   ReactElement,
@@ -25,6 +27,7 @@ import OfflineContext from "../context/OfflineContext";
 import usePhoneNumber from "../hooks/usePhoneNumber";
 import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
+import SnackBarActions from "../ui/Alert";
 import { DarkModeTextField } from "../ui/DarkModeTextField";
 import Layout from "../ui/Layout";
 
@@ -44,6 +47,14 @@ const useStyles = makeStyles({
     color: Colors.theme.platinum,
     fontFamily: "Signika Negative",
   },
+  success: {
+    backgroundColor: Colors.theme.success,
+    color: Colors.theme.platinum,
+  },
+  failure: {
+    backgroundColor: Colors.theme.error,
+    color: Colors.theme.platinum,
+  },
 });
 
 /** Screen for updating profile information. Currently collects super basic info.
@@ -51,6 +62,8 @@ const useStyles = makeStyles({
  */
 const FirstResponderProfile = (): ReactElement => {
   const phone = usePhoneNumber();
+  const [success, setSuccess] = useState(false);
+  const [failure, setFailure] = useState(false);
   if (!phone) return <Redirect to="/" />;
   const classes = useStyles();
   const globalClasses = useGlobalStyles();
@@ -104,6 +117,7 @@ const FirstResponderProfile = (): ReactElement => {
     })) as GraphQLResult<CreateFirstResponderProfileMutation>;
     if (response.errors) {
       console.error(response.errors);
+      throw response.errors;
     }
   };
 
@@ -121,6 +135,8 @@ const FirstResponderProfile = (): ReactElement => {
         === "DynamoDB:ConditionalCheckFailedException"
       ) {
         handleCreateProfile();
+      } else {
+        throw response;
       }
     }
   };
@@ -139,11 +155,15 @@ const FirstResponderProfile = (): ReactElement => {
       return;
     }
     setLoading(true);
-    await updateProfile(form);
-    // Artificially loading
-    setTimeout(() => {
+    try {
+      await updateProfile(form);
       setLoading(false);
-    }, 500);
+      setSuccess(true);
+      setFailure(false);
+    } catch (e) {
+      setFailure(true);
+      setSuccess(false);
+    }
   };
 
   /** Quick TextField Component */
@@ -185,6 +205,27 @@ const FirstResponderProfile = (): ReactElement => {
         )}
         Update Profile
       </Fab>
+      <Snackbar
+        open={success}
+        onClose={() => setSuccess(false)}
+        ContentProps={{ className: classes.success }}
+        action={<SnackBarActions icon={<Check fontSize="small" />} />}
+        message="Successfully saved profile!"
+        autoHideDuration={1000}
+      />
+      <Snackbar
+        open={failure}
+        onClose={() => setFailure(false)}
+        ContentProps={{ className: classes.failure }}
+        action={(
+          <SnackBarActions
+            handleClose={() => setFailure(false)}
+            icon={<Close fontSize="small" />}
+          />
+        )}
+        message="Failed to save your profile, please try again"
+        autoHideDuration={3000}
+      />
     </Layout>
   );
 };

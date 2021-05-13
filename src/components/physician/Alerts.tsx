@@ -1,16 +1,14 @@
 import { Button, Fab, makeStyles } from "@material-ui/core";
 import { Sync } from "@material-ui/icons";
-import { API, graphqlOperation } from "aws-amplify";
+import { API } from "aws-amplify";
 import { ReactElement, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { MeetingDetail, OnCreateMeetingDetailSubscription, OnUpdateMeetingDetailSubscription } from "../../API";
+import { MeetingDetail } from "../../API";
 import { SPECIALIST_NAME } from "../../Constants";
 import { onCreateMeetingDetail, onUpdateMeetingDetail } from "../../graphql/subscriptions";
 import {
-  GeolocationCoordinates,
   MeetingStateType,
   SpecialistProfileType,
-  SubscriptionValue,
 } from "../../types";
 import getProfile from "../calls/fetchPhysicianProfile";
 import { getRelevantMeetings } from "../calls/getRelevantMeetings";
@@ -59,7 +57,7 @@ const Alerts = (): ReactElement => {
   const phoneNumber = localStorage.getItem("physicianphonenumber");
   const sessionId = useSessionId();
   const [profile, setProfile] = useState<SpecialistProfileType>();
-  const { location, loading: locationLoading, error: locationError } = useLocation();
+  const { location } = useLocation();
 
   const getRelevant = async () => {
     if (!phoneNumber) return;
@@ -90,7 +88,6 @@ const Alerts = (): ReactElement => {
 
     updateSubscription.subscribe({
       next: (
-        response: SubscriptionValue<OnUpdateMeetingDetailSubscription>,
       ) => {
         getRelevant();
       },
@@ -104,7 +101,6 @@ const Alerts = (): ReactElement => {
 
     createSubscription.subscribe({
       next: (
-        response: SubscriptionValue<OnUpdateMeetingDetailSubscription>,
       ) => {
         getRelevant();
       },
@@ -158,7 +154,7 @@ const Alerts = (): ReactElement => {
 
   const renderMeetings = () => {
     if (meetings?.length) {
-      return meetings?.map((meeting, index) => (
+      return meetings?.map((meeting) => (
         <div
           className={globalClasses.wideButtonContainer}
           key={meeting.meeting_id}

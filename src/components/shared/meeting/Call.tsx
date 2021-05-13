@@ -1,7 +1,7 @@
 import React, { ReactElement, useContext } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import { MeetingStateType } from "../../types";
-import OfflineContext from "../context/OfflineContext";
+import { MeetingStateType } from "../../../types";
+import OfflineContext from "../../context/OfflineContext";
 import OfflineCall from "./OfflineCall";
 import OnlineCallOverData from "./OnlineCallOverData";
 

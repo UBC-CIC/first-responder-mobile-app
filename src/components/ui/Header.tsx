@@ -7,9 +7,10 @@ import {
   Typography,
 } from "@material-ui/core";
 import { ArrowBack, Wifi, WifiOff } from "@material-ui/icons";
+// eslint-disable-next-line import/no-unresolved
 import CSS from "csstype";
 import React, { ReactElement, useContext, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import OfflineContext from "../context/OfflineContext";
 import Colors from "../styling/Colors";
 
@@ -44,7 +45,6 @@ const Header = ({
   const history = useHistory();
   const classes = useStyles();
   const [forceOffline, setForceOffline] = useState(false);
-  const location = useLocation();
   const { offline, setOffline } = useContext(OfflineContext);
 
   const handleBackButtonPressed = () => {

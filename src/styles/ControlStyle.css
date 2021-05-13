@@ -1,0 +1,18 @@
+  
+.controller {
+    transition: opacity 250ms ease;
+    opacity: 0;
+    @media screen and (max-width: 768px) {
+        opacity: 1;
+    }
+}
+
+.controller.active {
+    opacity: 1
+}
+  
+  
+.controls-menu {
+    width: 100%;
+    position: inherit !important;
+}

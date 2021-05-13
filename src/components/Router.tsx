@@ -27,7 +27,7 @@ import PhysicianLogin from "./physician/PhysicianLogin";
 import PhysicianMain from "./physician/PhysicianMain";
 import PhysicianProfile from "./physician/PhysicianProfile";
 import BadConnection from "./shared/BadConnection";
-import Call from "./shared/Call";
+import Call from "./shared/meeting/Call";
 import Colors from "./styling/Colors";
 import SnackBarActions from "./ui/Alert";
 import AuthTheme from "./ui/AuthTheme";

@@ -7,8 +7,7 @@ import {
   RosterHeader,
 } from "amazon-chime-sdk-component-library-react";
 import React, { ReactElement, useEffect, useState } from "react";
-import { FR_NAME } from "../../Constants";
-import { AttendeeDetails, AttendeeType, RosterType } from "../../types";
+import { AttendeeType, RosterType } from "../../../types";
 
 /** Displays attendees in UI, with name and role
  * if available in the meeting-detail.attendees column in DDB  */
@@ -54,8 +53,8 @@ const RosterDisplay = ({
           microphone={<div />}
         />
       );
-    } return null;
-  });
+    } return undefined;
+  }).filter(Boolean);
 
   const rosterJSON = JSON.parse(JSON.stringify(roster));
 
@@ -63,8 +62,12 @@ const RosterDisplay = ({
     <Roster>
       <RosterHeader title="Present" badge={Object.values(rosterJSON).length} />
       <RosterGroup>{attendeeItems}</RosterGroup>
-      <RosterHeader title="Left" />
-      <RosterGroup>{attendeeItemsLeft}</RosterGroup>
+      {attendeeItemsLeft.length > 0 && (
+        <>
+          <RosterHeader title="Left" />
+          <RosterGroup>{attendeeItemsLeft}</RosterGroup>
+        </>
+      )}
     </Roster>
   );
 };

@@ -1,40 +1,33 @@
 /** Meeting Logic and Handler */
-import {
-  Button, makeStyles, Snackbar,
-} from "@material-ui/core";
+import { makeStyles, Snackbar } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import PhoneIcon from "@material-ui/icons/Phone";
 import {
   useAudioVideo,
   useBandwidthMetrics,
   useLocalVideo,
   useMeetingManager,
   useRosterState,
-  VideoTileGrid,
-  useToggleLocalMute,
-  IconButton,
-  Microphone,
-  Camera,
 } from "amazon-chime-sdk-component-library-react";
 import { MeetingSessionStatusCode } from "amazon-chime-sdk-js";
 import React, {
   ReactElement, useEffect, useState,
 } from "react";
-import "../../styles/Call.css";
-import "../../styles/VideoCall.css";
+import "../../../styles/Call.css";
+import "../../../styles/VideoCall.css";
 import {
   AttendeeType,
-  ConnectionState,
+
   LatLong,
-} from "../../types";
-import { joinMeeting } from "../calls";
-import fetchMeetingAttendees from "../calls/fetchMeetingAttendee";
-import { useMeetingInfo } from "../hooks/useMeetingInfo";
-import Colors from "../styling/Colors";
-import SnackBarActions from "../ui/Alert";
-import Layout from "../ui/Layout";
-import Chat from "./Chat";
-import RosterDisplay from "./RosterDisplay";
+} from "../../../types";
+import { joinMeeting } from "../../calls";
+import fetchMeetingAttendees from "../../calls/fetchMeetingAttendee";
+import { useMeetingInfo } from "../../hooks/useMeetingInfo";
+import Colors from "../../styling/Colors";
+import SnackBarActions from "../../ui/Alert";
+import Layout from "../../ui/Layout";
+import ConnectedMeetingView from "./ConnectedMeetingView";
+import MeetingEnded from "./MeetingEnded";
+import PoorConnectionView from "./PoorConnectionView";
 
 const MAX_LOSS = 5;
 
@@ -65,6 +58,14 @@ const useStyles = makeStyles({
   selectText: { fontFamily: "Montserrat", textAlign: "center" },
 });
 
+// eslint-disable-next-line no-shadow
+export enum MeetingState {
+  STARTING,
+  CONNECTED,
+  POOR,
+  ENDED,
+}
+
 /** Controller and UI for Online Video Call. Renders Chat, Roster, Video,
  * and Input/Output selection. If a call has been started, and internet drops,
  * suggests the user to join a phone call over PSTN. If the call has not been started
@@ -75,7 +76,6 @@ const OnlineCallOverData = (): ReactElement => {
   const { toggleVideo: toggleLocalVideo } = useLocalVideo();
   const classes = useStyles();
   const audioVideo = useAudioVideo();
-  const { muted, toggleMute } = useToggleLocalMute();
   const meetingManager = useMeetingManager();
   const { roster } = useRosterState();
   const {
@@ -85,14 +85,12 @@ const OnlineCallOverData = (): ReactElement => {
   const [localVideoShown, setLocalVideoShown] = useState(false);
   const [attendees, setAttendees] = useState([] as AttendeeType[]);
   const [warningShown, setWarningShown] = React.useState(false);
-  const [suggestionShown, setSuggestionShown] = React.useState(false);
-  const [connectionState, setConnectionState] = useState<ConnectionState>(
-    ConnectionState.UNKNOWN,
-  );
   const [packetLoss, setPacketLoss] = useState(0);
   const [lossCount, setLossCount] = useState(0);
   const [inMeeting, setInMeeting] = useState(false);
   const [myAttendeeId, setMyAttendeeId] = useState("");
+  const [meetingState, setMeetingState] = useState(MeetingState.STARTING);
+
   /** On mount join meeting */
   useEffect(() => {
     const f = async () => {
@@ -104,7 +102,7 @@ const OnlineCallOverData = (): ReactElement => {
       );
     };
     f();
-    meetingManager.getAttendee = async (chimeAttendeeId, externalUserId) => {
+    meetingManager.getAttendee = async (chimeAttendeeId) => {
       try {
         if (!meetingManager.meetingId) {
           console.error("Failed to get meeting Id");
@@ -174,11 +172,12 @@ const OnlineCallOverData = (): ReactElement => {
   /** On change of audio/video when call starts */
   useEffect(() => {
     const f = async () => {
-      /** Get and Bind User Devices to Chime Infrastructure */
       if (!meetingManager) return;
       meetingManager.audioVideoObservers.metricsDidReceive = (metric) => {
         const loss = metric.getObservableMetrics()
           .audioPacketsReceivedFractionLoss;
+        console.log(loss);
+
         setPacketLoss(loss);
       };
 
@@ -186,17 +185,10 @@ const OnlineCallOverData = (): ReactElement => {
       meetingManager.audioVideoDidStop = (sessionStatus) => {
         const sessionStatusCode = sessionStatus.statusCode();
         if (sessionStatusCode === MeetingSessionStatusCode.MeetingEnded) {
-          /*
-        - You (or someone else) have called the DeleteMeeting API action in your server application.
-        - You attempted to join a deleted meeting.
-        - No audio connections are present in the meeting for more than five minutes.
-        - Fewer than two audio connections are present in the meeting for more than 30 minutes.
-        - Screen share viewer connections are inactive for more than 30 minutes.
-        - The meeting time exceeds 24 hours.
-        See https://docs.aws.amazon.com/chime/latest/dg/mtgs-sdk-mtgs.html for details.
-      */
           console.log("The session has ended");
+          setMeetingState(MeetingState.ENDED);
         } else {
+          setMeetingState(MeetingState.ENDED);
           console.log("Stopped with a session status code: ", sessionStatusCode, ":", MeetingSessionStatusCode[sessionStatusCode]);
         }
       };
@@ -205,34 +197,30 @@ const OnlineCallOverData = (): ReactElement => {
 
     f();
   }, [audioVideo]);
+
   /** On change of Bandwidth upload speed, handle if connection is weak */
   useEffect(() => {
     if (packetLoss > 0) {
       if (lossCount + 1 > MAX_LOSS) {
+        console.log("Lost too many packets");
+
         handleSuggestPSTN();
       } else {
         setLossCount(lossCount + 1);
       }
     }
-
-    if (metrics.availableOutgoingBandwidth == null || packetLoss > 0) {
-      setConnectionState(ConnectionState.UNKNOWN);
-    } else if (metrics.availableOutgoingBandwidth < 100 || packetLoss > 0) {
+    if (!metrics.availableOutgoingBandwidth) return;
+    if (metrics.availableOutgoingBandwidth < 100 || packetLoss > 0) {
       handleDisableVideo();
-      setConnectionState(ConnectionState.POOR);
-    } else if (metrics.availableOutgoingBandwidth < 500) {
-      setConnectionState(ConnectionState.FAIR);
     } else {
       setWarningShown(false);
-      setConnectionState(ConnectionState.GOOD);
     }
   }, [metrics.availableOutgoingBandwidth, packetLoss]);
 
   /** Switches the view to an alert that links to  */
   const handleSuggestPSTN = () => {
-    setSuggestionShown(true);
+    setMeetingState(MeetingState.POOR);
     handleDisableVideo();
-    setConnectionState(ConnectionState.POOR);
   };
 
   /** Calls to lambda to join or create a meeting  */
@@ -279,13 +267,14 @@ const OnlineCallOverData = (): ReactElement => {
           if (joinInfo) {
             console.log("success", joinInfo);
             setInMeeting(true);
+            setMeetingState(MeetingState.CONNECTED);
           } else {
             console.error(joinRes.errors);
           }
         })
         .catch((e) => console.log(e));
     } catch (e) {
-      setSuggestionShown(true);
+      setMeetingState(MeetingState.POOR);
       console.error(e);
     }
   };
@@ -293,15 +282,6 @@ const OnlineCallOverData = (): ReactElement => {
   /** Handler for the useEffect  */
   const handleLeaveMeeting = () => {
     meetingManager.leave();
-  };
-
-  /** Wrapper for the Chime SDK toggle function. Does not enable camera if connection is poor */
-  const handleToggleCamera = () => {
-    if (connectionState === ConnectionState.POOR) {
-      setWarningShown(true);
-    } else {
-      toggleVideo();
-    }
   };
 
   /** Toggle Camera Button event handler */
@@ -317,7 +297,7 @@ const OnlineCallOverData = (): ReactElement => {
       ?.getAllRemoteVideoTiles()
       .forEach((tile) => audioVideo.pauseVideoTile(tile.id()));
     audioVideo?.stopLocalVideoTile();
-    setWarningShown(true);
+    if (meetingState === MeetingState.CONNECTED) { setWarningShown(true); }
   };
 
   /** On click of warning, points user to either PSTNCreate or PSTNJoin depending on if the meeting was already created or not. */
@@ -328,9 +308,10 @@ const OnlineCallOverData = (): ReactElement => {
       document.location.href = `tel:${process.env.REACT_APP_CREATE_PHONE_NUMBER}`;
     }
   };
+
   /** If connection drops, show user a PSTN Suggestion */
   const handleChangeToOffline = () => {
-    setSuggestionShown(true);
+    setMeetingState(MeetingState.POOR);
     audioVideo?.stop();
   };
 
@@ -339,72 +320,49 @@ const OnlineCallOverData = (): ReactElement => {
     if (reason === "clickaway") {
       return;
     }
-
     setWarningShown(false);
+  };
+
+  const renderMeetingFromState = () => {
+    if (!navigator.onLine) {
+      setMeetingState(() => MeetingState.POOR);
+    }
+    switch (meetingState) {
+    case MeetingState.POOR:
+      return (
+        <PoorConnectionView
+          handleClose={handleClose}
+          handleSwitch={handleSwitch}
+          poorConnection
+        />
+      );
+    case MeetingState.ENDED:
+      return <MeetingEnded />; // todo
+    case MeetingState.STARTING:
+    case MeetingState.CONNECTED:
+      return (
+        <ConnectedMeetingView
+          roster={roster}
+          myAttendeeId={myAttendeeId}
+          meetingId={meetingId}
+          attendees={attendees}
+        />
+      );
+    default:
+      return <div> error view</div>;
+    }
   };
 
   return (
     <Layout
       title="Online Conference"
       parent="/main"
+      hideBackButton={meetingState === MeetingState.CONNECTED}
       onChangeToOffline={() => handleChangeToOffline()}
     >
-      {!suggestionShown ? (
-        <div className="video-container">
-          <RosterDisplay roster={roster} attendees={attendees} />
-
-          <VideoTileGrid
-            className={classes.videoGrid}
-            layout="standard"
-            // TODO Convert into smarter component
-            noRemoteVideoView={(
-              <div>
-                <div style={{ color: "white", minHeight: "300px" }}>
-                  Nobody is sharing video at the moment
-                </div>
-              </div>
-            )}
-          />
-
-          <div
-            className="flex row"
-            style={{
-              justifyContent: "space-evenly",
-              backgroundColor: "white",
-              borderRadius: 5,
-              padding: 5,
-            }}
-          >
-            <IconButton label="Video" variant="icon" unselectable="on" selected icon={<Camera disabled={!localVideoShown} />} onClick={handleToggleCamera} />
-
-            <IconButton label="Mute" variant="icon" unselectable="on" selected icon={<Microphone muted={muted} />} onClick={toggleMute} />
-          </div>
-
-          <div style={{ overflow: "auto", flex: 1 }}>
-            <Chat meetingId={meetingId} attendeeId={myAttendeeId} attendees={roster} />
-          </div>
-        </div>
-      ) : (
-        <Snackbar
-          open={suggestionShown}
-          onClose={handleClose}
-          ContentProps={{ className: classes.suggestion }}
-          action={(
-            <SnackBarActions
-              icon={<PhoneIcon fontSize="small" />}
-              handleClose={() => {
-                handleSwitch();
-              }}
-            />
-          )}
-          message="Click to switch to Voice over Telephone."
-          onClick={() => {
-            handleSwitch();
-          }}
-        />
-      )}
+      {renderMeetingFromState()}
       <Snackbar
-        open={warningShown && !suggestionShown && inMeeting}
+        open={warningShown && meetingState !== MeetingState.POOR}
         autoHideDuration={6000}
         onClose={handleClose}
         ContentProps={{ className: classes.snackBar }}

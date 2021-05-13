@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 import { MeetingStateType } from "../../types";
-import { useQuery } from "../shared/Call";
+import { useQuery } from "../shared/meeting/Call";
 
 /** Gets phone number, meetingId, and attendeeId from either query params or the location state */
 export const useMeetingInfo = () => {
