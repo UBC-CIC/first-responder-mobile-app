@@ -173,6 +173,7 @@ const PhysicianSignIn = () => {
         {renderErrorMessage()}
       </FormHelperText>
       {authState === AuthState.NOT_AUTHENTICATED
+      // eslint-disable-next-line no-alert
       && <Button onClick={() => alert("Take user to specialist registration")} className={`${globalClasses.coral} ${globalClasses.button}`}>Register as a Specialist</Button>}
     </div>
   );

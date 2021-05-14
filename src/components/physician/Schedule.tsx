@@ -55,7 +55,7 @@ type ScheduleProps = {
  * choose their availability week-by-week here. If a specialist
  * needs to take time off, they should use the unfinished overrides component,
  */
-const Schedule = ({ initialSchedule, onChange = (arr: boolean[][]) => undefined }: ScheduleProps): ReactElement => {
+const Schedule = ({ initialSchedule, onChange = () => undefined }: ScheduleProps): ReactElement => {
   const [highlighted, setHighlighted] = useState(_.cloneDeep(FALSE_BOOLEAN_ARRAY));
   const [selected, setSelected] = useState(initialSchedule || _.cloneDeep(FALSE_BOOLEAN_ARRAY));
   const [startIndex, setStartIndex] = useState<number | undefined>();
@@ -71,7 +71,6 @@ const Schedule = ({ initialSchedule, onChange = (arr: boolean[][]) => undefined 
 
   const handleTouchStart = (
     index: number,
-    event: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
   ) => {
     setStartIndex(index);
     setCurrIndex(index);
@@ -261,8 +260,8 @@ const Schedule = ({ initialSchedule, onChange = (arr: boolean[][]) => undefined 
               id={`box-${topIndex}`}
               key={topIndex}
               className="smallbox-1"
-              onTouchStart={(e) => handleTouchStart(topIndex, e)}
-              onMouseDown={(e) => handleTouchStart(topIndex, e)}
+              onTouchStart={() => handleTouchStart(topIndex)}
+              onMouseDown={() => handleTouchStart(topIndex)}
               onMouseUp={(e) => handleMouseEnd(e)}
               onTouchEnd={(e) => handleTouchEnd(topIndex, e)}
               onTouchMove={(e) => handleTouchMove(e)}
@@ -275,7 +274,7 @@ const Schedule = ({ initialSchedule, onChange = (arr: boolean[][]) => undefined 
               id={`box-${botIndex}`}
               key={botIndex}
               className="smallbox-2"
-              onTouchStart={(e) => handleTouchStart(botIndex, e)}
+              onTouchStart={() => handleTouchStart(botIndex)}
               onTouchEnd={(e) => handleTouchEnd(botIndex, e)}
               onTouchMove={(e) => handleTouchMove(e)}
               onMouseDown={(e) => handleMouseStart(botIndex, e)}

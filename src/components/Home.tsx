@@ -1,17 +1,16 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { Button, makeStyles } from "@material-ui/core";
-import Amplify, { Auth, button } from "aws-amplify";
-import { ReactElement, useEffect, useState } from "react";
+import Amplify, { Auth } from "aws-amplify";
+import { ReactElement, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import stars from "../assets/stars.svg";
 import config from "../aws-exports";
 import { FR_NAME, SPECIALIST_NAME } from "../Constants";
 import "../styles/Home.css";
-import { CognitoUser } from "../types";
 import Colors from "./styling/Colors";
 import { useGlobalStyles } from "./styling/GlobalMuiStyles";
 import Layout from "./ui/Layout";
-import stars from "../assets/stars.svg";
 
 const useButtonClasses = makeStyles({
   root: {
@@ -56,13 +55,11 @@ const Home = (): ReactElement => {
   const history = useHistory();
   const buttonClasses = useButtonClasses();
   const globalClasses = useGlobalStyles();
-  const [user, setUser] = useState<CognitoUser | undefined>();
 
   useEffect(() => {
     const f = async () => {
       try {
         const currUser = await Auth.currentAuthenticatedUser();
-        setUser(currUser);
         if (currUser) history.replace("/main");
       } catch {
         // console.log("Not Logged In");

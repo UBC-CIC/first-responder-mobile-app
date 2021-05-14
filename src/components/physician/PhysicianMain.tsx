@@ -76,7 +76,7 @@ const PhysicianMain = (): ReactElement => {
       if (!location?.latitude || !location.longitude) return;
       const { latitude, longitude } = location;
       const input = { location: JSON.stringify({ latitude, longitude }), phone_number: user.attributes.phone_number };
-      const response = await API.graphql({ query: updateSpecialistProfile, variables: { input } });
+      await API.graphql({ query: updateSpecialistProfile, variables: { input } });
     };
 
     if (!locationLoading && user?.attributes.phone_number) {

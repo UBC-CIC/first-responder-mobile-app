@@ -123,7 +123,7 @@ const FirstResponderProfile = (): ReactElement => {
 
   const updateProfile = async (options: CreateFirstResponderProfileInput) => {
     try {
-      const response = (await API.graphql({
+      (await API.graphql({
         ...graphqlOperation(updateFirstResponderProfile, { input: options }),
         authMode: GRAPHQL_AUTH_MODE.API_KEY,
       })) as GraphQLResult<UpdateFirstResponderProfileMutation>;

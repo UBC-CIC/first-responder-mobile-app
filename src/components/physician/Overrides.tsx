@@ -2,9 +2,9 @@
 import { Fab, makeStyles } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import React, { ReactElement, useEffect, useState } from "react";
-import "../../styles/physician/Availability.css";
 import DatePicker from "react-datepicker";
-import TimePicker from "react-time-picker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../../styles/physician/Availability.css";
 import {
   FormattedTimeBlock,
   FullAvailabilityType,
@@ -12,10 +12,9 @@ import {
 import fetchSpecialistAvailability from "../calls/fetchSpecialistAvailability";
 import updateSpecialistAvailability from "../calls/updateSpecialistAvailability";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
+import Colors from "../styling/Colors";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
-import "react-datepicker/dist/react-datepicker.css";
-import Colors from "../styling/Colors";
 
 type GroupedTimeBlocks = {
   0: FormattedTimeBlock[];

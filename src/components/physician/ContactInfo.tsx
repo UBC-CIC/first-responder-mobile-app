@@ -70,7 +70,7 @@ const ContactInfo = (): ReactElement => {
     const f = async () => {
       try {
         const u: CognitoUser = await Auth.currentAuthenticatedUser();
-        const { email, phone_number } = u.attributes;
+        const { phone_number } = u.attributes;
         setPhone(phone_number);
         const profile = await fetchPhysicianProfile({ phone_number });
         delete profile?.location;

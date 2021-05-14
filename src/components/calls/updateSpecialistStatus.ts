@@ -1,8 +1,7 @@
-import { API, Auth, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api";
+import { API, graphqlOperation } from "aws-amplify";
+import { UpdateSpecialistProfileInput, UpdateSpecialistProfileMutation } from "../../API";
 import { updateSpecialistProfile as updateSpecialistProfileGraphql } from "./graphql/specialistProfile";
-import { UpdateSpecialistProfileInput, UpdateSpecialistProfileMutation, UpdateSpecialistProfileMutationVariables } from "../../API";
-import { CognitoUser } from "../../types";
 
 const updateSpecialistStatus = async (value: boolean, phone_number: string): Promise<GraphQLResult<UpdateSpecialistProfileMutation>> => {
   if (value) {

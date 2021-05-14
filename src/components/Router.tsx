@@ -4,13 +4,7 @@ import { Check } from "@material-ui/icons";
 import {
   MeetingProvider,
 } from "amazon-chime-sdk-component-library-react";
-import {
-  ConfirmSignUp,
-  ForgotPassword,
-  SignIn,
-  SignUp,
-  VerifyContact, withAuthenticator,
-} from "aws-amplify-react";
+import { withAuthenticator } from "aws-amplify-react";
 import React, { ReactElement, useState } from "react";
 import {
   BrowserRouter, Redirect, Route, Switch,

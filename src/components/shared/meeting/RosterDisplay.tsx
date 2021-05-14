@@ -14,11 +14,9 @@ import { AttendeeType, RosterType } from "../../../types";
 const RosterDisplay = ({
   attendees,
   roster,
-  noMicIcon,
 }: {
   attendees: AttendeeType[];
   roster: RosterType;
-  noMicIcon?: boolean;
 }): ReactElement => {
   const [rerender, setRerender] = useState(false);
   useEffect(() => {

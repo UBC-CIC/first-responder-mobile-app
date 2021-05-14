@@ -1,4 +1,5 @@
 /** Main container for every screen in app */
+// eslint-disable-next-line import/no-unresolved
 import CSS from "csstype";
 import { ReactElement, ReactNode } from "react";
 import { useHistory } from "react-router-dom";
@@ -14,7 +15,6 @@ const Layout = ({
   className,
   flexColumn = false,
   parent,
-  headerOfflineClickable = true,
   hideBackButton = false,
   onChangeToOffline,
 }: {
@@ -26,7 +26,6 @@ const Layout = ({
   className?: string;
   flexColumn?: boolean;
   parent?: string;
-  headerOfflineClickable?: boolean;
   hideBackButton?: boolean;
   onChangeToOffline?: Function;
 }): ReactElement => {

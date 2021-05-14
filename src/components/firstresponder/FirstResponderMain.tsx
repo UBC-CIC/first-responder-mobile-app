@@ -10,7 +10,6 @@ import React, {
   ReactElement, useContext, useEffect, useState,
 } from "react";
 import { useHistory } from "react-router-dom";
-import { v4 as uuid } from "uuid";
 import bg from "../../assets/first-responder-home-bg.svg";
 import { FR_NAME } from "../../Constants";
 import "../../styles/firstresponder/Home.css";

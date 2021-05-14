@@ -2,10 +2,9 @@ import { CircularProgress } from "@material-ui/core";
 import { Sync } from "@material-ui/icons";
 import {
   Modal,
-  ModalHeader,
   ModalBody,
-  Spinner,
   ModalButton,
+  ModalHeader,
 } from "amazon-chime-sdk-component-library-react";
 import React, { useEffect, useState } from "react";
 import fetchMeetingDetail from "../../calls/fetchMeetingDetail";
@@ -14,12 +13,11 @@ import Colors from "../../styling/Colors";
 type NotesProps = {
   show: boolean;
   setShow: Function;
-  externalMeetingId: string;
   meetingId: string;
 };
 
 const Notes = ({
-  show, setShow, externalMeetingId, meetingId,
+  show, setShow, meetingId,
 }: NotesProps) => {
   const [meetingNotes, setMeetingNotes] = useState<any>();
   const [loading, setLoading] = useState(true);

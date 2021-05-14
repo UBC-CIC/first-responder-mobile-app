@@ -26,7 +26,6 @@ type AvailabilityPropsType = {
 const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): ReactElement => {
   const user = useAuthenticatedUser();
   const [formattedAvailability, setFormattedAvailability] = useState<FullAvailabilityType | undefined>();
-  const [formattedSchedule, setFormattedSchedule] = useState<FormattedTimeBlock[] | undefined>();
   const [fetchedAvailability, setFetchedAvailability] = useState<FullAvailabilityType | undefined>();
   const [initialSchedule, setInitialSchedule] = useState<boolean[][]>();
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -130,7 +129,6 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
     for (let i = 0; i < schedule.length; i++) {
       returnFormattedSchedule.push(...formatDayOfWeek(schedule[i], i));
     }
-    setFormattedSchedule(returnFormattedSchedule);
     const fullAvailability: FullAvailabilityType = {
       overrides: [],
       schedules: returnFormattedSchedule,

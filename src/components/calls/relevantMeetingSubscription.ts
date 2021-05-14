@@ -1,5 +1,5 @@
 import { MeetingDetail } from "../../API";
-import { onCreateMeetingDetail, onUpdateMeetingDetail } from "../../graphql/subscriptions";
+import { onCreateMeetingDetail } from "../../graphql/subscriptions";
 import { subscribeGraphQL } from "./subscribeGraphQL";
 
 export const relevantMeetingSubscription = () => {
