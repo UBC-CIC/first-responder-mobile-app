@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CreateFirstResponderProfileInput, CreateSpecialistProfileInput } from "./API";
+import { CreateFirstResponderProfileInput, SpecialistProfile } from "./API";
 
 export type CognitoUser = {
   Session: any;
@@ -54,8 +54,6 @@ export type AlertsStateType= {
 }
 
 export type AttendeeType = RosterAttendeeType & { user_role: string };
-
-export type { CreateSpecialistProfileInput as SpecialistProfileType };
 
 export type { CreateFirstResponderProfileInput as FirstResponderProfileType };
 
@@ -171,7 +169,7 @@ export type AttendeeInfoType = {
 }
 
 export type AttendeeDetails = RosterAttendeeType & { user_role: string; attendee_type: AttendeeVariant; };
-
+export type SpecialistProfileType = Omit<SpecialistProfile, "__typename">
 export enum AttendeeVariant {
   FIRST_RESPONDER = "FIRST_RESPONDER",
   SPECIALIST = "SPECIALIST",

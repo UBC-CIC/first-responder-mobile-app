@@ -73,7 +73,7 @@ const ContactInfo = (): ReactElement => {
         const { email, phone_number } = u.attributes;
         setPhone(phone_number);
         const profile = await fetchPhysicianProfile({ phone_number });
-
+        delete profile?.location;
         if (profile) {
           setForm({ ...profile, phone_number });
         } else {
@@ -127,6 +127,8 @@ const ContactInfo = (): ReactElement => {
       console.error("No phone Provided for UpdateProfile");
       return;
     }
+    console.log(form);
+
     updateProfile(form);
   };
 
@@ -223,7 +225,7 @@ const ContactInfo = (): ReactElement => {
             onClose={() => setFailure(false)}
             ContentProps={{ className: classes.failure }}
             action={<SnackBarActions icon={<Error fontSize="large" />} />}
-            message="Failed to save your availability, please try again"
+            message="Failed to save your profile, please try again"
             autoHideDuration={3000}
           />
         </div>
