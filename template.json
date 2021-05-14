@@ -375,6 +375,27 @@
           }
         ]
       }
+    },
+    "AppSyncAPIID": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Name": "apiid",
+        "Type": "String",
+        "Value": {
+          "Ref": {
+            "Fn::Join": [
+              ":",
+              [
+                {
+                  "Ref": "AWS::StackName"
+                },
+                "GraphQLApiEndpoint"
+              ]
+            ]
+          }
+        },
+        "Description": "GraphQL Api ID for Amplify App"
+      }
     }
   },
   "Outputs": {
@@ -447,6 +468,21 @@
       "Value": {
         "Ref": "UnauthRole"
       }
+    },
+    "AppSyncAPIID": {
+        "Value": {
+          "Ref": {
+            "Fn::Join": [
+              ":",
+              [
+                {
+                  "Ref": "AWS::StackName"
+                },
+                "GraphQLApiEndpoint"
+              ]
+            ]
+          }
+        }
     }
   }
 }
