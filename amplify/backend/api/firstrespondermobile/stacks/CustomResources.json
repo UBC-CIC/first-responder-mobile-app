@@ -24,6 +24,10 @@
     "S3DeploymentRootKey": {
       "Type": "String",
       "Description": "An S3 key relative to the S3DeploymentBucket that points to the root\nof the deployment directory."
+    },
+    "AuthRoleName": {
+      "Type": "String",
+      "Default": "AuthRoleName"
     }
   },
   "Resources": {
@@ -36,9 +40,46 @@
         "Description": "GraphQL Api ID for Amplify App"
       }
     },
-    "EmptyResource": {
-      "Type": "Custom::EmptyResource",
-      "Condition": "AlwaysFalse"
+    "DataSourcePolicy": {
+      "Type" : "AWS::IAM::Policy",
+      "DependsOn": [
+        "DataSourceRole"
+      ],
+      "Properties" : {
+          "PolicyDocument" : {"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["dynamodb:DeleteItem","dynamodb:GetItem","dynamodb:PutItem","dynamodb:Query","dynamodb:Scan","dynamodb:UpdateItem"], "Resource": "*"}]},
+          "PolicyName" : "FirstResponderDataSourceDDBPolicy",
+          "Roles" : [ {
+            "Ref": "DataSourceRole"
+          } ]
+        }
+    },
+    "DataSourceRole": {
+      "Type" : "AWS::IAM::Role",
+      "Properties" : {
+          "AssumeRolePolicyDocument" : {"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"appsync.amazonaws.com"},"Action":"sts:AssumeRole"}]},
+          "Description" : "Role for AppSync DataSources",
+          "Policies" : [ { "Ref": "DataSourcePolicy" } ],
+          "RoleName" : "FirstResponderDataSourceDDBRole"
+        }
+    },
+    "FirstResponderProfileDataSource": {
+      "Type" : "AWS::AppSync::DataSource",
+      "Properties" : {
+          "ApiId" : {"Ref": "AppSyncApiId" },
+          "Description" : "Appsync Datasource for FirstResponderProfile",
+          "DynamoDBConfig" : {
+            "AwsRegion" : {
+              "Ref": "AWS::Region"
+            },
+            "TableName" : "first-responder-profile"
+          },
+          "Name" : "FirstResponderProfile",
+          "ServiceRoleArn" : { "Fn::GetAtt": [
+            "DataSourceRole",
+            "Arn"
+          ] } ,
+          "Type" : "AMAZON_DYNAMODB"
+        }
     }
   },
   "Conditions": {
