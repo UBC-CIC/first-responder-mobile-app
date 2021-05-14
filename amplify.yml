@@ -14,7 +14,7 @@ backend:
         - export ACCOUNTID=$(aws sts get-caller-identity --query Account --output text)
         - export API_ID=$(aws ssm get-parameter --name /firstresponder/apiid --query Parameter.Value --output text)
         - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
-        - export ENV_NAME=$(cat ./amplify/.confi`g/local-env-info.json | jq -r '.envName')
+        - export ENV_NAME=$(cat ./amplify/.config/local-env-info.json | jq -r '.envName')
         - echo Adding DataSources to AppSync App $API_ID
         - ./deployment/addAllDataSources.bat $API_ID $AWS_REGION
 frontend:
