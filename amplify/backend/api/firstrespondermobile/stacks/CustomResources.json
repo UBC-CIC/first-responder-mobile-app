@@ -27,6 +27,15 @@
     }
   },
   "Resources": {
+    "AppSyncIdParameter": {
+      "Type": "AWS::SSM::Parameter",
+      "Properties": {
+        "Name": "/apiid/test",
+        "Type": "String",
+        "Value": {"Ref": "AppSyncApiId" },
+        "Description": "GraphQL Api ID for Amplify App"
+      }
+    },
     "EmptyResource": {
       "Type": "Custom::EmptyResource",
       "Condition": "AlwaysFalse"
