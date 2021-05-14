@@ -181,39 +181,6 @@ export const deleteMeeting = /* GraphQL */ `
     }
   }
 `;
-export const createAttendeeData = /* GraphQL */ `
-  mutation CreateAttendeeData($input: CreateAttendeeDataInput!) {
-    createAttendeeData(input: $input) {
-      id
-      externalUserId
-      meetingID
-      name
-      role
-    }
-  }
-`;
-export const updateAttendeeData = /* GraphQL */ `
-  mutation UpdateAttendeeData($input: UpdateAttendeeDataInput!) {
-    updateAttendeeData(input: $input) {
-      id
-      externalUserId
-      meetingID
-      name
-      role
-    }
-  }
-`;
-export const deleteAttendeeData = /* GraphQL */ `
-  mutation DeleteAttendeeData($input: DeleteAttendeeDataInput!) {
-    deleteAttendeeData(input: $input) {
-      id
-      externalUserId
-      meetingID
-      name
-      role
-    }
-  }
-`;
 export const createMeetingDetail = /* GraphQL */ `
   mutation CreateMeetingDetail($input: CreateMeetingDetailInput!) {
     createMeetingDetail(input: $input) {

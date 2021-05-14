@@ -9,12 +9,14 @@ backend:
         - amplifyPush --simple
     postBuild:
       commands: 
+        - yum install -y jq
         - export AWS_REGION=$(aws configure get region)
         - export ACCOUNTID=$(aws sts get-caller-identity --query Account --output text)
+        - export API_ID=$(aws ssm get-parameter --name /firstresponder/apiid --query Parameter.Value --output text)
         - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
-        - export ENV_NAME=$(cat ./amplify/.config/local-env-info.json | jq -r '.envName')
-        - export API_ID=$(./deployment/getApiIdByName.bat ${PROJECT_NAME}-${ENV_NAME})
-        - echo $API_ID
+        - export ENV_NAME=$(cat ./amplify/.confi`g/local-env-info.json | jq -r '.envName')
+        - echo Adding DataSources to AppSync App $API_ID
+        - ./deployment/addAllDataSources.bat $API_ID $AWS_REGION
 frontend:
   phases:
     preBuild:

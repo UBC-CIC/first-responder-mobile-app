@@ -166,35 +166,6 @@ export type DeleteMeetingInput = {
   id: string,
 };
 
-export type CreateAttendeeDataInput = {
-  id: string,
-  externalUserId?: string | null,
-  meetingID?: string | null,
-  name?: string | null,
-  role?: string | null,
-};
-
-export type AttendeeData = {
-  __typename: "AttendeeData",
-  id?: string,
-  externalUserId?: string | null,
-  meetingID?: string | null,
-  name?: string | null,
-  role?: string | null,
-};
-
-export type UpdateAttendeeDataInput = {
-  id: string,
-  externalUserId?: string | null,
-  meetingID?: string | null,
-  name?: string | null,
-  role?: string | null,
-};
-
-export type DeleteAttendeeDataInput = {
-  id: string,
-};
-
 export type CreateMeetingDetailInput = {
   meeting_id: string,
   create_date_time?: string | null,
@@ -297,20 +268,6 @@ export type TableMeetingFilterInput = {
 export type MeetingConnection = {
   __typename: "MeetingConnection",
   items?:  Array<Meeting | null > | null,
-  nextToken?: string | null,
-};
-
-export type TableAttendeeDataFilterInput = {
-  id?: TableStringFilterInput | null,
-  externalUserId?: TableStringFilterInput | null,
-  meetingID?: TableStringFilterInput | null,
-  name?: TableStringFilterInput | null,
-  role?: TableStringFilterInput | null,
-};
-
-export type AttendeeDataConnection = {
-  __typename: "AttendeeDataConnection",
-  items?:  Array<AttendeeData | null > | null,
   nextToken?: string | null,
 };
 
@@ -544,51 +501,6 @@ export type DeleteMeetingMutation = {
     } | null,
     MediaRegion: string,
     MeetingId: string,
-  } | null,
-};
-
-export type CreateAttendeeDataMutationVariables = {
-  input?: CreateAttendeeDataInput,
-};
-
-export type CreateAttendeeDataMutation = {
-  createAttendeeData?:  {
-    __typename: "AttendeeData",
-    id: string,
-    externalUserId?: string | null,
-    meetingID?: string | null,
-    name?: string | null,
-    role?: string | null,
-  } | null,
-};
-
-export type UpdateAttendeeDataMutationVariables = {
-  input?: UpdateAttendeeDataInput,
-};
-
-export type UpdateAttendeeDataMutation = {
-  updateAttendeeData?:  {
-    __typename: "AttendeeData",
-    id: string,
-    externalUserId?: string | null,
-    meetingID?: string | null,
-    name?: string | null,
-    role?: string | null,
-  } | null,
-};
-
-export type DeleteAttendeeDataMutationVariables = {
-  input?: DeleteAttendeeDataInput,
-};
-
-export type DeleteAttendeeDataMutation = {
-  deleteAttendeeData?:  {
-    __typename: "AttendeeData",
-    id: string,
-    externalUserId?: string | null,
-    meetingID?: string | null,
-    name?: string | null,
-    role?: string | null,
   } | null,
 };
 
@@ -836,42 +748,6 @@ export type ListMeetingsQuery = {
       ExternalMeetingId?: string | null,
       MediaRegion: string,
       MeetingId: string,
-    } | null > | null,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetAttendeeDataQueryVariables = {
-  id?: string,
-};
-
-export type GetAttendeeDataQuery = {
-  getAttendeeData?:  {
-    __typename: "AttendeeData",
-    id: string,
-    externalUserId?: string | null,
-    meetingID?: string | null,
-    name?: string | null,
-    role?: string | null,
-  } | null,
-};
-
-export type ListAttendeeDataQueryVariables = {
-  filter?: TableAttendeeDataFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListAttendeeDataQuery = {
-  listAttendeeData?:  {
-    __typename: "AttendeeDataConnection",
-    items?:  Array< {
-      __typename: "AttendeeData",
-      id: string,
-      externalUserId?: string | null,
-      meetingID?: string | null,
-      name?: string | null,
-      role?: string | null,
     } | null > | null,
     nextToken?: string | null,
   } | null,
@@ -1164,63 +1040,6 @@ export type OnDeleteMeetingSubscription = {
     } | null,
     MediaRegion: string,
     MeetingId: string,
-  } | null,
-};
-
-export type OnCreateAttendeeDataSubscriptionVariables = {
-  id?: string | null,
-  externalUserId?: string | null,
-  meetingID?: string | null,
-  name?: string | null,
-  role?: string | null,
-};
-
-export type OnCreateAttendeeDataSubscription = {
-  onCreateAttendeeData?:  {
-    __typename: "AttendeeData",
-    id: string,
-    externalUserId?: string | null,
-    meetingID?: string | null,
-    name?: string | null,
-    role?: string | null,
-  } | null,
-};
-
-export type OnUpdateAttendeeDataSubscriptionVariables = {
-  id?: string | null,
-  externalUserId?: string | null,
-  meetingID?: string | null,
-  name?: string | null,
-  role?: string | null,
-};
-
-export type OnUpdateAttendeeDataSubscription = {
-  onUpdateAttendeeData?:  {
-    __typename: "AttendeeData",
-    id: string,
-    externalUserId?: string | null,
-    meetingID?: string | null,
-    name?: string | null,
-    role?: string | null,
-  } | null,
-};
-
-export type OnDeleteAttendeeDataSubscriptionVariables = {
-  id?: string | null,
-  externalUserId?: string | null,
-  meetingID?: string | null,
-  name?: string | null,
-  role?: string | null,
-};
-
-export type OnDeleteAttendeeDataSubscription = {
-  onDeleteAttendeeData?:  {
-    __typename: "AttendeeData",
-    id: string,
-    externalUserId?: string | null,
-    meetingID?: string | null,
-    name?: string | null,
-    role?: string | null,
   } | null,
 };
 

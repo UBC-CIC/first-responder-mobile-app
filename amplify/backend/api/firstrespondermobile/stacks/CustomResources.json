@@ -30,7 +30,7 @@
     "AppSyncIdParameter": {
       "Type": "AWS::SSM::Parameter",
       "Properties": {
-        "Name": "/apiid/test",
+        "Name": "/firstresponder/apiid",
         "Type": "String",
         "Value": {"Ref": "AppSyncApiId" },
         "Description": "GraphQL Api ID for Amplify App"

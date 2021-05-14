@@ -1,15 +1,3 @@
-type AttendeeData {
-  id: String!
-  externalUserId: String
-  meetingID: String
-  name: String
-  role: String
-}
-
-type AttendeeDataConnection {
-  items: [AttendeeData]
-  nextToken: String
-}
 
 type AttendeeDetail {
   attendee_id: String!
@@ -31,14 +19,6 @@ type AttendeeInfo {
 type Availability {
   overrides: [Override]
   schedules: [Schedule]
-}
-
-input CreateAttendeeDataInput {
-  id: String!
-  externalUserId: String
-  meetingID: String
-  name: String
-  role: String
 }
 
 input CreateFirstResponderProfileInput {
@@ -73,10 +53,6 @@ input CreateSpecialistProfileInput {
   updated_date_time: String
   user_role: String
   user_status: String
-}
-
-input DeleteAttendeeDataInput {
-  id: String!
 }
 
 input DeleteFirstResponderProfileInput {
@@ -286,9 +262,6 @@ type Mutation @aws_api_key {
   createMeeting(input: CreateMeetingInput!): Meeting
   updateMeeting(input: UpdateMeetingInput!): Meeting
   deleteMeeting(input: DeleteMeetingInput!): Meeting
-  createAttendeeData(input: CreateAttendeeDataInput!): AttendeeData
-  updateAttendeeData(input: UpdateAttendeeDataInput!): AttendeeData
-  deleteAttendeeData(input: DeleteAttendeeDataInput!): AttendeeData
   createMeetingDetail(input: CreateMeetingDetailInput!): MeetingDetail
   updateMeetingDetail(input: UpdateMeetingDetailInput!): MeetingDetail
   deleteMeetingDetail(input: DeleteMeetingDetailInput!): MeetingDetail
@@ -325,12 +298,6 @@ type Query {
     limit: Int
     nextToken: String
   ): MeetingConnection
-  getAttendeeData(id: String!): AttendeeData
-  listAttendeeData(
-    filter: TableAttendeeDataFilterInput
-    limit: Int
-    nextToken: String
-  ): AttendeeDataConnection
   getMeetingDetail(meeting_id: String!): MeetingDetail
   listMeetingDetails(
     filter: TableMeetingDetailFilterInput
@@ -433,27 +400,6 @@ type Subscription {
     @aws_subscribe(mutations: ["updateMeeting"])
   onDeleteMeeting(id: String): Meeting
     @aws_subscribe(mutations: ["deleteMeeting"])
-  onCreateAttendeeData(
-    id: String
-    externalUserId: String
-    meetingID: String
-    name: String
-    role: String
-  ): AttendeeData @aws_subscribe(mutations: ["createAttendeeData"])
-  onUpdateAttendeeData(
-    id: String
-    externalUserId: String
-    meetingID: String
-    name: String
-    role: String
-  ): AttendeeData @aws_subscribe(mutations: ["updateAttendeeData"])
-  onDeleteAttendeeData(
-    id: String
-    externalUserId: String
-    meetingID: String
-    name: String
-    role: String
-  ): AttendeeData @aws_subscribe(mutations: ["deleteAttendeeData"])
   onCreateMeetingDetail(
     meeting_id: String
     create_date_time: String
@@ -468,15 +414,6 @@ type Subscription {
     end_date_time: String
   ): MeetingDetail @aws_subscribe(mutations: ["deleteMeetingDetail"])
 }
-
-input TableAttendeeDataFilterInput {
-  id: TableStringFilterInput
-  externalUserId: TableStringFilterInput
-  meetingID: TableStringFilterInput
-  name: TableStringFilterInput
-  role: TableStringFilterInput
-}
-
 input TableBooleanFilterInput {
   eq: Boolean
   ne: Boolean
@@ -564,14 +501,6 @@ input TableStringFilterInput {
   lt: String
   ne: String
   notContains: String
-}
-
-input UpdateAttendeeDataInput {
-  id: String!
-  externalUserId: String
-  meetingID: String
-  name: String
-  role: String
 }
 
 input UpdateFirstResponderProfileInput {

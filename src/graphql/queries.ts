@@ -149,35 +149,6 @@ export const listMeetings = /* GraphQL */ `
     }
   }
 `;
-export const getAttendeeData = /* GraphQL */ `
-  query GetAttendeeData($id: String!) {
-    getAttendeeData(id: $id) {
-      id
-      externalUserId
-      meetingID
-      name
-      role
-    }
-  }
-`;
-export const listAttendeeData = /* GraphQL */ `
-  query ListAttendeeData(
-    $filter: TableAttendeeDataFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listAttendeeData(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        externalUserId
-        meetingID
-        name
-        role
-      }
-      nextToken
-    }
-  }
-`;
 export const getMeetingDetail = /* GraphQL */ `
   query GetMeetingDetail($meeting_id: String!) {
     getMeetingDetail(meeting_id: $meeting_id) {
