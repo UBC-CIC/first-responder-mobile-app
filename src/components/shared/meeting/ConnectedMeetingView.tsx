@@ -46,7 +46,7 @@ const ConnectedMeetingView = ({
         )}
       />
 
-      <Notes meetingId={meetingId} externalMeetingId={externalMeetingId} show={notes} setShow={setNotes} />
+      <Notes meetingId={meetingId} show={notes} setShow={setNotes} />
 
       <MeetingControls
         handleToggle={() => setNotes(true)}
