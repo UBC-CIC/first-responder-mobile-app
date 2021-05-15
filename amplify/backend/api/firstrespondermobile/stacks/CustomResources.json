@@ -65,6 +65,75 @@
         "Type": "AMAZON_DYNAMODB"
       }
     },
+    "SpecialistProfileDataSource": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Description": "Appsync Datasource for SpecialistProfile",
+        "DynamoDBConfig": {
+          "AwsRegion": {
+            "Ref": "AWS::Region"
+          },
+          "TableName": "specialist-profile"
+        },
+        "Name": "SpecialistProfile",
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "DataSourceRole",
+            "Arn"
+          ]
+        },
+        "Type": "AMAZON_DYNAMODB"
+      }
+    },
+    "MeetingDataDataSource": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Description": "Appsync Datasource for MeetingData",
+        "DynamoDBConfig": {
+          "AwsRegion": {
+            "Ref": "AWS::Region"
+          },
+          "TableName": "meeting-data"
+        },
+        "Name": "MeetingData",
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "DataSourceRole",
+            "Arn"
+          ]
+        },
+        "Type": "AMAZON_DYNAMODB"
+      }
+    },
+    "MeetingDetailDataSource": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Description": "Appsync Datasource for MeetingDetail",
+        "DynamoDBConfig": {
+          "AwsRegion": {
+            "Ref": "AWS::Region"
+          },
+          "TableName": "meeting-detail"
+        },
+        "Name": "MeetingDetail",
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "DataSourceRole",
+            "Arn"
+          ]
+        },
+        "Type": "AMAZON_DYNAMODB"
+      }
+    },
     "DataSourceRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
