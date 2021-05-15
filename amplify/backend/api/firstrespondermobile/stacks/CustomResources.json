@@ -249,7 +249,7 @@
       "DependsOn": "MeetingDataDataSource", 
       "Properties" : {
           "ApiId" : {"Ref": "AppSyncApiId"},
-          "DataSourceName" : "Meeting",
+          "DataSourceName" : "MeetingData",
           "FieldName" : "getMeeting",
           "RequestMappingTemplate" : "{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"GetItem\",\n    \"key\" : {\n        \"id\" : $util.dynamodb.toDynamoDBJson($ctx.args.id)\n    }\n}\n",
           "ResponseMappingTemplate" : "$utils.toJson($ctx.result)",
@@ -261,7 +261,7 @@
       "DependsOn": "MeetingDataDataSource", 
       "Properties" : {
           "ApiId" : {"Ref": "AppSyncApiId"},
-          "DataSourceName" : "Meeting",
+          "DataSourceName" : "MeetingData",
           "FieldName" : "listMeetings",
           "TypeName" : "Query",
           "RequestMappingTemplate": "{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"Scan\",\n    #if( $ctx.args.count )\n        \"limit\": $ctx.args.count,\n    #end\n    #if( ${ctx.args.nextToken} )\n        \"nextToken\": \"${ctx.args.nextToken}\"\n    #end\n}\n",
@@ -274,7 +274,7 @@
       "Properties" : {
         "ApiId" : {"Ref": "AppSyncApiId"},
         "TypeName" : "Mutation",
-        "DataSourceName" : "Meeting",
+        "DataSourceName" : "MeetingData",
         "FieldName" : "createMeeting",
         "RequestMappingTemplate": "#set( $d = $util.dynamodb )\n#set( $values = $d.toMapValues($ctx.args))\n$!{values.put(\"ups\", $d.toNumber(1))}\n$!{values.put(\"downs\", $d.toNumber(0))}\n$!{values.put(\"version\", $d.toNumber(1))}\n$!{values.put(\"created_at\", $d.toDynamoDB($util.time.nowISO8601()))}\n$!{values.put(\"lastUpdated\", $values.get(\"created_at\"))}\n{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"PutItem\",\n    \"key\" : {\n        \"id\" : $d.toStringJson($utils.autoId())\n    },\n    \"attributeValues\" : $util.toJson($values),\n}\n",
         "ResponseMappingTemplate": "$util.toJson($ctx.result)"
@@ -286,7 +286,7 @@
       "Properties" : {
         "ApiId" : {"Ref": "AppSyncApiId"},
         "TypeName" : "Mutation",
-        "DataSourceName" : "Meeting",
+        "DataSourceName" : "MeetingData",
         "FieldName" : "deleteMeeting",
         "RequestMappingTemplate": "{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"DeleteItem\",\n    \"key\": {\n        \"id\": $util.dynamodb.toStringJson($ctx.args.id)\n    },\n    #if( $ctx.args.containsKey(\"expectedVersion\") )\n        \"condition\" : {\n            \"expression\"       : \"attribute_not_exists(id) OR version = :expectedVersion\",\n            \"expressionValues\" : {\n                \":expectedVersion\" : $util.dynamodb.toNumberJson($ctx.args.expectedVersion)\n            }\n        },\n    #end\n}\n",
         "ResponseMappingTemplate": "$util.toJson($ctx.result)"
@@ -298,7 +298,7 @@
       "Properties" : {
         "ApiId" : {"Ref": "AppSyncApiId"},
         "TypeName" : "Mutation",
-        "DataSourceName" : "Meeting",
+        "DataSourceName" : "MeetingData",
         "FieldName" : "updateMeeting",
         "RequestMappingTemplate": "#set( $ddb = $util.dynamodb )\n{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"UpdateItem\",\n    \"key\" : {\n        \"id\" : $ddb.toDynamoDBJson($ctx.args.id)\n    },\n    ## Set up some space to keep track of things we're updating **\n    #set( $expNames  = {} )\n    #set( $expValues = {} )\n    #set( $expSet = {} )\n    #set( $expAdd = {} )\n    #set( $expRemove = [] )\n    ## Increment \"version\" by 1 **\n    $!{expAdd.put(\"version\", \":one\")}\n    $!{expValues.put(\":one\", $ddb.toDynamoDB(1))}\n    ## Set the \"lastUpdated\" timestamp **\n    $!{expSet.put(\"lastUpdated\", \":lastUpdated\")}\n    $!{expValues.put(\":lastUpdated\", $ddb.toDynamoDB($util.time.nowISO8601()))}\n    ## Iterate through each argument, skipping \"id\" and \"expectedVersion\" **\n    #foreach( $entry in $util.map.copyAndRemoveAllKeys($ctx.args, [\"id\",\"expectedVersion\"]).entrySet() )\n        #if( $util.isNull($entry.value) )\n            ## If the argument is set to \"null\", then remove that attribute from the item in DynamoDB **\n            #set( $discard = ${expRemove.add(\"#${entry.key}\")} )\n            $!{expNames.put(\"#${entry.key}\", \"${entry.key}\")}\n        #else\n            ## Otherwise set (or update) the attribute on the item in DynamoDB **\n            $!{expSet.put(\"#${entry.key}\", \":${entry.key}\")}\n            $!{expNames.put(\"#${entry.key}\", \"${entry.key}\")}\n            $!{expValues.put(\":${entry.key}\", $ddb.toDynamoDB($entry.value))}\n        #end\n    #end\n    ## Start building the update expression, starting with attributes we're going to SET **\n    #set( $expression = \"\" )\n    #if( !${expSet.isEmpty()} )\n        #set( $expression = \"SET\" )\n        foreach( $entry in $expSet.entrySet() )\n            set( $expression = \"${expression} ${entry.key} = ${entry.value}\" )\n            if ( $foreach.hasNext )\n                set( $expression = \"${expression},\" )\n            end\n        end\n    end\n    ## Continue building the update expression, adding attributes we're going to ADD **\n    #if( !${expAdd.isEmpty()} )\n        #set( $expression = \"${expression} ADD\" )\n        #foreach( $entry in $expAdd.entrySet() )\n            #set( $expression = \"${expression} ${entry.key} ${entry.value}\" )\n            #if ( $foreach.hasNext )\n                #set( $expression = \"${expression},\" )\n            #end\n        #end\n    #end\n    ## Continue building the update expression, adding attributes we're going to REMOVE **\n    #if( !${expRemove.isEmpty()} )\n        #set( $expression = \"${expression} REMOVE\" )\n        #foreach( $entry in $expRemove )\n            #set( $expression = \"${expression} ${entry}\" )\n            #if ( $foreach.hasNext )\n                #set( $expression = \"${expression},\" )\n            #end\n        #end\n    #end\n    ## Finally, write the update expression into the document, along with any expressionNames and expressionValues **\n    \"update\" : {\n        \"expression\" : \"${expression}\",\n        #if( !${expNames.isEmpty()} )\n            \"expressionNames\" : $utils.toJson($expNames),\n        #end\n        #if( !${expValues.isEmpty()} )\n            \"expressionValues\" : $utils.toJson($expValues),\n        #end\n    },\n    \"condition\" : {\n        \"expression\"       : \"attribute_exists(id) and version = :expectedVersion\",\n        \"expressionValues\" : {\n            \":expectedVersion\" : $ddb.toDynamoDBJson($context.arguments.expectedVersion)\n        }\n    }\n}\n",
         "ResponseMappingTemplate": "$util.toJson($ctx.result)"
