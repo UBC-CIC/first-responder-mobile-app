@@ -36,50 +36,84 @@
       "Properties": {
         "Name": "/firstresponder/apiid",
         "Type": "String",
-        "Value": {"Ref": "AppSyncApiId" },
+        "Value": {
+          "Ref": "AppSyncApiId"
+        },
         "Description": "GraphQL Api ID for Amplify App"
       }
     },
+    "FirstResponderProfileDataSource": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Ref": "AppSyncApiId"
+        },
+        "Description": "Appsync Datasource for FirstResponderProfile",
+        "DynamoDBConfig": {
+          "AwsRegion": {
+            "Ref": "AWS::Region"
+          },
+          "TableName": "first-responder-profile"
+        },
+        "Name": "FirstResponderProfile",
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "DataSourceRole",
+            "Arn"
+          ]
+        },
+        "Type": "AMAZON_DYNAMODB"
+      }
+    },
+    "DataSourceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Description": "Role for AppSync DataSources",
+        "RoleName": "FirstResponderDataSourceDDBRole"
+      }
+    },
     "DataSourcePolicy": {
-      "Type" : "AWS::IAM::Policy",
+      "Type": "AWS::IAM::Policy",
       "DependsOn": [
         "DataSourceRole"
       ],
-      "Properties" : {
-          "PolicyDocument" : {"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":["dynamodb:DeleteItem","dynamodb:GetItem","dynamodb:PutItem","dynamodb:Query","dynamodb:Scan","dynamodb:UpdateItem"], "Resource": "*"}]},
-          "PolicyName" : "FirstResponderDataSourceDDBPolicy",
-          "Roles" : [ {
+      "Properties": {
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:PutItem",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:UpdateItem"
+              ],
+              "Resource": "*"
+            }
+          ]
+        },
+        "PolicyName": "FirstResponderDataSourceDDBPolicy",
+        "Roles": [
+          {
             "Ref": "DataSourceRole"
-          } ]
-        }
-    },
-    "DataSourceRole": {
-      "Type" : "AWS::IAM::Role",
-      "Properties" : {
-          "AssumeRolePolicyDocument" : {"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"Service":"appsync.amazonaws.com"},"Action":"sts:AssumeRole"}]},
-          "Description" : "Role for AppSync DataSources",
-          "Policies" : [ { "Ref": "DataSourcePolicy" } ],
-          "RoleName" : "FirstResponderDataSourceDDBRole"
-        }
-    },
-    "FirstResponderProfileDataSource": {
-      "Type" : "AWS::AppSync::DataSource",
-      "Properties" : {
-          "ApiId" : {"Ref": "AppSyncApiId" },
-          "Description" : "Appsync Datasource for FirstResponderProfile",
-          "DynamoDBConfig" : {
-            "AwsRegion" : {
-              "Ref": "AWS::Region"
-            },
-            "TableName" : "first-responder-profile"
-          },
-          "Name" : "FirstResponderProfile",
-          "ServiceRoleArn" : { "Fn::GetAtt": [
-            "DataSourceRole",
-            "Arn"
-          ] } ,
-          "Type" : "AMAZON_DYNAMODB"
-        }
+          }
+        ]
+      }
     }
   },
   "Conditions": {
@@ -96,13 +130,18 @@
       ]
     },
     "AlwaysFalse": {
-      "Fn::Equals": ["true", "false"]
+      "Fn::Equals": [
+        "true",
+        "false"
+      ]
     }
   },
   "Outputs": {
     "AppSyncApiId": {
       "Description": "The id of the AppSync API associated with this project.",
-      "Value": {"Ref": "AppSyncApiId" }
+      "Value": {
+        "Ref": "AppSyncApiId"
+      }
     },
     "EmptyOutput": {
       "Description": "An empty output. You may delete this if you have at least one resource above.",
