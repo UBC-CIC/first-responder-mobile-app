@@ -186,6 +186,7 @@
     },
     "FirstResponderDataSourceResolverQuery": {
       "Type" : "AWS::AppSync::Resolver",
+      "DependsOn": "FirstResponderProfileDataSource", 
       "Properties" : {
           "ApiId" : {"Ref": "AppSyncApiId"},
           "DataSourceName" : "FirstResponderProfile",
@@ -197,6 +198,7 @@
     },
     "FirstResponderDataSourceResolverQueryAll": {
       "Type" : "AWS::AppSync::Resolver",
+      "DependsOn": "FirstResponderProfileDataSource", 
       "Properties" : {
           "ApiId" : {"Ref": "AppSyncApiId"},
           "DataSourceName" : "FirstResponderProfile",
@@ -208,6 +210,7 @@
     },
     "FirstResponderDataSourceResolverMutationCreate": {
       "Type" : "AWS::AppSync::Resolver",
+      "DependsOn": "FirstResponderProfileDataSource", 
       "Properties" : {
         "ApiId" : {"Ref": "AppSyncApiId"},
         "TypeName" : "Mutation",
@@ -219,6 +222,7 @@
     },
     "FirstResponderDataSourceResolverMutationDelete": {
       "Type" : "AWS::AppSync::Resolver",
+      "DependsOn": "FirstResponderProfileDataSource", 
       "Properties" : {
         "ApiId" : {"Ref": "AppSyncApiId"},
         "TypeName" : "Mutation",
@@ -230,6 +234,7 @@
     },
     "FirstResponderDataSourceResolverMutationUpdate": {
       "Type" : "AWS::AppSync::Resolver",
+      "DependsOn": "FirstResponderProfileDataSource", 
       "Properties" : {
         "ApiId" : {"Ref": "AppSyncApiId"},
         "TypeName" : "Mutation",
