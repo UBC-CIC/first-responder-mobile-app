@@ -68,7 +68,7 @@
         }
       }
     },
-    "apistarspwa": {
+    "apifirstresponder": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
         "TemplateURL": "https://s3.amazonaws.com/amplify-starspwa-dev-152341-deployment/amplify-cfn-templates/api/cloudformation-template.json",
