@@ -199,7 +199,7 @@ const ContactInfo = (): ReactElement => {
           </div>
           {renderTextField("organization", "Organization")}
           {renderTextField("user_role", "Occupation")}
-          {renderTextField("email", "Email", { width: "90%" })}
+          {renderTextField("email", "Email")}
         </div>
         <div className="ffc" style={{ flex: "0.3" }}>
           <Fab

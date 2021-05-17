@@ -1,4 +1,4 @@
-# STARS Mobile App
+# First Responder Mobile App
 
 ## Project Summary
 The First Responder Mobile app serves to assist emergency responders in connecting with medical experts and receiving appropriate medical expertise promptly, especially in rural areas where responders are essentially 'alone'. Emergency Responders connect to a Service Desk, where an attendee can see information about the situation, and page a relevant medical expert for assistance. The App is Powered by Amazon Chime, supporting video, audio, and text chat. In the case where data is not available, the app allows users to connect to Chime meetings via PSTN, over a toll-free number.
@@ -53,4 +53,4 @@ The First Responder Mobile app serves to assist emergency responders in connecti
 
 - [Install](#installation) App
 - Log in with phone number
-- Call into the [STARS Help Desk](https://github.com/UBC-CIC/first-responder-admin) when medical expertise is required
+- Call into the [Service Desk](https://github.com/UBC-CIC/first-responder-admin) when medical expertise is required

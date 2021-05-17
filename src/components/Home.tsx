@@ -4,7 +4,6 @@ import { Button, makeStyles } from "@material-ui/core";
 import Amplify, { Auth } from "aws-amplify";
 import { ReactElement, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import stars from "../assets/stars.svg";
 import config from "../aws-exports";
 import { FR_NAME, SPECIALIST_NAME } from "../Constants";
 import "../styles/Home.css";
@@ -80,8 +79,6 @@ const Home = (): ReactElement => {
       <div className="home-root">
         <div className="header-container">
           <div className="header-text">
-            <img alt="STARS Logo" src={stars} />
-            {" "}
             Emergency Response
           </div>
         </div>

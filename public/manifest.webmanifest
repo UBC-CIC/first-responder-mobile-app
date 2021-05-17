@@ -5,7 +5,7 @@
     "scope": "/",
     "start_url": "/",
     "name": "First Responder Emergency Communcations App",
-    "short_name": "STARS",
+    "short_name": "First Responder Mobile",
     "description": "First Responder Mobile Application for Contacting Professionals in an Emergency",
     "icons": [
         {

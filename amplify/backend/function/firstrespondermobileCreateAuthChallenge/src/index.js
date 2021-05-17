@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const SNS = new AWS.SNS({apiVersion: '2010-03-31'});
 function sendSMS(phone, code) {
     const params = {
-      Message: `STARS: Your authorization code is: ${code}`, /* required */
+      Message: `First Responder Mobile: Your authorization code is: ${code}`, /* required */
       PhoneNumber: phone,
     };
     

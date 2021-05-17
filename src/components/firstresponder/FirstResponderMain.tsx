@@ -149,7 +149,7 @@ const FirstResponderMain = (): ReactElement => {
             disabled={!navigator.onLine || offline}
           >
             <WifiIcon className={classes.icon} />
-            Call STARS over DATA
+            Call Service Desk over DATA
           </Fab>
           <Fab
             variant="extended"
@@ -158,7 +158,7 @@ const FirstResponderMain = (): ReactElement => {
             href={`tel:${process.env.REACT_APP_CREATE_PHONE_NUMBER}`}
           >
             <PhoneIcon className={classes.icon} />
-            Call STARS over PHONE LINE
+            Call Service Desk over PHONE LINE
           </Fab>
         </div>
         <Fab
