@@ -216,7 +216,7 @@
         "TypeName" : "Mutation",
         "DataSourceName" : "FirstResponderProfile",
         "FieldName" : "createFirstResponderProfile",
-        "RequestMappingTemplate": "{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"PutItem\",\n    \"key\" : {\n        \"phone_number\" : $util.dynamodb.toStringJson($ctx.args.phone_number)\n    },\n    \"attributeValues\" : $util.dynamodb.toMapValuesJson($ctx.args),\n}",
+        "RequestMappingTemplate": "{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"PutItem\",\n    \"key\" : {\n        \"phone_number\" : $util.dynamodb.toStringJson($ctx.args.input.phone_number)\n    },\n    \"attributeValues\" : $util.dynamodb.toMapValuesJson($ctx.args),\n}",
         "ResponseMappingTemplate": "$util.toJson($ctx.result)"
       }
     },
