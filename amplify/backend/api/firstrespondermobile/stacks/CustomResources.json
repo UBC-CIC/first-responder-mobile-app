@@ -324,7 +324,7 @@
           "DataSourceName" : "MeetingDetail",
           "FieldName" : "listMeetingDetails",
           "TypeName" : "Query",
-          "RequestMappingTemplate": "#set( $expression = \"\" )\n#set( $filter = {} )\n#set( $limit = \"\" )\n#set( $nextToken = \"\" )\n\n#if( $context.arguments.filter )\n    #set( $expression = \"SET\" )\n#end\n#if( $ctx.args.limit )\n    #set ( $limit = $ctx.args.limit)\n#end\n#if( ${ctx.args.nextToken} )\n    #set ( $nextToken = $ctx.args.nextToken)\n#end\n\n{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"Scan\",\n    #if( $ctx.args.filter )\n        \"filter\": $ctx.args.filter,\n    #end\n    #if( $ctx.args.limit )\n        \"limit\": $ctx.args.limit,\n    #end\n    #if( ${ctx.args.nextToken} )\n        \"nextToken\": \"${ctx.args.nextToken}\"\n    #end\n}",
+          "RequestMappingTemplate": "{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"Scan\",\n    \"filter\": $util.parseJson($util.transform.toDynamoDBFilterExpression($ctx.args.filter)),\n    \"limit\": $util.defaultIfNull(${ctx.args.limit}, 20),\n    \"nextToken\": $util.toJson($util.defaultIfNullOrBlank($ctx.args.nextToken, null))\n}",
           "ResponseMappingTemplate": "{\n    \"items\": $utils.toJson($ctx.result.items),\n    #if( ${ctx.result.nextToken} )\n        \"nextToken\": \"${ctx.result.nextToken}\",\n    #end\n}\n"
         }
     },
