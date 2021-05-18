@@ -20,7 +20,7 @@ backend:
         - export AMPLIFY_APP_ID=$(cat ./amplify/team-provider-info.json | jq -r --arg v "$ENV_NAME" '.[$v].awscloudformation.AmplifyAppId')
         - export BRANCH_NAME=$(aws amplify get-app --app-id $AMPLIFY_APP_ID | jq -r '.app.productionBranch.branchName')
         - export DOMAIN=$BRANCH_NAME.$(aws amplify get-app --app-id $AMPLIFY_APP_ID | jq -r '.app.defaultDomain')
-        - aws lambda update-function-configuration --function-name FirstResponder-Notify-Specialist-AppSync --environment "{\"Variables\": {\"CALL_URL\": \"$DOMAIN/call\", \"JOIN_PHONE_NUMBER\": \"$JOIN_PHONE_NUMBER\", \"SES_FROM_ADDRESS\": \"$SES_FROM_ADDRESS\"}}"
+        - aws lambda update-function-configuration --function-name FirstResponder-Notify-Specialist-AppSync --environment "Variables={CALL_URL="$DOMAIN/call",JOIN_PHONE_NUMBER="$JOIN_PHONE_NUMBER",SES_FROM_ADDRESS=""$SES_FROM_ADDRESS"}"
 
 frontend:
   phases:
