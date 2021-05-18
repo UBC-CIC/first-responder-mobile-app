@@ -10,13 +10,18 @@ backend:
     postBuild:
       commands: 
         - yum install -y jq
+        - export JOIN_PHONE_NUMBER=+18885998558
+        - export SES_FROM_ADDRESS=fristrespondertest@gmail.com
         - export AWS_REGION=$(aws configure get region)
         - export ACCOUNTID=$(aws sts get-caller-identity --query Account --output text)
         - export API_ID=$(aws ssm get-parameter --name /firstresponder/apiid --query Parameter.Value --output text)
         - export PROJECT_NAME=$(cat ./amplify/.config/project-config.json | jq -r '.projectName')
         - export ENV_NAME=$(cat ./amplify/.config/local-env-info.json | jq -r '.envName')
-        # - echo Adding Data Sources to AppSync App $API_ID
-        # - ./deployment/addAllDataSources.bat $API_ID $AWS_REGION
+        - export AMPLIFY_APP_ID=$(cat ./amplify/team-provider-info.json | jq -r --arg v "$ENV_NAME" '.[$v].awscloudformation.AmplifyAppId')
+        - export BRANCH_NAME=$(aws amplify get-app --app-id $AMPLIFY_APP_ID | jq -r '.app.productionBranch.branchName')
+        - export DOMAIN=$BRANCH_NAME.$(aws amplify get-app --app-id $AMPLIFY_APP_ID | jq -r '.app.defaultDomain')
+        - aws lambda update-function-configuration --function-name FirstResponder-Notify-Specialist-AppSync --environment "{\"Variables\": {\"CALL_URL\": \"$DOMAIN/call\", \"JOIN_PHONE_NUMBER\": \"$JOIN_PHONE_NUMBER\", \"SES_FROM_ADDRESS\": \"$SES_FROM_ADDRESS\"}}"
+
 frontend:
   phases:
     preBuild:

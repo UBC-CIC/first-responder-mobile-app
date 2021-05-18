@@ -1,0 +1,48 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-firstrespondermobile-dev-140746-authRole",
+      "UnauthRoleArn": "arn:aws:iam::676717162865:role/amplify-firstrespondermobile-dev-140746-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::676717162865:role/amplify-firstrespondermobile-dev-140746-authRole",
+      "Region": "ca-central-1",
+      "DeploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+      "UnauthRoleName": "amplify-firstrespondermobile-dev-140746-unauthRole",
+      "StackName": "amplify-firstrespondermobile-dev-140746",
+      "StackId": "arn:aws:cloudformation:ca-central-1:676717162865:stack/amplify-firstrespondermobile-dev-140746/e274dc80-8123-11eb-aafd-0e75e71712c2",
+      "AmplifyAppId": "dn4tcmp6sezds"
+    },
+    "categories": {
+      "function": {
+        "firstrespondermobileCreateAuthChallenge": {
+          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+          "s3Key": "amplify-builds/firstrespondermobileCreateAuthChallenge-79756a4b33776c307530-build.zip"
+        },
+        "firstrespondermobileDefineAuthChallenge": {
+          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+          "s3Key": "amplify-builds/firstrespondermobileDefineAuthChallenge-32762b7354764b504e76-build.zip"
+        },
+        "firstrespondermobilePreSignup": {
+          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+          "s3Key": "amplify-builds/firstrespondermobilePreSignup-7a495753634e5a696674-build.zip"
+        },
+        "firstrespondermobileVerifyAuthChallengeResponse": {
+          "deploymentBucketName": "amplify-firstrespondermobile-dev-140746-deployment",
+          "s3Key": "amplify-builds/firstrespondermobileVerifyAuthChallengeResponse-4a5374716d476d346b43-build.zip"
+        }
+      },
+      "auth": {
+        "starspwaphysicians": {},
+        "firstrespondermobile": {}
+      },
+      "storage": {
+        "userprofile": {
+          "tableName": "user-profile",
+          "region": "ca-central-1",
+          "arn": "arn:aws:dynamodb:ca-central-1:676717162865:table/user-profile",
+          "partitionKeyName": "email",
+          "partitionKeyType": "S"
+        }
+      }
+    }
+  }
+}
