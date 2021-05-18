@@ -324,7 +324,7 @@
           "DataSourceName" : "MeetingDetail",
           "FieldName" : "listMeetingDetails",
           "TypeName" : "Query",
-          "RequestMappingTemplate": "{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"Scan\",\n    \"filter\": $util.parseJson($util.transform.toDynamoDBFilterExpression($ctx.args.filter)),\n    \"limit\": $util.defaultIfNull(${ctx.args.limit}, 20),\n    \"nextToken\": $util.toJson($util.defaultIfNullOrBlank($ctx.args.nextToken, null))\n}",
+          "RequestMappingTemplate": "{\n    \"version\" : \"2017-02-28\",\n    \"operation\" : \"Scan\",\n    \"filter\": $util.parseJson(\"$util.transform.toDynamoDBFilterExpression($ctx.args.filter)\"),\n    \"limit\": $util.defaultIfNull(${ctx.args.limit}, 20),\n    \"nextToken\": $util.toJson($util.defaultIfNullOrBlank($ctx.args.nextToken, null))\n}",
           "ResponseMappingTemplate": "{\n    \"items\": $utils.toJson($ctx.result.items),\n    #if( ${ctx.result.nextToken} )\n        \"nextToken\": \"${ctx.result.nextToken}\",\n    #end\n}\n"
         }
     },
