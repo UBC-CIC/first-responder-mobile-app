@@ -1,6 +1,9 @@
 version: 1
 backend:
   phases:
+    preBuild:
+      commands:
+        - aws lambda get-function --function-name FirstResponder-Notify-Specialist-AppSync
     build:
       commands:
         - '# Execute Amplify CLI with the helper script'
