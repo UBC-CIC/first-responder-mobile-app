@@ -252,7 +252,7 @@ type Mutation @aws_api_key {
   ): SpecialistProfile
   joinChimeMeeting(
     input: JoinChimeMeetingInput!
-  ): JoinDataType @function(name: "FirstResponder-Data-ChimeMeeting")
+  ): JoinDataType @function(name: "FirstResponder-Data-ChimeMeeting-Join")
   updateFirstResponderProfile(
     input: UpdateFirstResponderProfileInput!
   ): FirstResponderProfile

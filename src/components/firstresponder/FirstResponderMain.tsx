@@ -158,7 +158,7 @@ const FirstResponderMain = (): ReactElement => {
             href={`tel:${process.env.REACT_APP_CREATE_PHONE_NUMBER}`}
           >
             <PhoneIcon className={classes.icon} />
-            Call Service Desk over PHONE LINE
+            Phone Service Desk
           </Fab>
         </div>
         <Fab

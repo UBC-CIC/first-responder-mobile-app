@@ -15,6 +15,8 @@ The First Responder Mobile app serves to assist emergency responders in connecti
 
 
 ## Deployment
+- Assure all [dependencies](#dependencies) have been deployed into AWS account, then press the button below to deploy this app.
+
 [![amplifybutton](https://oneclick.amplifyapp.com/button.svg)](https://console.aws.amazon.com/amplify/home#/deploy?repo=https://github.com/UBC-CIC/first-responder-mobile-app)
 
 ## Development
@@ -45,7 +47,7 @@ The First Responder Mobile app serves to assist emergency responders in connecti
 ### Medical Professionals
 
 - [Install](#installation) App
-- [Request A Physician Account](#) TODO
+- Request A Physician Account (Unimplemented)
   - Provide information like name, organization, field of expertise and availability.
   - Once approved, you will be able to log in with your phone number, join calls, and view alerts.
 
