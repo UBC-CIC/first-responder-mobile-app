@@ -56,3 +56,6 @@ The First Responder Mobile app serves to assist emergency responders in connecti
 - [Install](#installation) App
 - Log in with phone number
 - Call into the [Service Desk](https://github.com/UBC-CIC/first-responder-admin) when medical expertise is required
+
+## License
+This project is distributed under the [MIT License](./LICENSE).

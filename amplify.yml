@@ -7,8 +7,8 @@ backend:
     build:
       commands:
         - '# Execute Amplify CLI with the helper script'
-        - REACT_APP_CREATE_PHONE_NUMBER=+18883493697
-        - REACT_APP_JOIN_PHONE_NUMBER=+18885998558
+        - REACT_APP_CREATE_PHONE_NUMBER=$(aws ssm get-parameter --name /firstresponder/createPhoneNumber --query Parameter.Value --output text)
+        - REACT_APP_JOIN_PHONE_NUMBER=$(aws ssm get-parameter --name /firstresponder/joinPhoneNumber --query Parameter.Value --output text)
         - amplifyPush --simple
     postBuild:
       commands: 
