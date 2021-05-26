@@ -1,7 +1,6 @@
 import { API, graphqlOperation } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api";
-import { updateSpecialistProfile as updateSpecialistAvailabilityGraphql, UpdateSpecialistProfileMutation } from "./graphql/specialistAvailability";
-import { UpdateSpecialistProfileMutationVariables } from "../../API";
+import { updateSpecialistProfile as updateSpecialistAvailabilityGraphql, UpdateSpecialistProfileMutation, UpdateSpecialistProfileMutationVariables } from "./graphql/specialistAvailability";
 
 const updateSpecialistAvailability = async (
   options: UpdateSpecialistProfileMutationVariables,

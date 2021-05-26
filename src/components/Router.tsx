@@ -16,7 +16,6 @@ import Home from "./Home";
 import Alerts from "./physician/Alerts";
 import Availability from "./physician/Availability";
 import ContactInfo from "./physician/ContactInfo";
-import Overrides from "./physician/Overrides";
 import PhysicianLogin from "./physician/PhysicianLogin";
 import PhysicianMain from "./physician/PhysicianMain";
 import PhysicianProfile from "./physician/PhysicianProfile";
@@ -123,11 +122,6 @@ const PhysicianRoutes = withAuthenticator(
         </Route>
         <Route exact path="/main/availability">
           <Availability
-            onUnmount={(successParam) => (successParam ? setSuccess(true) : setFailure(true))}
-          />
-        </Route>
-        <Route exact path="/main/overrides">
-          <Overrides
             onUnmount={(successParam) => (successParam ? setSuccess(true) : setFailure(true))}
           />
         </Route>

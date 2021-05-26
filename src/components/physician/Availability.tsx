@@ -1,5 +1,6 @@
 import { ReactElement, useEffect, useState } from "react";
 import "../../styles/physician/Availability.css";
+import AWS from "aws-sdk";
 import { FormattedTimeBlock, FullAvailabilityType } from "../../types";
 import fetchSpecialistAvailability from "../calls/fetchSpecialistAvailability";
 import updateSpecialistAvailability from "../calls/updateSpecialistAvailability";
@@ -34,7 +35,7 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
       if (formattedAvailability && phoneNumber) {
         const res = await updateSpecialistAvailability({
           input: {
-            availability: JSON.stringify(formattedAvailability),
+            availability: formattedAvailability,
             phone_number: phoneNumber,
           },
         });
@@ -61,6 +62,7 @@ const Availability = ({ onUnmount = () => undefined }:AvailabilityPropsType): Re
     if (fetchedAvailability) {
       const init = convertAvailabilityToBoolean(fetchedAvailability);
       setInitialSchedule(init);
+      console.log("INIT", init);
     }
   }, [fetchedAvailability]);
 

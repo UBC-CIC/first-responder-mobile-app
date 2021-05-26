@@ -121,9 +121,10 @@ const PhysicianProfile = (): ReactElement => {
             variant="extended"
             className={`${globalClasses.button} ${globalClasses.coral}`}
             onClick={() => history.push("/main/availability")}
+            disabled
           >
             <CalendarIcon className={classes.icon} />
-            Standard Weekday Schedule
+            Standard Weekday Schedule (deprecated)
           </Fab>
           <Fab
             variant="extended"

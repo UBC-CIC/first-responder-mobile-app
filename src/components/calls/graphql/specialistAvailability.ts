@@ -98,3 +98,7 @@ export type GetSpecialistProfileQuery = {
     user_status?: string | null,
   } | null,
 };
+
+export type UpdateSpecialistProfileMutationVariables = {
+  input?: UpdateSpecialistProfileInput,
+};

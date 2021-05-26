@@ -238,6 +238,8 @@ const Schedule = ({ initialSchedule, onChange = () => undefined }: ScheduleProps
         const botIndex = topIndex + 7;
         const topCoords = indexToCoordinates(topIndex);
         const botCoords = indexToCoordinates(botIndex);
+        console.log(selected);
+
         let topBgColor: string;
         if (highlighted[topCoords.x][topCoords.y]) {
           topBgColor = "red";

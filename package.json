@@ -19,6 +19,7 @@
     "amazon-chime-sdk-js": "^2.4.1",
     "aws-amplify": "^3.3.18",
     "aws-amplify-react": "^4.2.23",
+    "aws-sdk": "^2.914.0",
     "axios": "^0.21.1",
     "byte-size": "^7.0.1",
     "csstype": "^2.6.16",
