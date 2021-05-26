@@ -7,13 +7,13 @@ backend:
     build:
       commands:
         - '# Execute Amplify CLI with the helper script'
-        - REACT_APP_CREATE_PHONE_NUMBER=$(aws ssm get-parameter --name /firstresponder/createPhoneNumber --query Parameter.Value --output text)
-        - REACT_APP_JOIN_PHONE_NUMBER=$(aws ssm get-parameter --name /firstresponder/joinPhoneNumber --query Parameter.Value --output text)
+        - REACT_APP_CREATE_PHONE_NUMBER=$(aws ssm get-parameter --name /firstresponder/createPhoneNumber --query Parameter.Value --output text || echo "")
+        - REACT_APP_JOIN_PHONE_NUMBER=$(aws ssm get-parameter --name /firstresponder/joinPhoneNumber --query Parameter.Value --output text || echo "")
         - amplifyPush --simple
     postBuild:
       commands: 
         - yum install -y jq
-        - export JOIN_PHONE_NUMBER=$(aws ssm get-parameter --name /firstresponder/joinPhoneNumber --query Parameter.Value --output text)
+        - export JOIN_PHONE_NUMBER=$(aws ssm get-parameter --name /firstresponder/joinPhoneNumber --query Parameter.Value --output text || echo "")
         - export SES_FROM_ADDRESS=fristrespondertest@gmail.com
         - export AWS_REGION=$(aws configure get region)
         - export ACCOUNTID=$(aws sts get-caller-identity --query Account --output text)
