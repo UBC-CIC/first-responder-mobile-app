@@ -117,24 +117,6 @@ const PhysicianProfile = (): ReactElement => {
             <ProfileIcon className={classes.icon} />
             Edit Contact Info
           </Fab>
-          <Fab
-            variant="extended"
-            className={`${globalClasses.button} ${globalClasses.coral}`}
-            onClick={() => history.push("/main/availability")}
-            disabled
-          >
-            <CalendarIcon className={classes.icon} />
-            Standard Weekday Schedule (deprecated)
-          </Fab>
-          <Fab
-            variant="extended"
-            className={`${globalClasses.button} ${globalClasses.coral}`}
-            onClick={() => history.push("/main/overrides")}
-            disabled
-          >
-            <EventBusy className={classes.icon} />
-            Book Time On / Off
-          </Fab>
           <FormControlLabel
             control={(
               <ThemedSwitch
