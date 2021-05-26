@@ -42,4 +42,3 @@ amplifytools.xcconfig
 .secret-*
 .eslintcache
 .vscode
-certs/*
