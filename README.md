@@ -8,6 +8,7 @@ The First Responder Mobile app serves to assist emergency responders in connecti
 - [Deployment](#Deployment)
 - [Development Instructions](#development)
 - [Installation](#installation)
+- [Usage](#usage)
 
 ## Dependencies
 - [Service Desk App](https://github.com/UBC-CIC/first-responder-admin) must be deployed to your AWS Account first.
@@ -21,13 +22,29 @@ The First Responder Mobile app serves to assist emergency responders in connecti
 ## Development
 
 ### HTTPS
-- Import the certificates in the certs/ directory to your machine. (You can also create your own Self Signed Certificates if you do not want to trust these ones.)
-  - On Mac, open the RootCA.crt in finder, and double click to open with Keychain Access. Open localhost.crt and double click.
+In order to use certain browser capabilities, like geolocation and user media (audio and video), a secure context (HTTPS) is required.
+For local development, a trusted self-signed certificate is required to access HTTPS.
+
+This repo provides self signed certificates, but it is recommended to create your own for security reasons.
+
+[Generate a Self Signed Certificate](https://stackoverflow.com/questions/10175812/how-to-generate-a-self-signed-ssl-certificate-using-openssl)
+
+> :warning: Make sure you trust these provided SSL Certificates
+#### MacOS
+  - Open the RootCA.crt in finder, and double click to open with Keychain Access. Open localhost.crt and double click.
   - This should have added 2 untrusted certs to the system keychain. For both: Right Click -> Get Info -> Trust -> When using this certificate: Always Trust
+#### Windows
+  - Follow instructions provided [here](https://docs.microsoft.com/en-us/skype-sdk/sdn/articles/installing-the-trusted-root-certificate)
 
-> `npm install`
+#### Linux
+  - ```cd certs```
+  - ```apt-get install ca-certificates```
+  - ```cp RootCA.pem /usr/share/ca-certificates```
+  - ```sudo update-ca-certificates```
 
-> `npm start`
+  Detailed Instructions [here](https://www.swiftstack.com/docs/admin/onpremise_management/self_signed.html)
+
+
 
 ### HTTP
 - If you do not want to run the app with HTTPS, you can simply run the following command
@@ -41,6 +58,8 @@ The First Responder Mobile app serves to assist emergency responders in connecti
 - Open the app on Chrome and press this button![a2hs2](./assets/a2hs3.png)
 - A prompt will ask you to install the app.
 - Open the app from your phone's home screen.
+## Usage **TODO**
+See [User Guide](#)
 
 ## License
 This project is distributed under the [MIT License](./LICENSE).
