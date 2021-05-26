@@ -8,7 +8,6 @@ The First Responder Mobile app serves to assist emergency responders in connecti
 - [Deployment](#Deployment)
 - [Development Instructions](#development)
 - [Installation](#installation)
-- [Usage](#usage)
 
 ## Dependencies
 - [Service Desk App](https://github.com/UBC-CIC/first-responder-admin) must be deployed to your AWS Account first.
