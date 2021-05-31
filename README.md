@@ -58,8 +58,8 @@ This repo provides self signed certificates, but it is recommended to create you
 - Open the app on Chrome and press this button![a2hs2](./assets/a2hs3.png)
 - A prompt will ask you to install the app.
 - Open the app from your phone's home screen.
-## Usage **TODO**
-See [User Guide](#)
+## Usage
+See [User Guide](https://docs.google.com/document/d/166zmASuUfzPkYlQgQNLbYUlJvMZ5-ZfZcFLz1EUfY_s/edit?usp=sharing)
 
 ## License
 This project is distributed under the [MIT License](./LICENSE).
