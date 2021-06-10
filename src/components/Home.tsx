@@ -11,13 +11,19 @@ import Colors from "./styling/Colors";
 import { useGlobalStyles } from "./styling/GlobalMuiStyles";
 import Layout from "./ui/Layout";
 
-const useButtonClasses = makeStyles({
+export const useButtonClasses = makeStyles({
   root: {
     width: "100%",
     backgroundColor: "#FF8552",
     borderRadius: 20,
     height: "50px",
     margin: "20px",
+    maxWidth: "500px",
+    "&:hover": {
+      transition: "all .3s",
+      filter: "brightness(.8)",
+      backgroundColor: "#FF8552",
+    },
   },
   label: {
     fontFamily: "Montserrat",
@@ -28,6 +34,7 @@ const useButtonClasses = makeStyles({
   smallText: {
     color: Colors.theme.platinum,
     textDecoration: "underline",
+    cursor: "pointer",
   },
 });
 
@@ -100,12 +107,12 @@ const Home = (): ReactElement => {
             >
               {SPECIALIST_NAME}
             </Button>
-            <p
+            <div
               className={buttonClasses.smallText}
               onClick={() => history.push("/badInternet")}
             >
               Weak Internet Connection?
-            </p>
+            </div>
           </div>
         </div>
       </div>

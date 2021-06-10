@@ -36,8 +36,9 @@ const ConnectedMeetingView = ({
   const [notes, setNotes] = useState(false);
   return (
     <div className="video-container">
-      <RosterDisplay roster={roster} attendees={attendees} />
-
+      <div className="roster-container">
+        <RosterDisplay roster={roster} attendees={attendees} />
+      </div>
       <VideoTileGrid
         className={classes.videoGrid}
         layout="standard"

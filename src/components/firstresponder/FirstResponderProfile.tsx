@@ -180,7 +180,7 @@ const FirstResponderProfile = (): ReactElement => {
   );
 
   return (
-    <Layout title={`${FR_NAME.full} Home`} parent="/main" flexColumn>
+    <Layout title={`${FR_NAME.full} Home`} parent="/main" flexColumn style={{ alignItems: "center" }}>
       <div className={classes.root}>
         <h3 className={classes.header}>
           Your Phone Number:
@@ -191,20 +191,21 @@ const FirstResponderProfile = (): ReactElement => {
         {renderTextField("first_name", "First Name")}
         {renderTextField("last_name", "Last Name")}
         {renderTextField("occupation", "Occupation")}
+        <Fab
+          variant="extended"
+          className={`${globalClasses.button} ${globalClasses.coral}`}
+          onClick={() => handleUpdateProfile()}
+          disabled={offline || loading}
+        >
+          {loading ? (
+            <CircularProgress className={classes.icon} />
+          ) : (
+            <Save className={classes.icon} />
+          )}
+          Update Profile
+        </Fab>
       </div>
-      <Fab
-        variant="extended"
-        className={`${globalClasses.button} ${globalClasses.coral}`}
-        onClick={() => handleUpdateProfile()}
-        disabled={offline || loading}
-      >
-        {loading ? (
-          <CircularProgress className={classes.icon} />
-        ) : (
-          <Save className={classes.icon} />
-        )}
-        Update Profile
-      </Fab>
+
       <Snackbar
         open={success}
         onClose={() => setSuccess(false)}

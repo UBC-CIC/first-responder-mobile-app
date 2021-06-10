@@ -1,24 +1,9 @@
 /** Screen for unauthenticated view, points user to either PSTN Join or PSTN Create */
 import { Button, makeStyles } from "@material-ui/core";
 import React from "react";
+import { useButtonClasses } from "../Home";
 import { useGlobalStyles } from "../styling/GlobalMuiStyles";
 import Layout from "../ui/Layout";
-
-const useButtonClasses = makeStyles({
-  root: {
-    width: "100%",
-    backgroundColor: "#FF8552",
-    borderRadius: 20,
-    height: "50px",
-    margin: "20px",
-  },
-  label: {
-    fontFamily: "Montserrat",
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-});
 /** Component that is used when a user has no internet
  * and cannot login to the app. Allows anybody to create a
  * meeting or join an existing one via PSTN.

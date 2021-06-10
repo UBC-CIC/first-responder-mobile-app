@@ -178,7 +178,9 @@ const SignIn = () => {
       noHeader
       title="Sign In"
       flexColumn
-      style={{ height: "100px !important" }}
+      style={{
+        height: "100px !important", display: "flex", flexDirection: "column", justifyContent: "flex-start", alignItems: "center",
+      }}
     >
       {renderSignInForm()}
     </Layout>

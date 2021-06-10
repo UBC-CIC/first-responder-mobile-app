@@ -11,3 +11,9 @@ div > video.ch-video {
   display: flex;
   flex-direction: column;
 }
+
+.roster-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}

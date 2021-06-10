@@ -207,7 +207,7 @@ const FirstResponderMain = (): ReactElement => {
                   log back in without internet
                   connection.
                 </p>
-                <div className="flex column">
+                <div className="flex column align">
                   <Fab
                     variant="extended"
                     className={`${globalClasses.button} ${classes.warning}`}

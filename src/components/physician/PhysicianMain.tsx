@@ -10,6 +10,7 @@ import bg from "../../assets/physician-home-bg.svg";
 import { SPECIALIST_NAME } from "../../Constants";
 import { getRelevantMeetings } from "../calls/getRelevantMeetings";
 import { updateSpecialistProfile } from "../calls/graphql/specialistProfile";
+import { useButtonClasses } from "../Home";
 import useAuthenticatedUser from "../hooks/useAuthenticatedUser";
 import useLocation from "../hooks/useLocation";
 import LocationStatus from "../shared/LocationStatus";
@@ -38,22 +39,6 @@ const useStyles = makeStyles({
   },
   badge: {
     textAlign: "center",
-  },
-});
-
-const useButtonClasses = makeStyles({
-  root: {
-    width: "100%",
-    backgroundColor: "#FF8552",
-    borderRadius: 20,
-    height: "50px",
-    margin: "20px",
-  },
-  label: {
-    fontFamily: "Montserrat",
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#fff",
   },
 });
 

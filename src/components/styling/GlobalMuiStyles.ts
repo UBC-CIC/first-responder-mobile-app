@@ -26,6 +26,11 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontSize: 15,
     margin: 10,
+    maxWidth: "500px",
+    "&:hover": {
+      filter: "brightness(0.8)",
+      transition: "all .3s",
+    },
   },
   coral: {
     backgroundColor: `${Colors.theme.coral} !important`,
