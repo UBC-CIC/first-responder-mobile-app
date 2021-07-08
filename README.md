@@ -51,8 +51,8 @@ This repo provides self signed certificates, but it is recommended to create you
 > `npm run start-http`
 ## Installation
 ### iOS
-- Open The app in Safari and press this button.![a2hs1](./assets/a2hs1.jpg)
-- Then add to your home screen by pressing this button![a2hs2](./assets/a2hs2.jpg)
+- Open The app in Safari and press this button.![a2hs1](./assets/a2hs1.jpeg)
+- Then add to your home screen by pressing this button![a2hs2](./assets/a2hs2.jpeg)
 
 ### Android
 - Open the app on Chrome and press this button![a2hs2](./assets/a2hs3.png)
